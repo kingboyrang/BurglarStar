@@ -9,7 +9,7 @@
 #import "SupervisionViewController.h"
 #import "Account.h"
 #import "TKMonitorCell.h"
-#import "LoginButtons.h"
+#import "ToolBarView.h"
 #import "AlertHelper.h"
 #import "AddSupervision.h"
 #import "EditSupervisionHead.h"
@@ -22,7 +22,7 @@
 #import "UIBarButtonItem+TPCategory.h"
 @interface SupervisionViewController ()<UITableViewDataSource,UITableViewDelegate>{
     UITableView *_tableView;
-    LoginButtons *_toolBar;
+    ToolBarView *_toolBar;
 }
 - (void)buttonAddClick;
 - (void)buttonEditClick:(id)sender;
@@ -73,15 +73,10 @@
     //_tableView.bounces=NO;
     [self.view addSubview:_tableView];
     
-    _toolBar=[[LoginButtons alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height, self.view.bounds.size.width, 44)];
-    _toolBar.cancel.hidden=YES;
-    _toolBar.submit.frame=CGRectMake(0, 0, self.view.bounds.size.width, 44);
-    [_toolBar.submit setTitle:@"删除(0)" forState:UIControlStateNormal];
-    [_toolBar.cancel setTitle:@"清空" forState:UIControlStateNormal];
-    [_toolBar.cancel addTarget:self action:@selector(buttonCancelRemoveClick) forControlEvents:UIControlEventTouchUpInside];
-    [_toolBar.submit addTarget:self action:@selector(buttonSubmitRemoveClick) forControlEvents:UIControlEventTouchUpInside];
+    _toolBar=[[ToolBarView alloc] initWithFrame:CGRectMake(0, r.size.height+r.origin.y+44, self.view.bounds.size.width, 44)];
+    [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
+    [_toolBar.button addTarget:self action:@selector(buttonSubmitRemoveClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_toolBar];
-    
     
 }
 - (void)loadSupervision{
@@ -175,7 +170,7 @@
         }
         [indexPaths release];
     }else{
-       [_toolBar.submit setTitle:@"删除(0)" forState:UIControlStateNormal];
+       [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
     }
    
 }
@@ -222,7 +217,7 @@
                 [_tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
                 [_tableView endUpdates];
                 [self.removeList removeAllObjects];
-                [_toolBar.submit setTitle:@"删除(0)" forState:UIControlStateNormal];
+                [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
                 [self hideLoadingSuccessWithTitle:@"删除成功!" completed:nil];
             }
         }
@@ -253,19 +248,17 @@
 }
 //编辑
 - (void)buttonEditClick:(id)sender{
+    
     UIButton *btn=(UIButton*)sender;
     [_tableView setEditing:!_tableView.editing animated:YES];
     if(_tableView.editing){
         [btn setTitle:@"取消" forState:UIControlStateNormal];
-        CGRect r=_toolBar.frame;
-        //r.origin.y=self.view.bounds.size.height-44-[self topHeight];
-        r.origin.y-=r.size.height;
-        
-        
         CGRect r1=_tableView.frame;
-        //r1.size.height=self.view.bounds.size.height-44*2-[self topHeight];
-        r1.size.height-=r.size.height;
         
+        CGRect r=_toolBar.frame;
+        r.origin.y=r1.origin.y+r1.size.height-r.size.height;
+        r1.size.height-=r.size.height;
+
         [UIView animateWithDuration:0.5f animations:^(){
             _toolBar.frame=r;
             _tableView.frame=r1;
@@ -276,15 +269,13 @@
         if (self.removeList&&[self.removeList count]>0) {
             [self.removeList removeAllObjects];
         }
-        [_toolBar.submit setTitle:@"删除(0)" forState:UIControlStateNormal];
+        [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
         
         [btn setTitle:@"编辑" forState:UIControlStateNormal];
         CGRect r=_toolBar.frame;
-        //r.origin.y=self.view.bounds.size.height+44;
         r.origin.y+=r.size.height;
         
         CGRect r1=_tableView.frame;
-        //r1.size.height=self.view.bounds.size.height-44;
         r1.size.height+=r.size.height;
         
         [UIView animateWithDuration:0.5f animations:^(){
@@ -310,17 +301,12 @@
         cell=[[[TKMonitorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
         cell.monitorView.controler=self;
     }
-    if (indexPath.row%2==0) {
-        cell.monitorView.backgroundColor=[UIColor colorFromHexRGB:@"efeedc"];
-    }else{
-        cell.monitorView.backgroundColor=[UIColor colorFromHexRGB:@"bebeb8"];
-    }
     SupervisionPerson *entity=self.cells[indexPath.row];
-    [cell.monitorView setDataSource:entity];
+    [cell.monitorView setDataSource:entity indexPathRow:indexPath.row];
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 104;
+    return 94;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:1];
@@ -337,7 +323,7 @@
         }
         SupervisionPerson *entity=self.cells[indexPath.row];
         [self.removeList setValue:[NSString stringWithFormat:@"%d",indexPath.row] forKey:entity.ID];
-        [_toolBar.submit setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
+        [_toolBar.button setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
     }
 }
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -348,7 +334,7 @@
     if ([btn.currentTitle isEqualToString:@"取消"]) {
          SupervisionPerson *entity=self.cells[indexPath.row];
         [self.removeList removeObjectForKey:entity.ID];
-        [_toolBar.submit setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
+        [_toolBar.button setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
     }
 }
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath

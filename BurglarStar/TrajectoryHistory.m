@@ -54,4 +54,11 @@
     }
     return @"";
 }
+- (NSString*)formatDateStr{
+    if (_pctime&&[_pctime length]>0) {
+        NSDate *date=[NSDate dateFromString:_pctime withFormat:@"yyyy/MM/dd HH:mm:ss"];
+        return [date stringWithFormat:@"yyyy/MM/dd"];
+    }
+    return @"";
+}
 @end

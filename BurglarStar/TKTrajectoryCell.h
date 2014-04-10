@@ -10,4 +10,5 @@
 #import "TKLabelCell.h"
 @interface TKTrajectoryCell : TKLabelCell
 @property(nonatomic,strong) UILabel *address;
+@property(nonatomic,strong) UIButton *arrowButton;
 @end

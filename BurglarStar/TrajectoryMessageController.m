@@ -77,9 +77,12 @@
     _tableView =[[PullingRefreshTableView alloc] initWithFrame:r pullingDelegate:self];
     _tableView.dataSource=self;
     _tableView.delegate=self;
+    _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
+    _tableView.separatorColor=[UIColor clearColor];
+    _tableView.backgroundColor=[UIColor clearColor];
     [self.view addSubview:_tableView];
     
-    CGFloat topY=self.view.bounds.size.height;
+    CGFloat topY=r.size.height+r.origin.y+44;
     _toolBar=[[LoginButtons alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 44)];
     [_toolBar.cancel setTitle:@"删除(0)" forState:UIControlStateNormal];
     [_toolBar.submit setTitle:@"标记已读(0)" forState:UIControlStateNormal];
@@ -242,15 +245,12 @@
     [_tableView setEditing:!_tableView.editing animated:YES];
     if(_tableView.editing){//编辑
         [btn setTitle:@"取消" forState:UIControlStateNormal];
+         CGRect r1=_tableView.frame;
         CGRect r=_toolBar.frame;
-        //r.origin.y=self.view.bounds.size.height-44;
-         r.origin.y-=r.size.height;
+         r.origin.y=r1.size.height+r1.origin.y-r.size.height;
         
-        CGRect r1=_tableView.frame;
-        //r1.size.height=self.view.bounds.size.height-44*2;
         r1.size.height-=r.size.height;
-       
-        
+
         [UIView animateWithDuration:0.5f animations:^(){
             _toolBar.frame=r;
             _tableView.frame=r1;
@@ -386,7 +386,7 @@
         //cell.monitorView.controler=self;
     }
     TrajectoryMessage *entity=self.cells[indexPath.row];
-    [cell.messageView setDataSource:entity];
+    [cell.messageView setDataSource:entity indexPathRow:indexPath.row];
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

@@ -18,7 +18,7 @@
         _messageView=[arr objectAtIndex:0];
         [self.contentView addSubview:_messageView];
     }
-    self.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+    //self.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
     
 	return self;
 }

@@ -22,7 +22,7 @@
         NSString *btnName=@"取消";
         CGSize size=[btnName textSize:[UIFont fontWithName:DeviceFontName size:DeviceFontSize] withWidth:self.bounds.size.width];
         _button=[UIButton buttonWithType:UIButtonTypeCustom];
-        _button.frame=CGRectMake((frame.size.width-size.width)/2,(frame.size.height-size.height)/2+5, size.width, size.height);
+        _button.frame=CGRectMake(0,(frame.size.height-size.height)/2+5, frame.size.width, size.height);
         [_button setTitle:@"取消" forState:UIControlStateNormal];
         [_button setTitleColor:[UIColor colorFromHexRGB:@"1e313f"] forState:UIControlStateNormal];
         _button.titleLabel.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];

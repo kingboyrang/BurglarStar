@@ -9,6 +9,7 @@
 #import "TrajectorySearch.h"
 #import "NSDate+TPCategory.h"
 #import "AlertHelper.h"
+#import <QuartzCore/QuartzCore.h>
 @interface TrajectorySearch (){
     CGFloat leftX;
    
@@ -25,6 +26,12 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        UIImage *img=[UIImage imageNamed:@"search_bg.png"];
+        UIImageView *imgView=[[UIImageView alloc] initWithFrame:CGRectMake(0, 0,frame.size.width, img.size.height)];
+        [imgView setImage:img];
+        [self addSubview:imgView];
+        [imgView release];
         //self.backgroundColor=[UIColor colorFromHexRGB:@"e5e1e1"];
         
         NSString *title=@"时间";
@@ -34,6 +41,7 @@
         label.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];
         label.backgroundColor=[UIColor clearColor];
         label.textColor=[UIColor blackColor];
+        label.textColor=[UIColor colorFromHexRGB:DeviceFontColorName];
         leftX=label.frame.origin.x+size.width+5;
         [self addSubview:label];
         [label release];
@@ -41,6 +49,9 @@
         NSDate *time=[NSDate date];
         
         _startCalendar = [[CVUICalendar alloc] initWithFrame:CGRectZero];
+        _startCalendar.popoverText.popoverTextField.layer.borderWidth=2.0;
+        _startCalendar.popoverText.popoverTextField.layer.cornerRadius=5.0;
+        _startCalendar.popoverText.popoverTextField.layer.borderColor=[UIColor colorFromHexRGB:@"6ab3c3"].CGColor;
         _startCalendar.popoverText.popoverTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         _startCalendar.popoverText.popoverTextField.borderStyle=UITextBorderStyleRoundedRect;
         _startCalendar.popoverText.popoverTextField.backgroundColor = [UIColor whiteColor];
@@ -54,6 +65,9 @@
         
         
         _endCalendar = [[CVUICalendar alloc] initWithFrame:CGRectZero];
+        _endCalendar.popoverText.popoverTextField.layer.borderWidth=2.0;
+        _endCalendar.popoverText.popoverTextField.layer.cornerRadius=5.0;
+        _endCalendar.popoverText.popoverTextField.layer.borderColor=[UIColor colorFromHexRGB:@"6ab3c3"].CGColor;
         _endCalendar.popoverText.popoverTextField.borderStyle=UITextBorderStyleRoundedRect;
         _endCalendar.popoverText.popoverTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         _endCalendar.popoverText.popoverTextField.backgroundColor = [UIColor whiteColor];
@@ -65,16 +79,12 @@
         _endCalendar.popoverText.popoverTextField.text=[time stringWithFormat:@"yyyy/MM/dd HH:mm"];
         [self addSubview:_endCalendar];
         
-        UIImage *leftImage=[UIImage imageNamed:@"bgbutton01.png"];
-        UIEdgeInsets leftInsets = UIEdgeInsetsMake(5,10, 5, 10);
-        leftImage=[leftImage resizableImageWithCapInsets:leftInsets resizingMode:UIImageResizingModeStretch];
+        UIImage *leftImage=[UIImage imageNamed:@"btn_search.png"];
+      
         
         _button=[UIButton buttonWithType:UIButtonTypeCustom];
-        _button.frame=CGRectMake(frame.size.width-85, (frame.size.height-40)/2, 80, 40);
-        [_button setBackgroundImage:leftImage forState:UIControlStateNormal];
-        [_button setTitle:@"搜索" forState:UIControlStateNormal];
-        [_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _button.titleLabel.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];
+        _button.frame=CGRectMake(frame.size.width-leftImage.size.width-5, (frame.size.height-leftImage.size.height)/2, leftImage.size.width, leftImage.size.height);
+        [_button setImage:leftImage forState:UIControlStateNormal];
         [self addSubview:_button];
         
         

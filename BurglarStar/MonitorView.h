@@ -11,6 +11,7 @@
 @interface MonitorView : UIView
 @property (retain, nonatomic) IBOutlet UIButton *headImage;
 @property (retain, nonatomic) IBOutlet UILabel *labName;
+@property (retain, nonatomic) IBOutlet UIButton *arrowButton;
 
 @property (strong,nonatomic) SupervisionPerson *Entity;
 @property (nonatomic,assign) id controler;
@@ -18,6 +19,6 @@
 - (IBAction)buttonMessageClick:(id)sender;
 - (IBAction)buttonTrajectoryClick:(id)sender;
 - (IBAction)buttonCallClick:(id)sender;
-- (void)setDataSource:(SupervisionPerson*)entity;
+- (void)setDataSource:(SupervisionPerson*)entity indexPathRow:(NSInteger)row;
 
 @end

@@ -7,6 +7,10 @@
 //
 
 #import "TKTrajectoryCell.h"
+#import "UIImage+TPCategory.h"
+@interface TKTrajectoryCell ()
+@property (nonatomic,strong) UIImageView *lineImageView;
+@end
 
 @implementation TKTrajectoryCell
 
@@ -24,6 +28,18 @@
 	
 	[self.contentView addSubview:_address];
     
+    //UIImage *img=[UIImage imageNamed:@"line_bg.png"];
+    _lineImageView=[[UIImageView alloc] initWithFrame:CGRectZero];
+    [_lineImageView setImage:[UIImage createImageWithColor:[UIColor colorFromHexRGB:@"cfcebf"]]];
+    [self.contentView addSubview:_lineImageView];
+    
+    
+   // NSString *imgName=@"arrow_right_n.png";
+   // UIImage *img=[UIImage imageNamed:imgName];
+    _arrowButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    _arrowButton.frame=CGRectMake(0, 0, 26, 26);
+   // [_arrowButton setImage:img forState:UIControlStateNormal];
+    [self.contentView addSubview:_arrowButton];
     
     return self;
 }
@@ -34,17 +50,26 @@
 - (void)layoutSubviews{
     [super layoutSubviews];
     NSString *str=[self.label.text Trim];
-    CGSize size1=[str textSize:[UIFont fontWithName:DeviceFontName size:14] withWidth:self.frame.size.width];
+    CGSize size1=[str textSize:[UIFont fontWithName:DeviceFontName size:14] withWidth:102];
     
     CGRect rect=self.label.frame;
-    rect.origin.x=5;
+    rect.origin.x=(102-size1.width)/2;
     rect.size=size1;
     self.label.frame=rect;
+    
+    rect=CGRectMake(102, 0, 2, self.frame.size.height);
+    self.lineImageView.frame=rect;
+    
+    CGRect btnFrame=_arrowButton.frame;
+    btnFrame.origin.x=self.frame.size.width-5-btnFrame.size.width;
+    btnFrame.origin.y=(self.frame.size.height-btnFrame.size.height)/2;
+    _arrowButton.frame=btnFrame;
 
     NSString *txt=_address.text;
-    CGFloat w=self.frame.size.width-self.label.frame.origin.x-self.label.frame.size.width-10;
     CGRect r = CGRectInset(self.contentView.bounds, 10,10);
-    r.origin.x=self.label.frame.origin.x+self.label.frame.size.width+10;
+    r.origin.x=102+3;
+    CGFloat w=btnFrame.origin.x-r.origin.x-5;
+    
     if ([txt length]>0) {
         CGSize size=[txt textSize:[UIFont fontWithName:DeviceFontName size:14] withWidth:w];
         r.size=size;

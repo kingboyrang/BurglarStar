@@ -56,7 +56,7 @@
     
     UIBarButtonItem *btn1=[UIBarButtonItem barButtonWithTitle:@"地图" target:self action:@selector(buttonMapLinesClick) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *btn2=[UIBarButtonItem barButtonArrowItemTarget:self action:@selector(buttonSwitchClick:) forControlEvents:UIControlEventTouchUpInside];
-    NSArray *actionButtonItems = [NSArray arrayWithObjects:btn1,btn2, nil];
+    NSArray *actionButtonItems = [NSArray arrayWithObjects:btn2,btn1, nil];
     self.navigationItem.rightBarButtonItems = actionButtonItems;
 
     
@@ -70,7 +70,7 @@
     _tableView.backgroundColor=[UIColor clearColor];
     [self.view addSubview:_tableView];
     
-    _trajectorySearch=[[TrajectorySearch alloc] initWithFrame:CGRectMake(0, 44-79, self.view.bounds.size.width, 79)];
+    _trajectorySearch=[[TrajectorySearch alloc] initWithFrame:CGRectMake(0,-79, self.view.bounds.size.width, 79)];
     [_trajectorySearch.button addTarget:self action:@selector(buttonSearchClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_trajectorySearch];
     [self.view sendSubviewToBack:_trajectorySearch];
@@ -99,15 +99,15 @@
     if (![_trajectorySearch compareToDate]) {
         return;
     }
-    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:1];
+    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:0];
     UIButton *btn=(UIButton*)barButton.customView;
     if (btn.selected) {
         CGRect r=self.trajectorySearch.frame;
-        r.origin.y=44-r.size.height;
+        r.origin.y=-r.size.height;
         
         CGRect r1=_tableView.frame;
-        r1.origin.y=44;
-        r1.size.height=self.view.bounds.size.height-r1.origin.y;
+        r1.origin.y=0;
+        r1.size.height+=r.size.height;
         
         [UIView animateWithDuration:0.5f animations:^{
             self.trajectorySearch.frame=r;
@@ -123,11 +123,11 @@
     UIButton *btn=(UIButton*)sender;
     if (btn.selected) {//隐藏
         CGRect r=self.trajectorySearch.frame;
-        r.origin.y=44-r.size.height;
+        r.origin.y=-r.size.height;
         
         CGRect r1=_tableView.frame;
-        r1.origin.y=44;
-        r1.size.height=self.view.bounds.size.height-r1.origin.y;
+        r1.origin.y=0;
+        r1.size.height+=r.size.height;
         
         [UIView animateWithDuration:0.5f animations:^{
             self.trajectorySearch.frame=r;
@@ -139,11 +139,11 @@
         [self.view sendSubviewToBack:_tableView];
         
         CGRect r=self.trajectorySearch.frame;
-        r.origin.y=44;
+        r.origin.y=0;
         
         CGRect r1=_tableView.frame;
-        r1.origin.y=44+r.size.height;
-        r1.size.height=self.view.bounds.size.height-r1.origin.y;
+        r1.origin.y=r.size.height;
+        r1.size.height-=r1.origin.y;
         
         [UIView animateWithDuration:0.5f animations:^{
             self.trajectorySearch.frame=r;
@@ -214,12 +214,22 @@
     if (cell==nil) {
         cell=[[[TKTrajectoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
         cell.label.font=[UIFont fontWithName:DeviceFontName size:14];
-        cell.label.textColor=[UIColor grayColor];
-        cell.address.textColor=[UIColor grayColor];
+        cell.label.textColor=[UIColor colorFromHexRGB:@"252930"];
+        cell.address.textColor=[UIColor colorFromHexRGB:@"252930"];
+        
+       
     }
     TrajectoryHistory *entity=self.cells[indexPath.row];
-    cell.label.text=entity.pctime;
+    cell.label.text=entity.formatDateStr;
     cell.address.text=entity.address;
+
+    if (indexPath.row%2==0) {
+         [cell.arrowButton setImage:[UIImage imageNamed:@"arrow_right_n.png"] forState:UIControlStateNormal];
+         cell.contentView.backgroundColor=[UIColor colorFromHexRGB:@"bebeb8"];
+    }else{
+         [cell.arrowButton setImage:[UIImage imageNamed:@"arrow_right_s.png"] forState:UIControlStateNormal];
+         cell.contentView.backgroundColor=[UIColor colorFromHexRGB:@"efeedc"];
+    }
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -236,24 +246,31 @@
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *bgView=[[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)] autorelease];
-    bgView.backgroundColor=[UIColor colorFromHexRGB:@"d5e1f0"];
+    //bgView.backgroundColor=[UIColor colorFromHexRGB:@"d5e1f0"];
+    UIImage *img=[UIImage imageNamed:@"tab_head_bg"];
+    UIImageView *imgView=[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
+    [imgView setImage:img];
+    [bgView addSubview:imgView];
+    [imgView release];
     
     NSString *lab1Title=@"时间";
     CGSize size=[lab1Title textSize:[UIFont fontWithName:DeviceFontName size:DeviceFontSize] withWidth:self.view.bounds.size.width];
-    UILabel *lab1=[[UILabel alloc] initWithFrame:CGRectMake((self.view.bounds.size.width/2-size.width)/2,(bgView.frame.size.height-size.height)/2, size.width,size.height)];
+    UILabel *lab1=[[UILabel alloc] initWithFrame:CGRectMake((102-size.width)/2,(bgView.frame.size.height-size.height)/2, size.width,size.height)];
     lab1.text=lab1Title;
     lab1.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];
     lab1.backgroundColor=[UIColor clearColor];
+    lab1.textColor=[UIColor colorFromHexRGB:DeviceFontColorName];
     [bgView addSubview:lab1];
     [lab1 release];
     
-    CGFloat w=self.view.bounds.size.width/2;
+    CGFloat w=self.view.bounds.size.width-102;
     NSString *lab2Title=@"位置";
     size=[lab2Title textSize:[UIFont fontWithName:DeviceFontName size:DeviceFontSize] withWidth:self.view.bounds.size.width];
-    UILabel *lab2=[[UILabel alloc] initWithFrame:CGRectMake(w+(w-size.width)/2,(bgView.frame.size.height-size.height)/2, size.width,size.height)];
+    UILabel *lab2=[[UILabel alloc] initWithFrame:CGRectMake(102+(w-size.width)/2,(bgView.frame.size.height-size.height)/2, size.width,size.height)];
     lab2.text=lab2Title;
     lab2.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];
     lab2.backgroundColor=[UIColor clearColor];
+    lab2.textColor=[UIColor colorFromHexRGB:DeviceFontColorName];
     [bgView addSubview:lab2];
     [lab2 release];
     
