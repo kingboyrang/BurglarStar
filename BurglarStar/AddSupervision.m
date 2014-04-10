@@ -9,7 +9,7 @@
 #import "AddSupervision.h"
 #import "TKLabelCell.h"
 #import "TKTextFieldCell.h"
-#import "LoginButtons.h"
+#import "ToolBarView.h"
 #import "Account.h"
 #import "UIImage+TPCategory.h"
 #import "EditSupervisionHead.h"
@@ -23,7 +23,7 @@
 @interface AddSupervision ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>{
     UITableView *_tableView;
     UIImageView *_imageHead;
-    LoginButtons *_toolBar;
+    ToolBarView *_toolBar;
 }
 @property (nonatomic,assign) CGRect tableRect;
 - (void)buttonSubmit;
@@ -89,25 +89,26 @@
     _tableView.dataSource=self;
     _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     _tableView.separatorColor=[UIColor clearColor];
+    _tableView.backgroundColor=[UIColor clearColor];
     _tableView.bounces=NO;
     //_tableView.autoresizesSubviews=YES;
     //_tableView.autoresizingMask=UIViewAutoresizingFlexibleWidth;
     [self.view addSubview:_tableView];
     
-    _toolBar=[[LoginButtons alloc] initWithFrame:CGRectMake(0,_tableView.frame.size.height+_tableView.frame.origin.y, self.view.bounds.size.width, 44)];
-    _toolBar.cancel.frame=CGRectMake(self.view.bounds.size.width*2/3, 0, self.view.bounds.size.width/3, 44);
-    _toolBar.submit.frame=CGRectMake(self.view.bounds.size.width/3, 0, self.view.bounds.size.width/3, 44);
-    [_toolBar.cancel setTitle:@"下一步" forState:UIControlStateNormal];
-    [_toolBar.submit setTitle:@"完成" forState:UIControlStateNormal];
-    [_toolBar.submit addTarget:self action:@selector(buttonSubmit) forControlEvents:UIControlEventTouchUpInside];
-    [_toolBar.cancel addTarget:self action:@selector(buttonCancel) forControlEvents:UIControlEventTouchUpInside];
+    _toolBar=[[ToolBarView alloc] initWithFrame:CGRectMake(0,_tableView.frame.size.height+_tableView.frame.origin.y, self.view.bounds.size.width, 44)];
+    //_toolBar.cancel.frame=CGRectMake(self.view.bounds.size.width*2/3, 0, self.view.bounds.size.width/3, 44);
+    //_toolBar.submit.frame=CGRectMake(self.view.bounds.size.width/3, 0, self.view.bounds.size.width/3, 44);
+    //[_toolBar.cancel setTitle:@"下一步" forState:UIControlStateNormal];
+    [_toolBar.button setTitle:@"完成" forState:UIControlStateNormal];
+    [_toolBar.button addTarget:self action:@selector(buttonSubmit) forControlEvents:UIControlEventTouchUpInside];
+    //[_toolBar.cancel addTarget:self action:@selector(buttonCancel) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_toolBar];
     
     //头像
     TKEmptyCell *cell9=[[[TKEmptyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
-    UIView *bgView=[[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 110)] autorelease];
+    UIView *bgView=[[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 120)] autorelease];
     bgView.backgroundColor=[UIColor clearColor];
-    UIImage *image=[UIImage imageNamed:@"bg03.png"];
+    UIImage *image=[UIImage imageNamed:@"head_photo.png"];
     _imageHead=[[UIImageView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width-image.size.width)/2,bgView.frame.size.height-image.size.height, image.size.width, image.size.height)];
     [_imageHead setImage:image];
     [bgView addSubview:_imageHead];
@@ -285,7 +286,7 @@
         return;
     }
     
-    [self showLoadingAnimatedWithTitle:@"新增监管目标,请稍后..."];
+    [self showLoadingAnimatedWithTitle:@"新增车辆管理,请稍后..."];
     [self uploadImageWithId:@"" completed:^(NSString *fileName) {
         NSMutableArray *params=[NSMutableArray arrayWithCapacity:6];
         [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:[cell1.textField.text Trim],@"Name", nil]];
@@ -322,7 +323,7 @@
                 }
             }
             if (!boo) {
-                NSString *errorMsg=@"新增监管目标失败!";
+                NSString *errorMsg=@"车辆管理失败!";
                 if ([status isEqualToString:@"2"]) {
                     errorMsg=@"输入的手机号码已绑定终端,无法新增!";
                 }
@@ -342,7 +343,7 @@
             }
         }];
         [request setFailedBlock:^{
-            [self hideLoadingFailedWithTitle:@"新增监管目标失败!" completed:nil];
+            [self hideLoadingFailedWithTitle:@"新增车辆管理失败!" completed:nil];
         }];
         [request startAsynchronous];
     }];
@@ -396,7 +397,7 @@
         [self showErrorNetWorkNotice:nil];
         return;
     }
-    [self showLoadingAnimatedWithTitle:@"修改监管目标,请稍后..."];
+    [self showLoadingAnimatedWithTitle:@"修改车辆管理,请稍后..."];
     
     NSMutableArray *params=[NSMutableArray arrayWithCapacity:6];
     [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:self.PersonID,@"personID", nil]];
@@ -435,7 +436,7 @@
             
         }
         if (!boo) {
-            NSString *errorMsg=@"修改监管目标失败!";
+            NSString *errorMsg=@"修改车辆管理失败!";
             if ([status isEqualToString:@"Exists"]) {
                 errorMsg=@"名称重复!";
             }
@@ -457,7 +458,7 @@
 
     }];
     [request setFailedBlock:^{
-        [self hideLoadingFailedWithTitle:@"修改监管目标失败!" completed:nil];
+        [self hideLoadingFailedWithTitle:@"修改车辆管理失败!" completed:nil];
     }];
     [request startAsynchronous];
     
@@ -511,7 +512,7 @@
 - (void)buttonChooseImage{
     SupervisionPerson *entity=[[[SupervisionPerson alloc] init] autorelease];
     entity.ID=self.operateType==1?@"":self.PersonID;
-    entity.Name=@"监管目标头像";
+    entity.Name=@"车辆管理头像";
     EditSupervisionHead *head=[[EditSupervisionHead alloc] init];
     head.Entity=entity;
     head.operateType=self.operateType;//新增
@@ -628,6 +629,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell=self.cells[indexPath.row];
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
+    cell.backgroundColor=[UIColor clearColor];
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

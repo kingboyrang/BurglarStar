@@ -68,6 +68,8 @@
     _tableView.dataSource=self;
     _tableView.bounces=NO;
     _tableView.backgroundColor=[UIColor clearColor];
+    _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
+    _tableView.separatorColor=[UIColor clearColor];
     [self.view addSubview:_tableView];
     
     _trajectorySearch=[[TrajectorySearch alloc] initWithFrame:CGRectMake(0,-79, self.view.bounds.size.width, 79)];
@@ -234,7 +236,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     TrajectoryHistory *entity=self.cells[indexPath.row];
-    CGFloat w=self.view.bounds.size.width/2-5;
+    CGFloat w=self.view.bounds.size.width-105-26-10;
     CGSize size=[entity.address textSize:[UIFont fontWithName:DeviceFontName size:14] withWidth:w];
     if (size.height+10>44) {
         return size.height+10+2;

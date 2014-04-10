@@ -64,7 +64,7 @@
     cell2.textField.placeholder=@"请输入原密码";
     cell2.textField.layer.borderWidth=2.0;
     cell2.textField.layer.cornerRadius=5.0;
-    cell2.textField.layer.borderColor=[UIColor colorFromHexRGB:@"4a7ebb"].CGColor;
+    cell2.textField.layer.borderColor=[UIColor colorFromHexRGB:@"6ab3c3"].CGColor;
     cell2.textField.delegate=self;
     cell2.textField.secureTextEntry=YES;
     
@@ -75,7 +75,7 @@
     cell4.textField.placeholder=@"请输入新密码";
     cell4.textField.layer.borderWidth=2.0;
     cell4.textField.layer.cornerRadius=5.0;
-    cell4.textField.layer.borderColor=[UIColor colorFromHexRGB:@"4a7ebb"].CGColor;
+    cell4.textField.layer.borderColor=[UIColor colorFromHexRGB:@"6ab3c3"].CGColor;
     cell4.textField.secureTextEntry=YES;
     cell4.textField.delegate=self;
     
@@ -86,7 +86,7 @@
     cell6.textField.placeholder=@"请输入确认新密码";
     cell6.textField.layer.borderWidth=2.0;
     cell6.textField.layer.cornerRadius=5.0;
-    cell6.textField.layer.borderColor=[UIColor colorFromHexRGB:@"4a7ebb"].CGColor;
+    cell6.textField.layer.borderColor=[UIColor colorFromHexRGB:@"6ab3c3"].CGColor;
     cell6.textField.secureTextEntry=YES;
     cell6.textField.delegate=self;
     

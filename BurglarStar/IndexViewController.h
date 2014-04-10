@@ -26,5 +26,5 @@
 - (BOOL)selectedTrajectoryIndex:(id)number;
 - (void)setSelectedTabIndex:(id)num;
 - (void)selectedMetaWithEntity:(SupervisionPerson*)entity;//进放仪表画面
-- (void)setSelectedSupervisionCenter:(SupervisionPerson*)entity;//设置监管目标选中
+- (void)setSelectedSupervisionCenter:(SupervisionPerson*)entity;//设置车辆管理选中
 @end

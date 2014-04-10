@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "BSMenu.h"
+#import "AdView.h"
 @interface MainViewController : BasicViewController<BSMenuDelegate>
-
+@property (nonatomic,strong) AdView *scrollAdView;
 @end

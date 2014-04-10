@@ -59,38 +59,31 @@
     self.cameraImage=[[CaseCameraImage alloc] init];
     self.cameraImage.delegate=self;
 	
-    CGFloat topY=44;
-    _preview=[[UIImageView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width-90)/2, topY+108, 90, 104)];
+    CGFloat topY=25;
+    UIImage *placeImg=[UIImage imageNamed:@"head_big_photo.png"];
+    _preview=[[UIImageView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width-placeImg.size.width)/2, topY, placeImg.size.width, placeImg.size.height)];
     if (self.Entity&&self.Entity.Photo&&[self.Entity.Photo length]>0) {
-        [_preview setImageWithURL:[NSURL URLWithString:self.Entity.Photo] placeholderImage:[UIImage imageNamed:@"bg02.png"]];
+        [_preview setImageWithURL:[NSURL URLWithString:self.Entity.Photo] placeholderImage:placeImg];
     }else{
-        [_preview setImage:[UIImage imageNamed:@"bg02.png"]];
+        [_preview setImage:placeImg];
     }
     [self.view addSubview:_preview];
     [self.view sendSubviewToBack:_preview];
     
-    
-    UIImage *leftImage=[UIImage imageNamed:@"bgbutton01.png"];
-    UIEdgeInsets leftInsets = UIEdgeInsetsMake(5,10, 5, 10);
-    leftImage=[leftImage resizableImageWithCapInsets:leftInsets resizingMode:UIImageResizingModeStretch];
-    
+    topY=310;
+    UIImage *imgPhotos=[UIImage imageNamed:@"head_photos.png"];
     UIButton *_button=[UIButton buttonWithType:UIButtonTypeCustom];
-    _button.frame=CGRectMake(36, 320+topY, 114, 40);
-    [_button setBackgroundImage:leftImage forState:UIControlStateNormal];
-    [_button setTitle:@"浏览" forState:UIControlStateNormal];
-    [_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    _button.titleLabel.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];
+    _button.frame=CGRectMake((self.view.bounds.size.width-imgPhotos.size.width)/2, topY, imgPhotos.size.width, imgPhotos.size.height);
+    [_button setImage:imgPhotos forState:UIControlStateNormal];
     [_button addTarget:self action:@selector(buttonViewerClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_button];
     
    
-    
+    topY+=imgPhotos.size.height+10;
+    UIImage *imgCamera=[UIImage imageNamed:@"head_camera.png"];
     UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
-    btn.frame=CGRectMake(170, 320+topY, 114, 40);
-    [btn setBackgroundImage:leftImage forState:UIControlStateNormal];
-    [btn setTitle:@"照相" forState:UIControlStateNormal];
-    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    btn.titleLabel.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];
+    btn.frame=CGRectMake((self.view.bounds.size.width-imgCamera.size.width)/2, topY, imgCamera.size.width, imgPhotos.size.height);
+    [btn setImage:imgCamera forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(buttonCameraClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btn];
     
@@ -123,11 +116,13 @@
     if (self.operateType==2) {//修改
         if (_imageCropper) {
             [self uploadImageWithId:self.Entity.ID completed:^(NSString *fileName) {
-                if (self.delegate&&[self.delegate respondsToSelector:@selector(finishSelectedImage:)]) {
-                    [self.delegate performSelector:@selector(finishSelectedImage:) withObject:[_imageCropper getCroppedImage]];
+                SEL sel=NSSelectorFromString(@"finishSelectedImage:");
+                if (self.delegate&&[self.delegate respondsToSelector:sel]) {
+                    [self.delegate performSelector:sel withObject:[_imageCropper getCroppedImage]];
                 }
-                if (self.delegate&&[self.delegate respondsToSelector:@selector(finishUploadFileName:)]) {
-                    [self.delegate performSelector:@selector(finishUploadFileName:) withObject:fileName];
+                SEL sel1=NSSelectorFromString(@"finishUploadFileName:");
+                if (self.delegate&&[self.delegate respondsToSelector:sel1]) {
+                    [self.delegate performSelector:sel1 withObject:fileName];
                 }
             }];
         }else{
@@ -136,8 +131,9 @@
     }else{
         if (_imageCropper) {
             //[self uploadImageWithId:self.Entity.ID completed:nil];
-            if (self.delegate&&[self.delegate respondsToSelector:@selector(finishSelectedImage:)]) {
-                [self.delegate performSelector:@selector(finishSelectedImage:) withObject:[_imageCropper getCroppedImage]];
+            SEL sel2=NSSelectorFromString(@"finishSelectedImage:");
+            if (self.delegate&&[self.delegate respondsToSelector:sel2]) {
+                [self.delegate performSelector:sel2 withObject:[_imageCropper getCroppedImage]];
             }
             [self.navigationController popViewControllerAnimated:YES];
             return;
@@ -160,7 +156,7 @@
     
     UIImage *realImage=[image scaleToSize:CGSizeMake(300, 300)];
     
-    CGRect r=CGRectMake((self.view.bounds.size.width-realImage.size.width)/2,44+(320-realImage.size.height)/2, realImage.size.width, realImage.size.height);
+    CGRect r=CGRectMake((self.view.bounds.size.width-realImage.size.width)/2,(310-realImage.size.height)/2, realImage.size.width, realImage.size.height);
     _imageCropper = [[NLImageCropperView alloc] initWithFrame:r];
     [self.view addSubview:_imageCropper];
     [_imageCropper setImage:realImage];
@@ -228,11 +224,13 @@
     if (self.operateType==2) {//修改
         if (_imageCropper) {
             [self uploadImageWithId:self.Entity.ID completed:^(NSString *fileName) {
-                if (self.delegate&&[self.delegate respondsToSelector:@selector(finishSelectedImage:)]) {
-                    [self.delegate performSelector:@selector(finishSelectedImage:) withObject:[_imageCropper getCroppedImage]];
+                SEL sel=NSSelectorFromString(@"finishSelectedImage:");
+                if (self.delegate&&[self.delegate respondsToSelector:sel]) {
+                    [self.delegate performSelector:sel withObject:[_imageCropper getCroppedImage]];
                 }
-                if (self.delegate&&[self.delegate respondsToSelector:@selector(finishUploadFileName:)]) {
-                    [self.delegate performSelector:@selector(finishUploadFileName:) withObject:fileName];
+                SEL sel1=NSSelectorFromString(@"finishUploadFileName:");
+                if (self.delegate&&[self.delegate respondsToSelector:sel1]) {
+                    [self.delegate performSelector:sel1 withObject:fileName];
                 }
             }];
         }else{
@@ -241,8 +239,9 @@
     }else{
         if (_imageCropper) {
             //[self uploadImageWithId:self.Entity.ID completed:nil];
-            if (self.delegate&&[self.delegate respondsToSelector:@selector(finishSelectedImage:)]) {
-                [self.delegate performSelector:@selector(finishSelectedImage:) withObject:[_imageCropper getCroppedImage]];
+            SEL sel2=NSSelectorFromString(@"finishSelectedImage:");
+            if (self.delegate&&[self.delegate respondsToSelector:sel2]) {
+                [self.delegate performSelector:sel2 withObject:[_imageCropper getCroppedImage]];
             }
             [self.navigationController popViewControllerAnimated:YES];
         }else{

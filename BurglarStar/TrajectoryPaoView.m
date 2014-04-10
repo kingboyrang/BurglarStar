@@ -201,9 +201,7 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell=self.cells[indexPath.row];
-//    UIView *bgView=[[[UIView alloc] init] autorelease];
-//    bgView.backgroundColor=[UIColor clearColor];
-//    cell.backgroundView=bgView;
+    /***
     if (indexPath.row==self.cells.count-1) {
         cell.detailTextLabel.text=@"详细信息";
         cell.detailTextLabel.font=[UIFont fontWithName:DeviceFontName size:12];
@@ -212,6 +210,8 @@
     }else{
         cell.selectionStyle=UITableViewCellSelectionStyleNone;
     }
+     ***/
+    cell.selectionStyle=UITableViewCellSelectionStyleNone;
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -234,12 +234,13 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    /***
     if (indexPath.row==self.cells.count-1) {
          SEL sel=NSSelectorFromString(@"selectedMetaWithEntity:");
         if (self.controls&&[self.controls respondsToSelector:sel]) {
             [self.controls performSelector:sel withObject:self.Entity];
         }
     }
-   
+   ***/
 }
 @end

@@ -67,10 +67,10 @@
     
     UIBarButtonItem *btn1=[UIBarButtonItem barButtonWithTitle:@"列表" target:self action:@selector(buttonListClick) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *btn2=[UIBarButtonItem barButtonArrowItemTarget:self action:@selector(buttonSwitchClick:) forControlEvents:UIControlEventTouchUpInside];
-    NSArray *actionButtonItems = [NSArray arrayWithObjects:btn1,btn2, nil];
+    NSArray *actionButtonItems = [NSArray arrayWithObjects:btn2,btn1, nil];
     self.navigationItem.rightBarButtonItems = actionButtonItems;
     
-    _trajectorySearch=[[TrajectorySearch alloc] initWithFrame:CGRectMake(0, 44-79, self.view.bounds.size.width, 79)];
+    _trajectorySearch=[[TrajectorySearch alloc] initWithFrame:CGRectMake(0,-79, self.view.bounds.size.width, 79)];
     [_trajectorySearch.button addTarget:self action:@selector(buttonSearchClick) forControlEvents:UIControlEventTouchUpInside];
     _trajectorySearch.backgroundColor=[UIColor whiteColor];
     _trajectorySearch.startCalendar.popoverText.popoverTextField.text=self.startTime;
@@ -128,7 +128,7 @@
     UIButton *btn=(UIButton*)sender;
     if (btn.selected) {//隐藏
         CGRect r=self.trajectorySearch.frame;
-        r.origin.y=44-r.size.height;
+        r.origin.y=-r.size.height;
         [UIView animateWithDuration:0.5f animations:^{
             self.trajectorySearch.frame=r;
             btn.selected=NO;
@@ -141,7 +141,7 @@
         [self.view sendSubviewToBack:_mapView];
         
         CGRect r=self.trajectorySearch.frame;
-        r.origin.y=44;
+        r.origin.y=0;
         
         [UIView animateWithDuration:0.5f animations:^{
             self.trajectorySearch.frame=r;
@@ -401,10 +401,10 @@
    //隐藏搜索按钮
     
     CGRect r=self.trajectorySearch.frame;
-    if (r.origin.y>0) {
-        UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:1];
+    if (r.origin.y>=0) {
+        UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:0];
         UIButton *btn=(UIButton*)barButton.customView;
-        r.origin.y=44-r.size.height;
+        r.origin.y=-r.size.height;
         [UIView animateWithDuration:0.5f animations:^{
             self.trajectorySearch.frame=r;
              btn.selected=NO;

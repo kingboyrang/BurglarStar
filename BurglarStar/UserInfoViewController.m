@@ -62,7 +62,7 @@
     TKTextFieldCell *cell2=[[[TKTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
     cell2.textField.layer.borderWidth=2.0;
     cell2.textField.layer.cornerRadius=5.0;
-    cell2.textField.layer.borderColor=[UIColor colorFromHexRGB:@"4a7ebb"].CGColor;
+    cell2.textField.layer.borderColor=[UIColor colorFromHexRGB:@"6ab3c3"].CGColor;
     cell2.textField.backgroundColor=[UIColor grayColor];
     cell2.textField.enabled=NO;
     cell2.textField.text=acc.UserId;
@@ -73,7 +73,7 @@
     TKTextFieldCell *cell4=[[[TKTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
     cell4.textField.layer.borderWidth=2.0;
     cell4.textField.layer.cornerRadius=5.0;
-    cell4.textField.layer.borderColor=[UIColor colorFromHexRGB:@"4a7ebb"].CGColor;
+    cell4.textField.layer.borderColor=[UIColor colorFromHexRGB:@"6ab3c3"].CGColor;
     cell4.textField.text=acc.Phone;
     cell4.textField.keyboardType=UIKeyboardTypeAlphabet;
     cell4.textField.delegate=self;
@@ -85,7 +85,7 @@
     TKTextFieldCell *cell6=[[[TKTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
     cell6.textField.layer.borderWidth=2.0;
     cell6.textField.layer.cornerRadius=5.0;
-    cell6.textField.layer.borderColor=[UIColor colorFromHexRGB:@"4a7ebb"].CGColor;
+    cell6.textField.layer.borderColor=[UIColor colorFromHexRGB:@"6ab3c3"].CGColor;
     cell6.textField.text=acc.Name;
     cell6.textField.delegate=self;
     cell6.textField.placeholder=@"请输入昵称";

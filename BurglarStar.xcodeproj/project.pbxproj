@@ -196,6 +196,15 @@
 		01C2F17518F5219F00B37603 /* AreaRangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C2F17018F5219F00B37603 /* AreaRangeViewController.m */; };
 		01C2F17618F5219F00B37603 /* AreaRuleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C2F17218F5219F00B37603 /* AreaRuleViewController.m */; };
 		01C2F17818F528E200B37603 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C2F17718F528E200B37603 /* ImageIO.framework */; };
+		01CD566E18F68820007731E1 /* BusLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD566D18F68820007731E1 /* BusLocationViewController.m */; };
+		01CD567318F68DC3007731E1 /* WeatherView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD567218F68DC3007731E1 /* WeatherView.m */; };
+		01CD567818F691EB007731E1 /* AdModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD567518F691EB007731E1 /* AdModel.m */; };
+		01CD567918F691EB007731E1 /* AdView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD567718F691EB007731E1 /* AdView.m */; };
+		01CD568018F6A5D6007731E1 /* SVGeocoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD567D18F6A5D6007731E1 /* SVGeocoder.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		01CD568118F6A5D6007731E1 /* SVPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD567F18F6A5D6007731E1 /* SVPlacemark.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		01CD568418F6A5E0007731E1 /* LocationGPS.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD568318F6A5E0007731E1 /* LocationGPS.m */; };
+		01CD568618F6A75A007731E1 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01CD568518F6A75A007731E1 /* MapKit.framework */; };
+		01CD568918F6A933007731E1 /* ReverseCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD568818F6A933007731E1 /* ReverseCoordinate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -586,6 +595,23 @@
 		01C2F17118F5219F00B37603 /* AreaRuleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AreaRuleViewController.h; sourceTree = "<group>"; };
 		01C2F17218F5219F00B37603 /* AreaRuleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AreaRuleViewController.m; sourceTree = "<group>"; };
 		01C2F17718F528E200B37603 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		01CD566C18F68820007731E1 /* BusLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusLocationViewController.h; sourceTree = "<group>"; };
+		01CD566D18F68820007731E1 /* BusLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusLocationViewController.m; sourceTree = "<group>"; };
+		01CD567118F68DC3007731E1 /* WeatherView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherView.h; sourceTree = "<group>"; };
+		01CD567218F68DC3007731E1 /* WeatherView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherView.m; sourceTree = "<group>"; };
+		01CD567418F691EB007731E1 /* AdModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdModel.h; sourceTree = "<group>"; };
+		01CD567518F691EB007731E1 /* AdModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdModel.m; sourceTree = "<group>"; };
+		01CD567618F691EB007731E1 /* AdView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdView.h; sourceTree = "<group>"; };
+		01CD567718F691EB007731E1 /* AdView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdView.m; sourceTree = "<group>"; };
+		01CD567C18F6A5D6007731E1 /* SVGeocoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGeocoder.h; sourceTree = "<group>"; };
+		01CD567D18F6A5D6007731E1 /* SVGeocoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGeocoder.m; sourceTree = "<group>"; };
+		01CD567E18F6A5D6007731E1 /* SVPlacemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVPlacemark.h; sourceTree = "<group>"; };
+		01CD567F18F6A5D6007731E1 /* SVPlacemark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVPlacemark.m; sourceTree = "<group>"; };
+		01CD568218F6A5E0007731E1 /* LocationGPS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationGPS.h; sourceTree = "<group>"; };
+		01CD568318F6A5E0007731E1 /* LocationGPS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationGPS.m; sourceTree = "<group>"; };
+		01CD568518F6A75A007731E1 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		01CD568718F6A933007731E1 /* ReverseCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReverseCoordinate.h; sourceTree = "<group>"; };
+		01CD568818F6A933007731E1 /* ReverseCoordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReverseCoordinate.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -593,6 +619,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01CD568618F6A75A007731E1 /* MapKit.framework in Frameworks */,
 				01C2F17818F528E200B37603 /* ImageIO.framework in Frameworks */,
 				01C2F07918F4CEE900B37603 /* CoreLocation.framework in Frameworks */,
 				01C2F06518F3F61000B37603 /* CoreTelephony.framework in Frameworks */,
@@ -647,6 +674,7 @@
 		01C2ED8F18F22E5100B37603 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				01CD568518F6A75A007731E1 /* MapKit.framework */,
 				01C2F17718F528E200B37603 /* ImageIO.framework */,
 				01C2F07818F4CEE900B37603 /* CoreLocation.framework */,
 				01C2F06418F3F61000B37603 /* CoreTelephony.framework */,
@@ -767,6 +795,7 @@
 		01C2EDF418F24FB400B37603 /* class */ = {
 			isa = PBXGroup;
 			children = (
+				01CD567A18F6A5BC007731E1 /* Location */,
 				01C2EFFF18F3CDE800B37603 /* UI */,
 				01C2EF0218F29C3E00B37603 /* WebService */,
 				01C2EECD18F2954300B37603 /* Blocks */,
@@ -1146,8 +1175,14 @@
 		01C2F07418F3FE4E00B37603 /* MainUI */ = {
 			isa = PBXGroup;
 			children = (
+				01CD567418F691EB007731E1 /* AdModel.h */,
+				01CD567518F691EB007731E1 /* AdModel.m */,
+				01CD567618F691EB007731E1 /* AdView.h */,
+				01CD567718F691EB007731E1 /* AdView.m */,
 				01C2F07518F3FE7900B37603 /* BSMenu.h */,
 				01C2F07618F3FE7900B37603 /* BSMenu.m */,
+				01CD567118F68DC3007731E1 /* WeatherView.h */,
+				01CD567218F68DC3007731E1 /* WeatherView.m */,
 			);
 			name = MainUI;
 			sourceTree = "<group>";
@@ -1178,6 +1213,8 @@
 				01C2F0B918F4DD0900B37603 /* ExceptionViewController.h */,
 				01C2F0BA18F4DD0900B37603 /* ExceptionViewController.m */,
 				01C2F07B18F4DCAA00B37603 /* UI */,
+				01CD566C18F68820007731E1 /* BusLocationViewController.h */,
+				01CD566D18F68820007731E1 /* BusLocationViewController.m */,
 			);
 			name = Target;
 			sourceTree = "<group>";
@@ -1407,6 +1444,29 @@
 			name = UI;
 			sourceTree = "<group>";
 		};
+		01CD567A18F6A5BC007731E1 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				01CD568218F6A5E0007731E1 /* LocationGPS.h */,
+				01CD568318F6A5E0007731E1 /* LocationGPS.m */,
+				01CD567B18F6A5CA007731E1 /* SVGeocoder */,
+				01CD568718F6A933007731E1 /* ReverseCoordinate.h */,
+				01CD568818F6A933007731E1 /* ReverseCoordinate.m */,
+			);
+			name = Location;
+			sourceTree = "<group>";
+		};
+		01CD567B18F6A5CA007731E1 /* SVGeocoder */ = {
+			isa = PBXGroup;
+			children = (
+				01CD567C18F6A5D6007731E1 /* SVGeocoder.h */,
+				01CD567D18F6A5D6007731E1 /* SVGeocoder.m */,
+				01CD567E18F6A5D6007731E1 /* SVPlacemark.h */,
+				01CD567F18F6A5D6007731E1 /* SVPlacemark.m */,
+			);
+			name = SVGeocoder;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1542,6 +1602,7 @@
 				01C2F16A18F5219500B37603 /* TKAreaWeekCell.m in Sources */,
 				01C2F0E118F4DE3600B37603 /* PersonTrajectoryViewController.m in Sources */,
 				01C2F10318F4E48E00B37603 /* MoreViewController.m in Sources */,
+				01CD566E18F68820007731E1 /* BusLocationViewController.m in Sources */,
 				01C2F02E18F3EF4A00B37603 /* ToolBarView.m in Sources */,
 				01C2F0A218F4DCFC00B37603 /* MonitorView.m in Sources */,
 				01C2EEF518F29BBA00B37603 /* ASIDownloadCache.m in Sources */,
@@ -1602,6 +1663,7 @@
 				01C2F12318F4E89900B37603 /* SDImageCache.m in Sources */,
 				01C2F12818F4E89900B37603 /* SDWebImageManager.m in Sources */,
 				01C2EE9F18F290A400B37603 /* RecordView.m in Sources */,
+				01CD568418F6A5E0007731E1 /* LocationGPS.m in Sources */,
 				01C2F09518F4DCE100B37603 /* NLCropViewLayer.m in Sources */,
 				01C2EE0A18F24FD600B37603 /* UIDevice+TPCategory.m in Sources */,
 				01C2EE7718F28FB400B37603 /* AreaTimeSpan.m in Sources */,
@@ -1613,22 +1675,27 @@
 				01C2F0D918F4DE0500B37603 /* TrajectoryPaoView.m in Sources */,
 				01C2EE0E18F24FD600B37603 /* NSData+TPCategory.m in Sources */,
 				01C2F01D18F3D79200B37603 /* DCRoundSwitchToggleLayer.m in Sources */,
+				01CD568918F6A933007731E1 /* ReverseCoordinate.m in Sources */,
 				01C2EEF218F29BBA00B37603 /* ASIAuthenticationDialog.m in Sources */,
 				01C2EE6018F28F8B00B37603 /* FileHelper.m in Sources */,
 				01C2F12618F4E89900B37603 /* SDWebImageDownloader.m in Sources */,
 				01C2EED618F2954F00B37603 /* UIActionSheet+Blocks.m in Sources */,
+				01CD567818F691EB007731E1 /* AdModel.m in Sources */,
 				01C2F0E918F4DF4B00B37603 /* PinView.m in Sources */,
 				01C2EF0B18F29C5E00B37603 /* ASIServiceArgs.m in Sources */,
 				01C2F0E618F4DEDD00B37603 /* ToolBarMenu.m in Sources */,
 				01C2EF0D18F29C5E00B37603 /* ASIServiceHTTPRequest.m in Sources */,
+				01CD567318F68DC3007731E1 /* WeatherView.m in Sources */,
 				01C2F08818F4DCC700B37603 /* TrajectorySearch.m in Sources */,
 				01C2F16818F5219500B37603 /* AreaPaoView.m in Sources */,
 				01C2EE8E18F2909000B37603 /* BasicViewController.m in Sources */,
+				01CD567918F691EB007731E1 /* AdView.m in Sources */,
 				01C2F0A018F4DCFC00B37603 /* CaseCameraImage.m in Sources */,
 				01C2EE7418F28FB400B37603 /* TrajectoryMessage.m in Sources */,
 				01C2EECC18F2937600B37603 /* TKLabelCell.m in Sources */,
 				01C2EE8418F2905500B37603 /* GeneralLoginViewController.m in Sources */,
 				01C2F12918F4E89900B37603 /* SDWebImagePrefetcher.m in Sources */,
+				01CD568118F6A5D6007731E1 /* SVPlacemark.m in Sources */,
 				01C2F0E318F4DE3600B37603 /* SingleMapShowViewController.mm in Sources */,
 				01C2EEC218F2936000B37603 /* TKTextFieldCell.m in Sources */,
 				01C2EEF918F29BBA00B37603 /* ASINetworkQueue.m in Sources */,
@@ -1644,6 +1711,7 @@
 				01C2EEBA18F2922A00B37603 /* LoginWay.m in Sources */,
 				01C2EE1218F24FD600B37603 /* UIButton+TPCategory.m in Sources */,
 				01C2EEA018F290A400B37603 /* RunScrollView.m in Sources */,
+				01CD568018F6A5D6007731E1 /* SVGeocoder.m in Sources */,
 				01C2EEF818F29BBA00B37603 /* ASIInputStream.m in Sources */,
 				01C2EE8A18F2906200B37603 /* PagerViewController.m in Sources */,
 				01C2F01B18F3D79200B37603 /* DCRoundSwitchKnobLayer.m in Sources */,
@@ -1889,6 +1957,7 @@
 				01C2EDBB18F22E5200B37603 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		01C2EDBC18F22E5200B37603 /* Build configuration list for PBXNativeTarget "BurglarStarTests" */ = {
 			isa = XCConfigurationList;
@@ -1897,6 +1966,7 @@
 				01C2EDBE18F22E5200B37603 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -385,6 +385,7 @@
         cell=[[[MessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
         //cell.monitorView.controler=self;
     }
+    cell.backgroundColor=[UIColor clearColor];
     TrajectoryMessage *entity=self.cells[indexPath.row];
     [cell.messageView setDataSource:entity indexPathRow:indexPath.row];
     return cell;
@@ -401,7 +402,7 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:1];
+    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:0];
     UIButton *btn=(UIButton*)barButton.customView;
     if ([btn.currentTitle isEqualToString:@"编辑"]) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -440,7 +441,7 @@
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:1];
+    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:0];
     UIButton *btn=(UIButton*)barButton.customView;
     if ([btn.currentTitle isEqualToString:@"取消"]) {
         TrajectoryMessage *entity=self.cells[indexPath.row];

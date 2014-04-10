@@ -14,6 +14,9 @@
 #import "IndexViewController.h"
 #import "ASIHTTPRequest.h"
 #import "SupervisionViewController.h"
+#import "UserInfoViewController.h"
+#import "WeatherView.h"
+#import "LocationGPS.h"
 @interface MainViewController ()
 - (void)buttonLoginClick:(id)sender;
 - (void)buttonRegisterClick:(id)sender;
@@ -33,7 +36,15 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self loadInitControls];
+    
+    [self.scrollAdView loadAdSources];//加载图片滚动
 }
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [self.scrollAdView pauseAd];//暂停
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -48,6 +59,43 @@
     [self.view addSubview:menu];
     [menu release];
     
+    CGFloat topY=r.origin.y-10-44;
+    WeatherView *weather=[[WeatherView alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 44)];
+    [self.view addSubview:weather];
+    [weather release];
+    
+    _scrollAdView=[[AdView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, topY)];
+    [self.view addSubview:_scrollAdView];
+    
+    LocationGPS *gps=[LocationGPS sharedInstance];
+    [gps startLocation:^(SVPlacemark *place) {
+        NSLog(@"name=%@",place.name);
+        NSLog(@"formattedAddress=%@",place.formattedAddress);
+         NSLog(@"subThoroughfare=%@",place.subThoroughfare);
+         NSLog(@"thoroughfare=%@",place.thoroughfare);
+         NSLog(@"subLocality=%@",place.subLocality);
+         NSLog(@"locality=%@",place.locality);
+         NSLog(@"subAdministrativeArea=%@",place.subAdministrativeArea);
+         NSLog(@"administrativeArea=%@",place.administrativeArea);
+         NSLog(@"administrativeAreaCode=%@",place.administrativeAreaCode);
+        NSLog(@"postalCode=%@",place.postalCode);
+        NSLog(@"country=%@",place.country);
+         NSLog(@"ISOcountryCode=%@",place.ISOcountryCode);
+    } failed:nil];
+    /***
+     @property (nonatomic, strong, readonly) NSString *name;
+     @property (nonatomic, strong, readonly) NSString *formattedAddress;
+     @property (nonatomic, strong, readonly) NSString *subThoroughfare;
+     @property (nonatomic, strong, readonly) NSString *thoroughfare;
+     @property (nonatomic, strong, readonly) NSString *subLocality;
+     @property (nonatomic, strong, readonly) NSString *locality;
+     @property (nonatomic, strong, readonly) NSString *subAdministrativeArea;
+     @property (nonatomic, strong, readonly) NSString *administrativeArea;
+     @property (nonatomic, strong, readonly) NSString *administrativeAreaCode;
+     @property (nonatomic, strong, readonly) NSString *postalCode;
+     @property (nonatomic, strong, readonly) NSString *country;
+     @property (nonatomic, strong, readonly) NSString *ISOcountryCode;
+     
     NSURL *url = [NSURL URLWithString:@"http://61.4.185.48:81/g/"];
     ASIHTTPRequest *request=[ASIHTTPRequest requestWithURL:url];
     [request setCompletionBlock:^{
@@ -57,6 +105,7 @@
         
     }];
     [request startAsynchronous];
+     ***/
     
 }
 - (void)loadInitControls{
@@ -128,7 +177,9 @@
         [self.navigationController pushViewController:Supervision animated:YES];
         [Supervision release];
     }else{//人物
-    
+        UserInfoViewController *userInfo=[[UserInfoViewController alloc] init];
+        [self.navigationController pushViewController:userInfo animated:YES];
+        [userInfo release];
     }
 }
 

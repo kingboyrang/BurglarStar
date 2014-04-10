@@ -174,19 +174,13 @@
         [self.navigationController pushViewController:viewController2 animated:YES];
         [viewController2 release];
     }
-    if (index==2) {//电话
-        CallTrajectoryViewController *viewController2=[[CallTrajectoryViewController alloc] init];
-        viewController2.Entity=self.selectedSupervision;
-        [self.navigationController pushViewController:viewController2 animated:YES];
-        [viewController2 release];
-    }
-    if (index==3) {//信息
+    if (index==2) {//信息
         TrajectoryMessageController *viewController2=[[TrajectoryMessageController alloc] init];
         viewController2.Entity=self.selectedSupervision;
         [self.navigationController pushViewController:viewController2 animated:YES];
         [viewController2 release];
     }
-    if (index==4) {//应用中心
+    if (index==3) {//应用中心
         MoreViewController *viewController2=[[MoreViewController alloc] init];
         [self.navigationController pushViewController:viewController2 animated:YES];
         [viewController2 release];

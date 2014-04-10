@@ -20,6 +20,7 @@
 #import "PersonTrajectoryViewController.h"
 #import "ASIServiceHTTPRequest.h"
 #import "UIBarButtonItem+TPCategory.h"
+#import "BusLocationViewController.h"
 @interface SupervisionViewController ()<UITableViewDataSource,UITableViewDelegate>{
     UITableView *_tableView;
     ToolBarView *_toolBar;
@@ -55,7 +56,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title=@"车辆管理 ";
+    self.title=@"车辆管理";
     
     UIBarButtonItem *btn1=[UIBarButtonItem barButtonWithTitle:@"添加"  target:self action:@selector(buttonAddClick) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *btn2=[UIBarButtonItem barButtonWithTitle:@"编辑"  target:self action:@selector(buttonEditClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -154,7 +155,7 @@
      ***/
 }
 -(void)supervisionCallWithEntity:(SupervisionPerson*)entity{
-    CallTrajectoryViewController *controler=[[CallTrajectoryViewController alloc] init];
+    BusLocationViewController *controler=[[BusLocationViewController alloc] init];
     controler.Entity=entity;
     [self.navigationController pushViewController:controler animated:YES];
     [controler release];
@@ -301,6 +302,7 @@
         cell=[[[TKMonitorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
         cell.monitorView.controler=self;
     }
+    cell.backgroundColor=[UIColor clearColor];
     SupervisionPerson *entity=self.cells[indexPath.row];
     [cell.monitorView setDataSource:entity indexPathRow:indexPath.row];
     return cell;
@@ -309,7 +311,7 @@
     return 94;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:1];
+    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:0];
     UIButton *btn=(UIButton*)barButton.customView;
     if ([btn.currentTitle isEqualToString:@"编辑"]) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -329,7 +331,7 @@
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
    
-    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:1];
+    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:0];
     UIButton *btn=(UIButton*)barButton.customView;
     if ([btn.currentTitle isEqualToString:@"取消"]) {
          SupervisionPerson *entity=self.cells[indexPath.row];

@@ -127,11 +127,6 @@
         [window addSubview:self];
         
         CGFloat h=self.frame.size.height,topY=screenRect.size.height-h;
-#ifdef __IPHONE_7_0
-        if ([[UIDevice currentDevice].systemVersion floatValue] >= 7.0) {
-            topY-=20;
-        }
-#endif
         [UIView animateWithDuration:0.5f animations:^(void){
             self.frame=CGRectMake(0, topY, 320, h);
         }];
@@ -144,11 +139,7 @@
         return;
     }
     CGFloat h=self.frame.size.height,topY=screenRect.size.height;
-#ifdef __IPHONE_7_0
-    if ([[UIDevice currentDevice].systemVersion floatValue] >= 7.0) {
-        topY+=20;
-    }
-#endif
+
     [UIView animateWithDuration:0.5f animations:^(void){
         self.frame=CGRectMake(0,topY+h, 320, h);
         

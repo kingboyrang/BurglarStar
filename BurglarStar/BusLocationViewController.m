@@ -1,20 +1,21 @@
 //
-//  ExceptionViewController.m
-//  LocationService
+//  BusLocationViewController.m
+//  BurglarStar
 //
-//  Created by aJia on 2014/1/15.
+//  Created by aJia on 2014/4/10.
 //  Copyright (c) 2014年 lz. All rights reserved.
 //
 
-#import "ExceptionViewController.h"
-#import "ExceptionPaoView.h"
+#import "BusLocationViewController.h"
+#import "TrajectoryPaoView.h"
 #import "ASIServiceHTTPRequest.h"
-@interface ExceptionViewController ()
+@interface BusLocationViewController ()
 - (void)cleanMap;
-- (void)readRemove;
+- (void)showPointAnnotation;
+- (void)loadDataSource;
 @end
 
-@implementation ExceptionViewController
+@implementation BusLocationViewController
 - (void)dealloc {
     [super dealloc];
     if (_mapView) {
@@ -32,12 +33,32 @@
 }
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-   
+    
     
     [_mapView viewWillAppear];
     _mapView.delegate = self; // 此处记得不用的时候需要置nil，否则影响内存的释放
     
     [self cleanMap];
+    
+    [self loadDataSource];
+}
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.title=self.Entity.Name;
+	CGRect r=self.view.bounds;
+    r.size.height-=[self topHeight];
+    _mapView= [[BMKMapView alloc]initWithFrame:r];
+    [self.view addSubview:_mapView];
+}
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [_mapView viewWillDisappear];
+    _mapView.delegate = nil; // 不用时，置nil
+    
+}
+- (void)showPointAnnotation{
     CLLocationCoordinate2D coor;
     coor.latitude=[self.Entity.Latitude floatValue];
     coor.longitude=[self.Entity.Longitude floatValue];
@@ -49,44 +70,6 @@
     [_mapView setCenterCoordinate:coor animated:YES];
     [_mapView selectAnnotation:item animated:YES];
     [item release];
-    
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    self.title=[NSString stringWithFormat:@"%@ %@",self.Entity.PName,self.Entity.PCTime];
-	CGRect r=self.view.bounds;
-    r.size.height-=[self topHeight];
-    _mapView= [[BMKMapView alloc]initWithFrame:r];
-    [self.view addSubview:_mapView];
-    
-    //标记已读
-    [self readRemove];
-    
-}
-//标记已读
-- (void)readRemove{
-    ASIServiceArgs *args=[[[ASIServiceArgs alloc] init] autorelease];
-    args.serviceURL=DataWebservice1;
-    args.serviceNameSpace=DataNameSpace1;
-    args.methodName=@"BatchHandleAlarmData";
-    args.soapParams=[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:self.Entity.ID,@"id", nil], nil];
-    
-    ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
-    [request setCompletionBlock:^{
-        
-    }];
-    [request setFailedBlock:^{
-        
-    }];
-    [request startAsynchronous];
-}
--(void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    [_mapView viewWillDisappear];
-    _mapView.delegate = nil; // 不用时，置nil
-    
 }
 -(void)cleanMap
 {
@@ -94,6 +77,40 @@
     //[_mapView removeAnnotations:_mapView.annotations];
     NSArray* array = [NSArray arrayWithArray:_mapView.annotations];
     [_mapView removeAnnotations:array];
+}
+//重新获取最新信息
+- (void)loadDataSource{
+    ASIServiceArgs *args=[[[ASIServiceArgs alloc] init] autorelease];
+    args.serviceURL=DataWebservice1;
+    args.serviceNameSpace=DataNameSpace1;
+    args.methodName=@"GetSingleDetail";
+    args.soapParams=[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:self.Entity.ID,@"id", nil], nil];
+    
+    ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
+    [request setCompletionBlock:^{
+        if (request.ServiceResult.success) {
+            NSDictionary *dic=[request.ServiceResult json];
+            NSArray *arr=[dic objectForKey:@"Person"];
+            if (arr&&[arr count]>0) {
+                NSDictionary *item=[arr objectAtIndex:0];
+                self.Entity.Name=[item objectForKey:@"Name"];
+                self.Entity.PCTime=[item objectForKey:@"PCTime"];
+                self.Entity.Address=[item objectForKey:@"Address"];
+                self.Entity.speed=[item objectForKey:@"speed"];
+                self.Entity.angle=[item objectForKey:@"angle"];
+                self.Entity.oil=[item objectForKey:@"oil"];
+                self.Entity.temper=[item objectForKey:@"temper"];
+                self.Entity.extend=[item objectForKey:@"extend"];
+                //NSLog(@"pctime=%@",self.Entity.PCTime);
+                //[self reloadTableSource:self.Entity];
+            }
+        }
+        [self showPointAnnotation];
+    }];
+    [request setFailedBlock:^{
+        [self showPointAnnotation];
+    }];
+    [request startAsynchronous];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -118,7 +135,7 @@
         newAnnotation.annotation = annotation;
         
         //自定义气泡
-        ExceptionPaoView *_areaPaoView=[[[ExceptionPaoView alloc] initWithFrame:CGRectMake(0, 0, 250, 350)] autorelease];
+        TrajectoryPaoView *_areaPaoView=[[[TrajectoryPaoView alloc] initWithFrame:CGRectMake(0, 0, 250, 350)] autorelease];
         [_areaPaoView setDataSource:self.Entity];
         BMKActionPaopaoView *paopao=[[BMKActionPaopaoView alloc] initWithCustomView:_areaPaoView];
         newAnnotation.paopaoView=paopao;
