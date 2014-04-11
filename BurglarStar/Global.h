@@ -39,5 +39,12 @@
 #define DeviceFontSize 16.0
 
 
+//取得一周天气
+#define WeatherWeekURL @"http://m.weather.com.cn/data/%@.html"
+//取得今天天气
+#define WeatherDayURL @"http://www.weather.com.cn/data/sk/%@.html"
+#define WeatherCityDayURL @"http://www.weather.com.cn/data/cityinfo/%@.html"
+
+
 
 

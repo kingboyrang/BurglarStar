@@ -15,8 +15,7 @@
 #import "ASIHTTPRequest.h"
 #import "SupervisionViewController.h"
 #import "UserInfoViewController.h"
-#import "WeatherView.h"
-#import "LocationGPS.h"
+
 @interface MainViewController ()
 - (void)buttonLoginClick:(id)sender;
 - (void)buttonRegisterClick:(id)sender;
@@ -38,6 +37,7 @@
     [self loadInitControls];
     
     [self.scrollAdView loadAdSources];//加载图片滚动
+    [self.weatherView loadCurrentLocationWeather];//加载当前位置天气
 }
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -60,53 +60,61 @@
     [menu release];
     
     CGFloat topY=r.origin.y-10-44;
-    WeatherView *weather=[[WeatherView alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 44)];
-    [self.view addSubview:weather];
-    [weather release];
+    _weatherView=[[WeatherView alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 44)];
+    [self.view addSubview:_weatherView];
     
     _scrollAdView=[[AdView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, topY)];
     [self.view addSubview:_scrollAdView];
     
-    LocationGPS *gps=[LocationGPS sharedInstance];
-    [gps startLocation:^(SVPlacemark *place) {
-        NSLog(@"name=%@",place.name);
-        NSLog(@"formattedAddress=%@",place.formattedAddress);
-         NSLog(@"subThoroughfare=%@",place.subThoroughfare);
-         NSLog(@"thoroughfare=%@",place.thoroughfare);
-         NSLog(@"subLocality=%@",place.subLocality);
-         NSLog(@"locality=%@",place.locality);
-         NSLog(@"subAdministrativeArea=%@",place.subAdministrativeArea);
-         NSLog(@"administrativeArea=%@",place.administrativeArea);
-         NSLog(@"administrativeAreaCode=%@",place.administrativeAreaCode);
-        NSLog(@"postalCode=%@",place.postalCode);
-        NSLog(@"country=%@",place.country);
-         NSLog(@"ISOcountryCode=%@",place.ISOcountryCode);
-    } failed:nil];
-    /***
-     @property (nonatomic, strong, readonly) NSString *name;
-     @property (nonatomic, strong, readonly) NSString *formattedAddress;
-     @property (nonatomic, strong, readonly) NSString *subThoroughfare;
-     @property (nonatomic, strong, readonly) NSString *thoroughfare;
-     @property (nonatomic, strong, readonly) NSString *subLocality;
-     @property (nonatomic, strong, readonly) NSString *locality;
-     @property (nonatomic, strong, readonly) NSString *subAdministrativeArea;
-     @property (nonatomic, strong, readonly) NSString *administrativeArea;
-     @property (nonatomic, strong, readonly) NSString *administrativeAreaCode;
-     @property (nonatomic, strong, readonly) NSString *postalCode;
-     @property (nonatomic, strong, readonly) NSString *country;
-     @property (nonatomic, strong, readonly) NSString *ISOcountryCode;
-     
-    NSURL *url = [NSURL URLWithString:@"http://61.4.185.48:81/g/"];
-    ASIHTTPRequest *request=[ASIHTTPRequest requestWithURL:url];
-    [request setCompletionBlock:^{
-        NSLog(@"xml=%@",request.responseString);
-    }];
-    [request setFailedBlock:^{
-        
-    }];
-    [request startAsynchronous];
+/***
+http://mobile.weather.com.cn/data/forecast/101280601.html
+http://m.weather.com.cn/data/101280601.html
+ ***/
+     //client.Headers.Add("Accept", "application/json, text/javascript, */*; q=0.01");
+     /***
+    client.Headers.Add("Accept-Language", "zh-CN,zh;q=0.8");
+    //注意：Referer 一定要加，否则获取的不是当天的。
+    client.Headers.Add("Referer", "http://mobile.weather.com.cn/");
+    client.Headers.Add("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1;Chrome/27.0.1453.110; Trident/5.0)");
      ***/
     
+    /***
+     http://mobile.weather.com.cn/images/small/day/31.png
+     //当天天气=http://mobile.weather.com.cn/data/sk/101280601.html
+     fa 白天图片id http://mobile.weather.com.cn/images/small/day/00.png
+     
+     fb 夜晚图片id http://mobile.weather.com.cn/images/small/night/00.png
+     
+     fc 白天温度
+     
+     fd 夜晚温度
+     
+     fi 日出和日落时间
+     ***/
+    
+    ASIHTTPRequest *request=[ASIHTTPRequest requestWithURL:[NSURL URLWithString:@"http://mobile.weather.com.cn/data/forecast/101280601.html"]];
+   
+    [request addRequestHeader:@"Accept" value:@"application/json, text/javascript, */*; q=0.01"];
+    [request addRequestHeader:@"Accept-Language" value:@"zh-CN,zh;q=0.8"];
+    [request addRequestHeader:@"Referer" value:@"http://mobile.weather.com.cn/"];
+    [request addRequestHeader:@"User-Agent" value:@"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1;Chrome/27.0.1453.110; Trident/5.0)"];
+   
+    [request setCompletionBlock:^{
+        if (request.responseStatusCode==200) {
+            NSLog(@"xml=%@",request.responseString);
+            NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
+            NSDictionary *obj=[dic objectForKey:@"f"];
+            NSDictionary *item=[obj objectForKey:@"f1"];
+             NSLog(@"class=%@",[item class]);
+            NSLog(@"%@",item);
+           
+        }
+       
+    }];
+    [request setFailedBlock:^{
+        NSLog(@"error=%@",request.error.description);
+    }];
+    [request startAsynchronous];
 }
 - (void)loadInitControls{
     Account *acc=[Account unarchiverAccount];

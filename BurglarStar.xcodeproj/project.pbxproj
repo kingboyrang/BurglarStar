@@ -204,7 +204,8 @@
 		01CD568118F6A5D6007731E1 /* SVPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD567F18F6A5D6007731E1 /* SVPlacemark.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		01CD568418F6A5E0007731E1 /* LocationGPS.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD568318F6A5E0007731E1 /* LocationGPS.m */; };
 		01CD568618F6A75A007731E1 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01CD568518F6A75A007731E1 /* MapKit.framework */; };
-		01CD568918F6A933007731E1 /* ReverseCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD568818F6A933007731E1 /* ReverseCoordinate.m */; };
+		01CD568E18F79973007731E1 /* CityCode.plist in Resources */ = {isa = PBXBuildFile; fileRef = 01CD568D18F79973007731E1 /* CityCode.plist */; };
+		01CD569118F79B5F007731E1 /* WeatherHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD569018F79B5F007731E1 /* WeatherHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -610,8 +611,9 @@
 		01CD568218F6A5E0007731E1 /* LocationGPS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationGPS.h; sourceTree = "<group>"; };
 		01CD568318F6A5E0007731E1 /* LocationGPS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationGPS.m; sourceTree = "<group>"; };
 		01CD568518F6A75A007731E1 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		01CD568718F6A933007731E1 /* ReverseCoordinate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReverseCoordinate.h; sourceTree = "<group>"; };
-		01CD568818F6A933007731E1 /* ReverseCoordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReverseCoordinate.m; sourceTree = "<group>"; };
+		01CD568D18F79973007731E1 /* CityCode.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CityCode.plist; sourceTree = "<group>"; };
+		01CD568F18F79B5F007731E1 /* WeatherHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherHelper.h; sourceTree = "<group>"; };
+		01CD569018F79B5F007731E1 /* WeatherHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherHelper.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -710,6 +712,7 @@
 		01C2ED9718F22E5100B37603 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				01CD568C18F7991D007731E1 /* Source */,
 				01C2EDBF18F230A800B37603 /* images */,
 				01C2ED9818F22E5100B37603 /* BurglarStar-Info.plist */,
 				01C2ED9918F22E5100B37603 /* InfoPlist.strings */,
@@ -868,6 +871,8 @@
 				01C2EE6E18F28FB400B37603 /* AreaCar.m */,
 				01C2EE6F18F28FB400B37603 /* AreaTimeSpan.h */,
 				01C2EE7018F28FB400B37603 /* AreaTimeSpan.m */,
+				01CD568F18F79B5F007731E1 /* WeatherHelper.h */,
+				01CD569018F79B5F007731E1 /* WeatherHelper.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1450,8 +1455,6 @@
 				01CD568218F6A5E0007731E1 /* LocationGPS.h */,
 				01CD568318F6A5E0007731E1 /* LocationGPS.m */,
 				01CD567B18F6A5CA007731E1 /* SVGeocoder */,
-				01CD568718F6A933007731E1 /* ReverseCoordinate.h */,
-				01CD568818F6A933007731E1 /* ReverseCoordinate.m */,
 			);
 			name = Location;
 			sourceTree = "<group>";
@@ -1465,6 +1468,14 @@
 				01CD567F18F6A5D6007731E1 /* SVPlacemark.m */,
 			);
 			name = SVGeocoder;
+			sourceTree = "<group>";
+		};
+		01CD568C18F7991D007731E1 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				01CD568D18F79973007731E1 /* CityCode.plist */,
+			);
+			name = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1564,6 +1575,7 @@
 				01C2EDD818F2367200B37603 /* Icon-72.png in Resources */,
 				01C2EDE318F23E7B00B37603 /* Icon-76.png in Resources */,
 				01C2EDC618F230E500B37603 /* Icon-80.png in Resources */,
+				01CD568E18F79973007731E1 /* CityCode.plist in Resources */,
 				01C2EDDC18F23D4900B37603 /* Icon-Small-50@2x.png in Resources */,
 				01C2F08A18F4DCC700B37603 /* MessageView.xib in Resources */,
 				01C2F15B18F51DE500B37603 /* blueArrowDown@2x.png in Resources */,
@@ -1675,7 +1687,6 @@
 				01C2F0D918F4DE0500B37603 /* TrajectoryPaoView.m in Sources */,
 				01C2EE0E18F24FD600B37603 /* NSData+TPCategory.m in Sources */,
 				01C2F01D18F3D79200B37603 /* DCRoundSwitchToggleLayer.m in Sources */,
-				01CD568918F6A933007731E1 /* ReverseCoordinate.m in Sources */,
 				01C2EEF218F29BBA00B37603 /* ASIAuthenticationDialog.m in Sources */,
 				01C2EE6018F28F8B00B37603 /* FileHelper.m in Sources */,
 				01C2F12618F4E89900B37603 /* SDWebImageDownloader.m in Sources */,
@@ -1708,6 +1719,7 @@
 				01C2EF1918F29DA900B37603 /* XmlNode.m in Sources */,
 				01C2F12518F4E89900B37603 /* SDWebImageDecoder.m in Sources */,
 				01C2EE9C18F290A400B37603 /* AnimateLoadView.m in Sources */,
+				01CD569118F79B5F007731E1 /* WeatherHelper.m in Sources */,
 				01C2EEBA18F2922A00B37603 /* LoginWay.m in Sources */,
 				01C2EE1218F24FD600B37603 /* UIButton+TPCategory.m in Sources */,
 				01C2EEA018F290A400B37603 /* RunScrollView.m in Sources */,

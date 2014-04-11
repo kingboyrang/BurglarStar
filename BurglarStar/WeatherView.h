@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface WeatherView : UIView
+#import "ASIServiceHelper.h"
+@interface WeatherView : UIView{
+    ASIServiceHelper *_serviceHelper;
+}
+@property (nonatomic,strong) UIImageView *weatherImage;//天气图标
+@property (nonatomic,strong) UILabel *labCurDate;//当前日期
+@property (nonatomic,strong) UILabel *labCurCity;//当前城市与天气
+@property (nonatomic,strong) UILabel *labCurTemp;//当前温度
 @property (nonatomic,strong) UIButton *arrowButton;
+- (void)loadCurrentLocationWeather;
 @end

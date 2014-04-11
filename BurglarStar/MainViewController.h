@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "BSMenu.h"
 #import "AdView.h"
+#import "WeatherView.h"
 @interface MainViewController : BasicViewController<BSMenuDelegate>
 @property (nonatomic,strong) AdView *scrollAdView;
+@property (nonatomic,strong) WeatherView *weatherView;
 @end
