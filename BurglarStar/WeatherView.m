@@ -13,8 +13,9 @@
 #import "WeatherHelper.h"
 #import "ASIHTTPRequest.h"
 #import "UIImageView+WebCache.h"
-@interface WeatherView ()
 
+@interface WeatherView ()
+@property (nonatomic,copy) NSString *weatherCityNumber;
 - (void)updateUIWithJson:(NSData*)data;
 - (void)updateUIWeatherWithJson:(NSData*)data;
 @end
@@ -40,12 +41,12 @@
         [self addSubview:imageView];
         [imageView release];
         
-        UIImage *image=[UIImage imageNamed:@"arrow_down.png"];
+        UIImage *image=[UIImage imageNamed:@"arrowdown.png"];
         CGFloat leftX=frame.size.width-10-image.size.width;
         _arrowButton=[UIButton buttonWithType:UIButtonTypeCustom];
         _arrowButton.frame=CGRectMake(leftX,(frame.size.height-image.size.height)/2, image.size.width, image.size.height);
         [_arrowButton setBackgroundImage:image forState:UIControlStateNormal];
-        [_arrowButton setBackgroundImage:[UIImage imageNamed:@"arrow_up.png"] forState:UIControlStateSelected];
+        [_arrowButton setBackgroundImage:[UIImage imageNamed:@"arrowup.png"] forState:UIControlStateSelected];
         [self addSubview:_arrowButton];
         
         NSString *memo=@"100°";
@@ -55,7 +56,7 @@
         _labCurTemp.textColor=[UIColor colorFromHexRGB:@"1e303e"];
         _labCurTemp.font=[UIFont boldSystemFontOfSize:30];
         _labCurTemp.textAlignment=NSTextAlignmentRight;
-        _labCurTemp.text=@"30°";
+        _labCurTemp.text=@"20°";
         
         [self addSubview:_labCurTemp];
         
@@ -90,6 +91,16 @@
     [gps startLocation:^(SVPlacemark *place) {
         NSString *cityNumber=[WeatherHelper getWeatherCityCode:place];
         if (cityNumber!=nil) {
+            
+            if (![self.weatherCityNumber isEqualToString:cityNumber]) {
+                self.weatherCityNumber=cityNumber;
+            }else{
+                return;
+            }
+            if (self.delegate&&[self.delegate respondsToSelector:@selector(locationGPSCityNumber:)]) {
+                [self.delegate locationGPSCityNumber:cityNumber];
+            }
+            [_serviceHelper clearAndDelegate];
             NSURL *dayURL=[NSURL URLWithString:[NSString stringWithFormat:WeatherDayURL,cityNumber]];
             ASIHTTPRequest *request1=[ASIHTTPRequest requestWithURL:dayURL];
             [request1 setUserInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"day",@"name", nil]];
@@ -110,7 +121,9 @@
                 if ([name isEqualToString:@"city"]&&request.responseStatusCode==200) {
                     [self performSelectorOnMainThread:@selector(updateUIWeatherWithJson:) withObject:request.responseData waitUntilDone:NO];
                 }
-            } failed:nil complete:nil];
+            } failed:nil complete:^(NSArray *results) {
+                
+            }];
         }
         
     } failed:nil];

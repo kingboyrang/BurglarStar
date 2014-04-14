@@ -10,7 +10,7 @@
 #import "Account.h"
 #import "AreaCrawl.h"
 #import "AppHelper.h"
-#import "LoginButtons.h"
+#import "ToolBarView.h"
 #import "ModifyAreaViewController.h"
 #import "AreaRangeViewController.h"
 #import "AlertHelper.h"
@@ -18,7 +18,7 @@
 #import "ASIServiceHTTPRequest.h"
 @interface AreaViewController ()<UITableViewDataSource,UITableViewDelegate>{
     UITableView *_tableView;
-    LoginButtons *_toolBar;
+    ToolBarView *_toolBar;
 }
 - (void)loadingArea;
 - (void)buttonAddClick;
@@ -64,15 +64,14 @@
     _tableView.delegate=self;
     _tableView.dataSource=self;
     _tableView.bounces=NO;
+    _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
+    _tableView.separatorColor=[UIColor clearColor];
+    _tableView.backgroundColor=[UIColor clearColor];
     [self.view addSubview:_tableView];
     
-    _toolBar=[[LoginButtons alloc] initWithFrame:CGRectMake(0, _tableView.frame.size.height+_tableView.frame.origin.y+44, self.view.bounds.size.width, 44)];
-    _toolBar.cancel.hidden=YES;
-    _toolBar.submit.frame=CGRectMake(0, 0, self.view.bounds.size.width, 44);
-    [_toolBar.submit setTitle:@"删除(0)" forState:UIControlStateNormal];
-    [_toolBar.cancel setTitle:@"清空" forState:UIControlStateNormal];
-    [_toolBar.cancel addTarget:self action:@selector(buttonCancelRemoveClick) forControlEvents:UIControlEventTouchUpInside];
-    [_toolBar.submit addTarget:self action:@selector(buttonSubmitRemoveClick:) forControlEvents:UIControlEventTouchUpInside];
+    _toolBar=[[ToolBarView alloc] initWithFrame:CGRectMake(0, _tableView.frame.size.height+_tableView.frame.origin.y+44, self.view.bounds.size.width, 44)];
+    [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
+    [_toolBar.button addTarget:self action:@selector(buttonSubmitRemoveClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_toolBar];
     
     
@@ -129,7 +128,7 @@
         }
         [indexPaths release];
     }else{
-        [_toolBar.submit setTitle:@"删除(0)" forState:UIControlStateNormal];
+        [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
     }
 
 }
@@ -162,7 +161,7 @@
                 [_tableView deleteRowsAtIndexPaths:[NSArray arrayWithArray:[self.removeList allValues]] withRowAnimation:UITableViewRowAnimationFade];
                 [_tableView endUpdates];
                 [self.removeList removeAllObjects];
-                [_toolBar.submit setTitle:@"删除(0)" forState:UIControlStateNormal];
+                [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
                 
                 [self hideLoadingSuccessWithTitle:@"删除成功!" completed:nil];
             }
@@ -210,12 +209,10 @@
     [_tableView setEditing:!_tableView.editing animated:YES];
     if(_tableView.editing){
         [btn setTitle:@"取消" forState:UIControlStateNormal];
-        CGRect r=_toolBar.frame;
-        //r.origin.y=self.view.bounds.size.height-44;
-        r.origin.y-=r.size.height;
-        
         CGRect r1=_tableView.frame;
-        //r1.size.height=self.view.bounds.size.height-44*2;
+        CGRect r=_toolBar.frame;
+        r.origin.y=r1.size.height+r1.origin.y-r.size.height;
+        
         r1.size.height-=r.size.height;
         
         [UIView animateWithDuration:0.5f animations:^(){
@@ -228,7 +225,7 @@
         {
             [self.removeList removeAllObjects];
         }
-        [_toolBar.submit setTitle:@"删除(0)" forState:UIControlStateNormal];
+        [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
         
         [btn setTitle:@"编辑" forState:UIControlStateNormal];
         CGRect r=_toolBar.frame;
@@ -260,16 +257,31 @@
     UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell==nil) {
         cell=[[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
-        cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+       
+        //cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];
         cell.textLabel.textColor=[UIColor blackColor];
+        
+        UIImage *image=[UIImage imageNamed:@"arrow_right_n.png"];
+        UIImageView *imageView=[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+        [imageView setImage:image];
+        cell.accessoryView=imageView;
+        [imageView release];
+        //
     }
+    cell.textLabel.backgroundColor=[UIColor clearColor];
+    UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
+    backgrdView.backgroundColor = indexPath.row%2==0?[UIColor colorFromHexRGB:@"bebeb8"]:[UIColor colorFromHexRGB:@"efeedc"];
+    cell.backgroundView = backgrdView;
+    [backgrdView release];
+    
+    
     AreaCrawl *area=self.list[indexPath.row];
     cell.textLabel.text=area.AreaName;
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:1];
+    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:0];
     UIButton *btn=(UIButton*)barButton.customView;
     if ([btn.currentTitle isEqualToString:@"编辑"]) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -285,18 +297,18 @@
         }
         AreaCrawl *entity=self.list[indexPath.row];
         [self.removeList setValue:indexPath forKey:entity.SysID];
-        [_toolBar.submit setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
+        [_toolBar.button setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
     }
 }
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:1];
+    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:0];
     UIButton *btn=(UIButton*)barButton.customView;
     if ([btn.currentTitle isEqualToString:@"取消"]) {
         AreaCrawl *entity=self.list[indexPath.row];
         [self.removeList removeObjectForKey:entity.SysID];
-        [_toolBar.submit setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
+        [_toolBar.button setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
     }
 }
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath

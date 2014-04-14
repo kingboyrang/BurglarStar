@@ -72,16 +72,19 @@
     
     self.ruleId=@"";
     self.operateType=1;
-    CGFloat topY=44;
+    CGFloat topY=0;
 	
-    RangHeader *titleView=[[RangHeader alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 30)];
+    UIImage *titleViewImg=[UIImage imageNamed:@"top_bg01.png"];
+    titleViewImg=[titleViewImg stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+    RangHeader *titleView=[[RangHeader alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 31)];
     titleView.label.frame=CGRectMake(0, 5, titleView.frame.size.width, 20);
     titleView.label.text=[NSString stringWithFormat:@"名称:%@",self.AreaName];
     titleView.label.textAlignment=NSTextAlignmentCenter;
+    [titleView.backroundView setImage:titleViewImg];
     [self.view addSubview:titleView];
     [titleView release];
     
-    topY+=30+5;
+    topY+=31+5;
     NSString *title=@"规则";
     CGSize size=[title textSize:[UIFont fontWithName:DeviceFontName size:DeviceFontSize] withWidth:self.view.bounds.size.width];
     UILabel *labTitle=[[UILabel alloc] initWithFrame:CGRectMake(37, (45-size.height)/2+44+30, size.width, size.height)];
@@ -109,26 +112,30 @@
     [self.view addSubview:_ruleSelect];
     
     topY+=35+5;
-    RangHeader *header1=[[RangHeader alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 30)];
+    UIImage *header1Img=[UIImage imageNamed:@"top_bg03.png"];
+    header1Img=[header1Img stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+    RangHeader *header1=[[RangHeader alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 35)];
     header1.label.text=@"关联对象";
+    [header1.backroundView setImage:header1Img];
     [self.view addSubview:header1];
     [header1 release];
-    topY+=30;
+    topY+=35;
     
     CGRect r=self.view.bounds;
     r.origin.y=topY;
-    r.size.height-=topY+44;
+    r.size.height-=topY+44+[self topHeight];
     
     _tableView=[[UITableView alloc] initWithFrame:r style:UITableViewStylePlain];
     _tableView.delegate=self;
     _tableView.dataSource=self;
-    //_tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
-    //_tableView.separatorColor=[UIColor clearColor];
+    _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
+    _tableView.separatorColor=[UIColor clearColor];
+    _tableView.backgroundColor=[UIColor clearColor];
     //_tableView.bounces=NO;
     [self.view addSubview:_tableView];
     
     
-    LoginButtons *buttons=[[LoginButtons alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-44, self.view.bounds.size.width, 44)];
+    LoginButtons *buttons=[[LoginButtons alloc] initWithFrame:CGRectMake(0,_tableView.frame.origin.y+_tableView.frame.size.height, self.view.bounds.size.width, 44)];
     UIButton *btnPrev=[UIButton buttonWithType:UIButtonTypeCustom];
     btnPrev.frame=CGRectMake(0,0,self.view.bounds.size.width/3,44);
     //[AppUI createhighlightButtonWithTitle:@"上一步" frame:CGRectMake(0,0,self.view.bounds.size.width/3,44)];
@@ -372,13 +379,13 @@
     UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell==nil) {
         cell=[[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
-        
+        cell.backgroundColor=[UIColor clearColor];
     }
     SupervisionPerson *entity=self.sourceData[indexPath.row];
     [cell.imageView setImageWithURL:[NSURL URLWithString:entity.Photo] placeholderImage:[UIImage imageNamed:@"bg02.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
         if (image) {
-            if (image.size.width>90||image.size.height>104) {
-                [cell.imageView setImage:[image imageByScalingToSize:CGSizeMake(90, 104)]];
+            if (image.size.width>70||image.size.height>84) {
+                [cell.imageView setImage:[image imageByScalingToSize:CGSizeMake(70, 84)]];
             }else{
                 [cell.imageView setImage:image];
             }
@@ -391,7 +398,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 104;
+    return 84;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (!self.shipUsers) {

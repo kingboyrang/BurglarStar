@@ -10,7 +10,9 @@
 #import "BSMenu.h"
 #import "AdView.h"
 #import "WeatherView.h"
+#import "WeatherPopView.h"
 @interface MainViewController : BasicViewController<BSMenuDelegate>
 @property (nonatomic,strong) AdView *scrollAdView;
 @property (nonatomic,strong) WeatherView *weatherView;
+@property (nonatomic,strong) WeatherPopView *weatherPopView;
 @end

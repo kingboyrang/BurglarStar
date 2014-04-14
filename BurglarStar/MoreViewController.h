@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MoreMenuView.h"
+@interface MoreViewController : BasicViewController<MoreMenuViewDelegate>
 
-@interface MoreViewController : BasicViewController<UICollectionViewDataSource,UICollectionViewDelegate>
-@property(nonatomic,strong) UICollectionView *collectionView;
-@property(nonatomic,retain) NSMutableArray *sourceData;
 @end

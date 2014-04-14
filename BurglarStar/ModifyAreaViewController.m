@@ -86,6 +86,7 @@
 {
     [super viewDidLoad];
     self.title=@"电子围栏";
+    self.view.backgroundColor=[UIColor whiteColor];
     UIBarButtonItem *btn1=[UIBarButtonItem barButtonWithTitle:@"1/3" target:self action:nil forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *btn2=[UIBarButtonItem barButtonWithTitle:@"列表" target:self action:@selector(buttonListClick) forControlEvents:UIControlEventTouchUpInside];
     NSArray *actionButtonItems = [NSArray arrayWithObjects:btn2,btn1, nil];
@@ -116,9 +117,17 @@
     [_silder addTarget:self action:@selector(changeSilderValue:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:_silder];
     
-    LoginButtons *buttons=[[LoginButtons alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-44, self.view.bounds.size.width, 44)];
-    buttons.cancel.frame=CGRectMake(self.view.bounds.size.width*2/3, 0, self.view.bounds.size.width/3, 44);
-    buttons.submit.frame=CGRectMake(self.view.bounds.size.width/3, 0, self.view.bounds.size.width/3, 44);
+    topY=self.view.bounds.size.height-[self topHeight]-44;
+    LoginButtons *buttons=[[LoginButtons alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 44)];
+    r=buttons.submit.frame;
+    r.origin.x=self.view.bounds.size.width/3;
+    r.size.width=self.view.bounds.size.width/3;
+    buttons.submit.frame=r;
+    
+    r=buttons.submit.frame;
+    r.origin.x+=r.origin.x;
+    buttons.cancel.frame=r;
+    
     [buttons.cancel setTitle:@"下一步" forState:UIControlStateNormal];
     [buttons.cancel addTarget:self action:@selector(buttonNextClick:) forControlEvents:UIControlEventTouchUpInside];
     [buttons.submit setTitle:@"完成" forState:UIControlStateNormal];

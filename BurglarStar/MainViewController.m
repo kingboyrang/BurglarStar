@@ -20,6 +20,7 @@
 - (void)buttonLoginClick:(id)sender;
 - (void)buttonRegisterClick:(id)sender;
 - (void)loadInitControls;
+- (void)buttonPopWeatherClick:(UIButton*)btn;
 @end
 
 @implementation MainViewController
@@ -51,6 +52,7 @@
     self.title=@"防盗之星";
 
     BSMenu *menu=[[BSMenu alloc] initWithFrame:CGRectZero];
+    menu.tag=801;
     menu.delegate=self;
     CGRect r=menu.frame;
     r.origin.x=(self.view.bounds.size.width-r.size.width)/2;
@@ -60,61 +62,21 @@
     [menu release];
     
     CGFloat topY=r.origin.y-10-44;
+    
+    _weatherPopView=[[WeatherPopView alloc] initWithFrame:CGRectMake(0, topY+44-74, self.view.bounds.size.width,74)];
+    [self.view addSubview:_weatherPopView];
+    
     _weatherView=[[WeatherView alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 44)];
+    [_weatherView.arrowButton addTarget:self action:@selector(buttonPopWeatherClick:) forControlEvents:UIControlEventTouchUpInside];
+    _weatherView.delegate=_weatherPopView;
     [self.view addSubview:_weatherView];
     
+   
+    
     _scrollAdView=[[AdView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, topY)];
+    _scrollAdView.backgroundColor=[UIColor colorFromHexRGB:@"e5e2d0"];
     [self.view addSubview:_scrollAdView];
     
-/***
-http://mobile.weather.com.cn/data/forecast/101280601.html
-http://m.weather.com.cn/data/101280601.html
- ***/
-     //client.Headers.Add("Accept", "application/json, text/javascript, */*; q=0.01");
-     /***
-    client.Headers.Add("Accept-Language", "zh-CN,zh;q=0.8");
-    //注意：Referer 一定要加，否则获取的不是当天的。
-    client.Headers.Add("Referer", "http://mobile.weather.com.cn/");
-    client.Headers.Add("User-Agent", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1;Chrome/27.0.1453.110; Trident/5.0)");
-     ***/
-    
-    /***
-     http://mobile.weather.com.cn/images/small/day/31.png
-     //当天天气=http://mobile.weather.com.cn/data/sk/101280601.html
-     fa 白天图片id http://mobile.weather.com.cn/images/small/day/00.png
-     
-     fb 夜晚图片id http://mobile.weather.com.cn/images/small/night/00.png
-     
-     fc 白天温度
-     
-     fd 夜晚温度
-     
-     fi 日出和日落时间
-     ***/
-    
-    ASIHTTPRequest *request=[ASIHTTPRequest requestWithURL:[NSURL URLWithString:@"http://mobile.weather.com.cn/data/forecast/101280601.html"]];
-   
-    [request addRequestHeader:@"Accept" value:@"application/json, text/javascript, */*; q=0.01"];
-    [request addRequestHeader:@"Accept-Language" value:@"zh-CN,zh;q=0.8"];
-    [request addRequestHeader:@"Referer" value:@"http://mobile.weather.com.cn/"];
-    [request addRequestHeader:@"User-Agent" value:@"Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1;Chrome/27.0.1453.110; Trident/5.0)"];
-   
-    [request setCompletionBlock:^{
-        if (request.responseStatusCode==200) {
-            NSLog(@"xml=%@",request.responseString);
-            NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
-            NSDictionary *obj=[dic objectForKey:@"f"];
-            NSDictionary *item=[obj objectForKey:@"f1"];
-             NSLog(@"class=%@",[item class]);
-            NSLog(@"%@",item);
-           
-        }
-       
-    }];
-    [request setFailedBlock:^{
-        NSLog(@"error=%@",request.error.description);
-    }];
-    [request startAsynchronous];
 }
 - (void)loadInitControls{
     Account *acc=[Account unarchiverAccount];
@@ -133,6 +95,33 @@ http://m.weather.com.cn/data/101280601.html
         }
        
     }
+}
+//点击弹出天气
+- (void)buttonPopWeatherClick:(id)sender{
+    UIButton *btn=(UIButton*)sender;
+    BSMenu *menu=(BSMenu*)[self.view viewWithTag:801];
+   if(!btn.selected)//显示天气
+   {
+       btn.selected=YES;
+       CGRect r=self.weatherPopView.frame;
+       r.origin.y+=r.size.height;
+       
+       [self.view sendSubviewToBack:menu];
+       
+       [UIView animateWithDuration:0.5f animations:^{
+           self.weatherPopView.frame=r;
+       }];
+       
+   }else{//隐藏天气
+       btn.selected=NO;
+       CGRect r=self.weatherPopView.frame;
+       r.origin.y-=r.size.height;
+       
+       [UIView animateWithDuration:0.5f animations:^{
+           self.weatherPopView.frame=r;
+       }];
+
+   }
 }
 //登录
 - (void)buttonLoginClick:(id)sender

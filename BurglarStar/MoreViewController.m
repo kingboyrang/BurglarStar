@@ -7,13 +7,11 @@
 //
 
 #import "MoreViewController.h"
-#import "MoreCell.h"
 #import "EditPwdViewController.h"
 #import "AlertHelper.h"
 #import "LoginViewController.h"
 #import "UserInfoViewController.h"
 #import "Account.h"
-#import "BasicNavigationController.h"
 #import "SupervisionViewController.h"
 #import "AreaViewController.h"
 //#import "OnlineMapViewController.h"
@@ -34,39 +32,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title=@"应用中心";
-    
-	CGRect rect=self.view.bounds;
-    rect.size.height-=[self topHeight];
-    UICollectionViewFlowLayout *flowlayout=[[UICollectionViewFlowLayout alloc] init];
-    CGFloat h=120;
-    flowlayout.itemSize=CGSizeMake(DeviceWidth/3.0, h);
-    flowlayout.scrollDirection=UICollectionViewScrollDirectionVertical;
-    flowlayout.sectionInset=UIEdgeInsetsMake(10, 0, 5, 0);
-    flowlayout.minimumLineSpacing=0.0;
-    flowlayout.minimumInteritemSpacing=0.0;
-    _collectionView=[[UICollectionView alloc] initWithFrame:rect collectionViewLayout:flowlayout];
-    _collectionView.backgroundColor=[UIColor clearColor];
-    _collectionView.dataSource=self;
-    _collectionView.delegate=self;
-    _collectionView.bounces=NO;
-    
-    
-    _collectionView.showsVerticalScrollIndicator=NO;
-    //_collectionView.autoresizingMask=UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-    [_collectionView setUserInteractionEnabled:YES];
-    
-    [_collectionView registerClass:[MoreCell class] forCellWithReuseIdentifier:@"moreCell"];
-    [self.view addSubview:_collectionView];
-    [flowlayout release];
-    
-    NSMutableArray *source1=[NSMutableArray array];
-    NSString *n=@"";
-    for (int i=6; i<12; i++) {
-        n=i<10?[NSString stringWithFormat:@"0%d",i]:[NSString stringWithFormat:@"%d",i];
-        [source1 addObject:[NSString stringWithFormat:@"ico%@.png",n]];
-    }
-    self.sourceData=source1;
+    self.title=@"个人中心";
+    CGRect r=self.view.bounds;
+    r.size.height-=[self topHeight];
+	MoreMenuView *menu=[[MoreMenuView alloc] initWithFrame:r];
+    menu.delegate=self;
+    [self.view addSubview:menu];
+    [menu release];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -75,46 +47,29 @@
 }
 #pragma mark -
 #pragma mark UICollectionViewDataSource
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return [self.sourceData count];
-}
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    
-    NSString *path = [self.sourceData objectAtIndex:indexPath.row];
-    static NSString *cellIdentifier = @"moreCell";
-    MoreCell *cell = (MoreCell *)[collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-    [cell.imageView setImage:[UIImage imageNamed:path]];
-    return cell;
-}
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row==0) {
-        SupervisionViewController *edit=[[SupervisionViewController alloc] init];
-        [self.navigationController pushViewController:edit animated:YES];
-        [edit release];
-    }
-    if (indexPath.row==1) {
-        AreaViewController *edit=[[AreaViewController alloc] init];
-        [self.navigationController pushViewController:edit animated:YES];
-        [edit release];
-    }
-    if (indexPath.row==2) {
+- (void)selectedMenuItemIndex:(NSInteger)index sender:(id)sender{
+    if (index==0) {//电子围栏
+        AreaViewController *area=[[AreaViewController alloc] init];
+        [self.navigationController pushViewController:area animated:YES];
+        [area release];    }
+    if (index==1) {//离线地图
         /***
-        OnlineMapViewController *edit=[[OnlineMapViewController alloc] init];
-        [self.navigationController pushViewController:edit animated:YES];
-        [edit release];
+         OnlineMapViewController *edit=[[OnlineMapViewController alloc] init];
+         [self.navigationController pushViewController:edit animated:YES];
+         [edit release];
          ***/
     }
-    if (indexPath.row==3) {
-        UserInfoViewController *edit=[[UserInfoViewController alloc] init];
-        [self.navigationController pushViewController:edit animated:YES];
-        [edit release];
+    if (index==2) {//个人信息
+        UserInfoViewController *user=[[UserInfoViewController alloc] init];
+        [self.navigationController pushViewController:user animated:YES];
+        [user release];
     }
-    if (indexPath.row==4) {
+    if (index==3) {//修改密码
         EditPwdViewController *edit=[[EditPwdViewController alloc] init];
         [self.navigationController pushViewController:edit animated:YES];
         [edit release];
     }
-    if (indexPath.row==5) {
+    if (index==4) {//注销帐号
         [AlertHelper initWithTitle:@"提示" message:@"确认注销?" cancelTitle:@"取消" cancelAction:nil confirmTitle:@"确认" confirmAction:^{
             [Account closed];
             LoginViewController *login=[[[LoginViewController alloc] init] autorelease];
@@ -122,19 +77,17 @@
             [arr replaceObjectAtIndex:0 withObject:login];
             self.navigationController.viewControllers=arr;
             [self.navigationController popToRootViewControllerAnimated:YES];
-            /***
-            BasicNavigationController *nav=[[[BasicNavigationController alloc] initWithRootViewController:login] autorelease];
-#ifdef __IPHONE_7_0
-            if ([[UIDevice currentDevice].systemVersion floatValue] >= 7.0) {
-                UIWindow *window=[[UIApplication sharedApplication] keyWindow];
-                window.rootViewController=nav;
-            }
-#else
-            [self presentViewController:nav animated:YES completion:nil];
-#endif
-             ***/
             
         }];
+    }
+    if (index==5) {//意见反馈
+        
+    }
+    if (index==6) {//关于我们
+        
+    }
+    if (index==7) {//帮助
+        
     }
 }
 @end

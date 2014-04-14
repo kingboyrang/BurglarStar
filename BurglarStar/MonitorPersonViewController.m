@@ -87,6 +87,7 @@
     _tableView=[[UITableView alloc] initWithFrame:r style:UITableViewStylePlain];
     _tableView.delegate=self;
     _tableView.dataSource=self;
+    _tableView.backgroundColor=[UIColor clearColor];
     [self.view addSubview:_tableView];
     
     [self loadingMonitors:@"" message:@"加载"];
@@ -167,26 +168,26 @@
     UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell==nil) {
         cell=[[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
+        cell.backgroundColor=[UIColor clearColor];
         
     }
     SupervisionPerson *entity=self.list[indexPath.row];
     [cell.imageView setImageWithURL:[NSURL URLWithString:entity.Photo] placeholderImage:[UIImage imageNamed:@"bg02.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
         if (image) {
-            if (image.size.width>90||image.size.height>104) {
-                [cell.imageView setImage:[image imageByScalingToSize:CGSizeMake(90, 104)]];
+            if (image.size.width>70||image.size.height>84) {
+                [cell.imageView setImage:[image imageByScalingToSize:CGSizeMake(70, 84)]];
             }else{
                 [cell.imageView setImage:image];
             }
         }
     }];
-    
     cell.textLabel.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];
     cell.textLabel.text=entity.Name;
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 104;
+    return 84;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

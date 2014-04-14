@@ -63,15 +63,15 @@
 -(void)addQueue:(ASIHTTPRequest*)request{
     if (!_requestList) {
         _requestList=[[NSMutableArray alloc] init];
-        
         if (!_queueResults) {
             _queueResults=[[NSMutableArray alloc] init];
         }else{
             [_queueResults removeAllObjects];
         }
     }
-    [_requestList addObject:request];
-    
+    if (![_requestList containsObject:request]) {
+         [_requestList addObject:request];
+    }
 }
 -(void)addQueues:(NSArray*)requests{
     if (!_requestList) {
@@ -99,6 +99,17 @@
     self.completeBlock=finishQueue;
     [self startQueue];
 }
+-(void)clearAndDelegate{
+    if (_requestList) {
+        [_requestList removeAllObjects];
+    }
+    if (_queueResults) {
+        [_queueResults removeAllObjects];
+    }
+    if (self.networkQueue) {
+        [self.networkQueue reset];
+    }
+}
 #pragma mark -Queue delegate Methods
 -(void)queueFetchComplete:(ASIHTTPRequest*)request{
    
@@ -113,13 +124,15 @@
     }
 }
 -(void)requestFetchComplete:(ASIHTTPRequest*)request{
-    
-	
-    if (self.finishBlock) {
-        self.finishBlock(request);
-    }
     if (_queueResults) {
         [_queueResults addObject:request];
+    }
+    if (self.finishBlock) {
+        if (_queueResults&&[_queueResults count]>0) {
+            self.finishBlock([_queueResults lastObject]);
+        }else{
+           self.finishBlock(request);
+        }
     }
     
 }

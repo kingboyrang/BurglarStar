@@ -22,4 +22,5 @@ typedef void (^queueCompleteBlock)(NSArray *results);
 -(void)addQueues:(NSArray*)requests;
 -(void)startQueue;
 -(void)startQueue:(queueFinishBlock)finish failed:(queueFailedBlock)failed complete:(queueCompleteBlock)finishQueue;
+-(void)clearAndDelegate;
 @end

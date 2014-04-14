@@ -30,4 +30,14 @@
     [btn addTarget:sender action:action forControlEvents:controlEvents];
     return btn;
 }
++ (id)buttonWithImageName:(NSString*)imageName target:(id)sender action:(SEL)action forControlEvents:(UIControlEvents)controlEvents{
+    
+    UIImage *image=[UIImage imageNamed:imageName];
+    UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame=CGRectMake(0, 0, image.size.width, image.size.height);
+    [btn setImage:image forState:UIControlStateNormal];
+     btn.showsTouchWhenHighlighted=YES;
+    [btn addTarget:sender action:action forControlEvents:controlEvents];
+    return btn;
+}
 @end

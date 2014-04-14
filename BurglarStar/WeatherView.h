@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "ASIServiceHelper.h"
+
+@protocol WeatherViewDelegate <NSObject>
+- (void)locationGPSCityNumber:(NSString*)cityNumber;
+@end
+
 @interface WeatherView : UIView{
     ASIServiceHelper *_serviceHelper;
 }
@@ -16,5 +21,6 @@
 @property (nonatomic,strong) UILabel *labCurCity;//当前城市与天气
 @property (nonatomic,strong) UILabel *labCurTemp;//当前温度
 @property (nonatomic,strong) UIButton *arrowButton;
+@property (nonatomic,assign) id<WeatherViewDelegate> delegate;
 - (void)loadCurrentLocationWeather;
 @end

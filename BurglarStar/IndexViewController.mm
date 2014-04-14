@@ -157,7 +157,7 @@
 - (BOOL)selectedTrajectoryIndex:(id)number{
     NSNumber *pos=(NSNumber*)number;
     int index=[pos intValue];
-    if (index>=1&&index<4) {
+    if (index>0&&index<3) {
         if (![self canShowTrajectory]) {
             return NO;
         }

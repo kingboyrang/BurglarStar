@@ -15,4 +15,5 @@
 @property(nonatomic,copy) NSString *AreaName;
 @property(nonatomic,copy) NSString *ruleId;//规则id
 @property (nonatomic,assign) int operateType;//1 新增 2:修改
+
 @end
