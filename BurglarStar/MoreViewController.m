@@ -14,7 +14,7 @@
 #import "Account.h"
 #import "SupervisionViewController.h"
 #import "AreaViewController.h"
-//#import "OnlineMapViewController.h"
+#import "OnlineMapViewController.h"
 @interface MoreViewController ()
 
 @end
@@ -32,6 +32,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     self.title=@"个人中心";
     CGRect r=self.view.bounds;
     r.size.height-=[self topHeight];
@@ -53,11 +54,9 @@
         [self.navigationController pushViewController:area animated:YES];
         [area release];    }
     if (index==1) {//离线地图
-        /***
          OnlineMapViewController *edit=[[OnlineMapViewController alloc] init];
          [self.navigationController pushViewController:edit animated:YES];
          [edit release];
-         ***/
     }
     if (index==2) {//个人信息
         UserInfoViewController *user=[[UserInfoViewController alloc] init];
@@ -74,10 +73,9 @@
             [Account closed];
             LoginViewController *login=[[[LoginViewController alloc] init] autorelease];
             NSMutableArray *arr=[NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-            [arr replaceObjectAtIndex:0 withObject:login];
+            [arr replaceObjectAtIndex:1 withObject:login];
             self.navigationController.viewControllers=arr;
             [self.navigationController popToRootViewControllerAnimated:YES];
-            
         }];
     }
     if (index==5) {//意见反馈

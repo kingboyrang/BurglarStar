@@ -7,7 +7,7 @@
 //
 
 #import "BasicNavigationController.h"
-
+#import "UIBarButtonItem+TPCategory.h"
 @interface BasicNavigationController ()
 -(void)popself;
 -(UIBarButtonItem*)customLeftBackButton;
@@ -30,19 +30,19 @@
 }
 -(void)popself
 {
+    if (self.basicNavDelegate&&[self.basicNavDelegate respondsToSelector:@selector(prevLeftBackJude)]) {
+        BOOL boo=[self.basicNavDelegate prevLeftBackJude];
+        if (!boo) {
+            return;
+        }
+    }
    [self popViewControllerAnimated:YES];
 }
 -(UIBarButtonItem*)customLeftBackButton{
-
-    UIImage *image=[UIImage imageNamed:@"left_back.png"];
-    UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
-    btn.frame=CGRectMake(0, 0, image.size.width, image.size.height);
-    [btn setBackgroundImage:image forState:UIControlStateNormal];
+    UIBarButtonItem *leftBtn=[UIBarButtonItem barButtonWithImage:@"left_back.png" target:self action:@selector(popself) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *btn=(UIButton*)leftBtn.customView;
     btn.showsTouchWhenHighlighted=YES;
-    [btn addTarget:self action:@selector(popself) forControlEvents:UIControlEventTouchUpInside];
-
-    UIBarButtonItem *leftBtn=[[UIBarButtonItem alloc] initWithCustomView:btn];
-    return  [leftBtn autorelease];
+    return leftBtn;
 }
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
@@ -52,7 +52,7 @@
      if ([self.viewControllers count]==1){
        //viewController.navigationItem.leftBarButtonItem =[self loadLogoImage];
      }else{
-       viewController.navigationItem.leftBarButtonItem =[self customLeftBackButton];
+         viewController.navigationItem.leftBarButtonItem =[self customLeftBackButton];
      }
 }
 - (void)didReceiveMemoryWarning

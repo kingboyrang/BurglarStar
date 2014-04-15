@@ -23,15 +23,15 @@
     
     _label=[[UILabel alloc] initWithFrame:CGRectZero];
     _label.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];
-    _label.textColor=[UIColor blackColor];
+    _label.textColor=[UIColor colorFromHexRGB:DeviceFontColorName];
     _label.backgroundColor=[UIColor clearColor];
     [self.contentView addSubview:_label];
     
-    UIImage *image1=[UIImage imageNamed:@"DownAccessory.png"];
+    UIImage *image1=[UIImage imageNamed:@"arrow_down.png"];
     _rightView=[UIButton buttonWithType:UIButtonTypeCustom];
     _rightView.frame=CGRectMake(0, 0, image1.size.width, image1.size.height);
     [_rightView setImage:image1 forState:UIControlStateNormal];
-    [_rightView setImage:[UIImage imageNamed:@"UpAccessory.png"] forState:UIControlStateSelected];
+    [_rightView setImage:[UIImage imageNamed:@"arrow_up.png"] forState:UIControlStateSelected];
     [self.contentView addSubview:_rightView];
     return self;
 }

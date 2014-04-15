@@ -39,6 +39,7 @@
 - (BOOL)formVerify;//表单验证
 - (BOOL)singleWeekVerifyWithRow:(int)row week:(int)week;
 - (BOOL)existsHasTimeOut;//判断是否存在有起始时间大于结束时间的设置
+- (void)addSelectTime:(float)topY;
 @end
 
 @implementation AreaRangeViewController
@@ -75,67 +76,37 @@
     NSArray *actionButtonItems = [NSArray arrayWithObjects:btn2,btn1, nil];
     self.navigationItem.rightBarButtonItems = actionButtonItems;
     
-    
-    CGFloat topY=44;
-	
-    RangHeader *titleView=[[RangHeader alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 30)];
-    titleView.label.frame=CGRectMake(0, 5, titleView.frame.size.width, 20);
-    titleView.label.text=[NSString stringWithFormat:@"名称:%@",self.AreaName];
-    titleView.label.textAlignment=NSTextAlignmentCenter;
+    CGFloat topY=0;
+    RangHeader *titleView=[[RangHeader alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 31)];
+    [titleView setCenterTopTitle:self.AreaName];
     [self.view addSubview:titleView];
     [titleView release];
     
-    topY+=30+5;
-    RangHeader *bgView=[[RangHeader alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 30)];
-    bgView.label.text=@"有效日期";
+    topY+=31;
+    RangHeader *bgView=[[RangHeader alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 35)];
+    [bgView setLeftTopTitle:@"有效日期"];
     [self.view addSubview:bgView];
     [bgView release];
     
-    topY+=30+5;
-    CGFloat lefxt=(self.view.bounds.size.width-149*2)/3;
-    NSDate *date=[NSDate date];
-    _sCalendar=[[CVUICalendar alloc] initWithFrame:CGRectMake(lefxt, topY, 149, 35)];
-    _sCalendar.popoverText.popoverTextField.placeholder=@"开始时间";
-    _sCalendar.popoverText.popoverTextField.text=[NSDate stringFromDate:date withFormat:@"yyyy-MM-dd"];
-    _sCalendar.popoverView.popoverTitle=@"开始时间";
-    _sCalendar.popoverView.clearButtonTitle=@"取消";
-    _sCalendar.isClearEmpty=NO;
-    //添加事件监听事件
-    //[_sCalendar.popoverText.popoverTextField addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
-    [self.view addSubview:_sCalendar];
-    
-
-    NSDate *date1=[date dateByAddingDays:6];
-    _eCalendar=[[CVUICalendar alloc] initWithFrame:CGRectMake(_sCalendar.frame.size.width+_sCalendar.frame.origin.x+lefxt, topY, 149, 35)];
-     _eCalendar.popoverText.popoverTextField.placeholder=@"结束时间";
-    _eCalendar.popoverText.popoverTextField.text=[NSDate stringFromDate:date1 withFormat:@"yyyy-MM-dd"];
-    _eCalendar.popoverView.popoverTitle=@"结束时间";
-    _eCalendar.popoverView.clearButtonTitle=@"取消";
-    _eCalendar.isClearEmpty=NO;
-    //添加属性事件监听
-    //[_eCalendar.popoverText.popoverTextField addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
-    [self.view addSubview:_eCalendar];
-    topY+=35+5;
-    
-    RangHeader *header1=[[RangHeader alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 30)];
-    header1.label.text=@"有效时间";
+    topY+=35;
+    [self addSelectTime:topY];
+    topY+=45;
+    RangHeader *header1=[[RangHeader alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 35)];
+    [header1 setLeftTopTitle:@"有效时间"];
     [self.view addSubview:header1];
     [header1 release];
-    
-    topY+=30;
-    
-    
-    _tableView=[[UITableView alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width,self.view.bounds.size.height-topY-44) style:UITableViewStylePlain];
+    topY+=35;
+
+    CGFloat h=self.view.bounds.size.height-[self topHeight]-topY-44;
+    _tableView=[[UITableView alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width,h) style:UITableViewStylePlain];
     _tableView.delegate=self;
     _tableView.dataSource=self;
     _tableView.bounces=NO;
+    _tableView.backgroundColor=[UIColor clearColor];
     [self.view addSubview:_tableView];
     
-    LoginButtons *buttons=[[LoginButtons alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-44, self.view.bounds.size.width, 44)];
-    buttons.cancel.frame=CGRectMake(0, 0, self.view.bounds.size.width/3, 44);
-    buttons.submit.frame=CGRectMake(self.view.bounds.size.width/3, 0, self.view.bounds.size.width/3, 44);
-    [buttons.cancel setTitle:@"上一步" forState:UIControlStateNormal];
-    [buttons.submit setTitle:@"完成" forState:UIControlStateNormal];
+    LoginButtons *buttons=[[LoginButtons alloc] initWithFrame:CGRectMake(0,h+_tableView.frame.origin.y, self.view.bounds.size.width, 44)];
+    [buttons setLeftButtonsWithCancelTitle:@"上一步" confirmTitle:@"完成"];
     [buttons.cancel addTarget:self action:@selector(buttonPrevClick) forControlEvents:UIControlEventTouchUpInside];
     [buttons.submit addTarget:self action:@selector(buttonSubmitClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:buttons];
@@ -167,6 +138,44 @@
         [self.cellChilds setValue:[NSMutableArray arrayWithObjects:cell1, nil] forKey:[NSString stringWithFormat:@"%d",i]];
         [cell1 release];
     }
+}
+- (void)addSelectTime:(float)topY{
+    
+    UIImage *imgV=[UIImage imageNamed:@"top_bg02.png"];
+    imgV=[imgV stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+    UIView *bgView=[[UIView alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 45)];
+    UIImageView *imgView=[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, bgView.frame.size.height)];
+    [imgView setImage:imgV];
+    [bgView addSubview:imgView];
+    [imgView release];
+
+    
+    CGFloat lefxt=(self.view.bounds.size.width-149*2)/3;
+    NSDate *date=[NSDate date];
+    _sCalendar=[[CVUICalendar alloc] initWithFrame:CGRectMake(lefxt,(bgView.frame.size.height-35)/2, 149, 35)];
+    _sCalendar.popoverText.popoverTextField.placeholder=@"开始时间";
+    _sCalendar.popoverText.popoverTextField.text=[NSDate stringFromDate:date withFormat:@"yyyy-MM-dd"];
+    _sCalendar.popoverView.popoverTitle=@"开始时间";
+    _sCalendar.popoverView.clearButtonTitle=@"取消";
+    _sCalendar.isClearEmpty=NO;
+    //添加事件监听事件
+    //[_sCalendar.popoverText.popoverTextField addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+    [bgView addSubview:_sCalendar];
+    
+    
+    NSDate *date1=[date dateByAddingDays:6];
+    _eCalendar=[[CVUICalendar alloc] initWithFrame:CGRectMake(_sCalendar.frame.size.width+_sCalendar.frame.origin.x+lefxt, _sCalendar.frame.origin.y, 149, 35)];
+    _eCalendar.popoverText.popoverTextField.placeholder=@"结束时间";
+    _eCalendar.popoverText.popoverTextField.text=[NSDate stringFromDate:date1 withFormat:@"yyyy-MM-dd"];
+    _eCalendar.popoverView.popoverTitle=@"结束时间";
+    _eCalendar.popoverView.clearButtonTitle=@"取消";
+    _eCalendar.isClearEmpty=NO;
+    //添加属性事件监听
+    //[_eCalendar.popoverText.popoverTextField addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+    [bgView addSubview:_eCalendar];
+    
+    [self.view addSubview:bgView];
+    [bgView release];
 }
 - (void)closedOpenCellRow:(NSMutableDictionary*)dic{
     NSInteger total=self.cells.count;
@@ -653,7 +662,14 @@
     UITableViewCell *cell=self.cells[indexPath.row];
     if (![cell isKindOfClass:[TKAreaWeekCell class]]) {
         cell.selectionStyle=UITableViewCellSelectionStyleNone;
+    }else{
+        TKAreaWeekCell *weekCell=(TKAreaWeekCell*)cell;
+        UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
+        backgrdView.backgroundColor =weekCell.index%2==0?[UIColor colorFromHexRGB:@"bebeb8"]:[UIColor colorFromHexRGB:@"f1eedd"];
+        weekCell.backgroundView = backgrdView;
+        [backgrdView release];
     }
+    //cell.backgroundColor=[UIColor clearColor];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

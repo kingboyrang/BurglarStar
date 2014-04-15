@@ -11,4 +11,6 @@
 @interface RangHeader : UIView
 @property(nonatomic,strong) UILabel *label;
 @property(nonatomic,strong) UIImageView *backroundView;
+- (void)setCenterTopTitle:(NSString*)title;
+- (void)setLeftTopTitle:(NSString*)title;
 @end

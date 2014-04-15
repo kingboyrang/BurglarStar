@@ -208,6 +208,12 @@
 		01CD569B18FB6E07007731E1 /* WeatherDayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD569A18FB6E07007731E1 /* WeatherDayView.m */; };
 		01CD569E18FB7182007731E1 /* WeatherPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD569D18FB7182007731E1 /* WeatherPopView.m */; };
 		01CD56A418FBBE9F007731E1 /* MoreMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD56A318FBBE9F007731E1 /* MoreMenuView.m */; };
+		01CD56D018FCD2C7007731E1 /* TKMapCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD56C818FCD2C7007731E1 /* TKMapCell.m */; };
+		01CD56D118FCD2C7007731E1 /* HotCityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD56CA18FCD2C7007731E1 /* HotCityView.m */; };
+		01CD56D218FCD2C7007731E1 /* DownloadMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD56CC18FCD2C7007731E1 /* DownloadMapView.m */; };
+		01CD56D318FCD2C7007731E1 /* ViewerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD56CE18FCD2C7007731E1 /* ViewerMapView.m */; };
+		01CD56D818FCD2D3007731E1 /* OnlineMapViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 01CD56D518FCD2D3007731E1 /* OnlineMapViewController.mm */; };
+		01CD56D918FCD2D3007731E1 /* OfflineHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD56D718FCD2D3007731E1 /* OfflineHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -621,6 +627,19 @@
 		01CD569D18FB7182007731E1 /* WeatherPopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherPopView.m; sourceTree = "<group>"; };
 		01CD56A218FBBE9F007731E1 /* MoreMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreMenuView.h; sourceTree = "<group>"; };
 		01CD56A318FBBE9F007731E1 /* MoreMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreMenuView.m; sourceTree = "<group>"; };
+		01CD56C718FCD2C7007731E1 /* TKMapCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKMapCell.h; sourceTree = "<group>"; };
+		01CD56C818FCD2C7007731E1 /* TKMapCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKMapCell.m; sourceTree = "<group>"; };
+		01CD56C918FCD2C7007731E1 /* HotCityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotCityView.h; sourceTree = "<group>"; };
+		01CD56CA18FCD2C7007731E1 /* HotCityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotCityView.m; sourceTree = "<group>"; };
+		01CD56CB18FCD2C7007731E1 /* DownloadMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DownloadMapView.h; sourceTree = "<group>"; };
+		01CD56CC18FCD2C7007731E1 /* DownloadMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DownloadMapView.m; sourceTree = "<group>"; };
+		01CD56CD18FCD2C7007731E1 /* ViewerMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewerMapView.h; sourceTree = "<group>"; };
+		01CD56CE18FCD2C7007731E1 /* ViewerMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewerMapView.m; sourceTree = "<group>"; };
+		01CD56CF18FCD2C7007731E1 /* OnlineBackDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnlineBackDelegate.h; sourceTree = "<group>"; };
+		01CD56D418FCD2D3007731E1 /* OnlineMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnlineMapViewController.h; sourceTree = "<group>"; };
+		01CD56D518FCD2D3007731E1 /* OnlineMapViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OnlineMapViewController.mm; sourceTree = "<group>"; };
+		01CD56D618FCD2D3007731E1 /* OfflineHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineHelper.h; sourceTree = "<group>"; };
+		01CD56D718FCD2D3007731E1 /* OfflineHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineHelper.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -781,6 +800,7 @@
 		01C2EDEF18F24C5600B37603 /* viewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				01CD56C518FCD24B007731E1 /* OnlineMap */,
 				01C2F15D18F5217300B37603 /* Area */,
 				01C2F0FA18F4E46E00B37603 /* More */,
 				01C2F0C618F4DD6900B37603 /* TargetCenter */,
@@ -1490,6 +1510,34 @@
 			name = Source;
 			sourceTree = "<group>";
 		};
+		01CD56C518FCD24B007731E1 /* OnlineMap */ = {
+			isa = PBXGroup;
+			children = (
+				01CD56D418FCD2D3007731E1 /* OnlineMapViewController.h */,
+				01CD56D518FCD2D3007731E1 /* OnlineMapViewController.mm */,
+				01CD56D618FCD2D3007731E1 /* OfflineHelper.h */,
+				01CD56D718FCD2D3007731E1 /* OfflineHelper.m */,
+				01CD56C618FCD2BA007731E1 /* UI */,
+			);
+			name = OnlineMap;
+			sourceTree = "<group>";
+		};
+		01CD56C618FCD2BA007731E1 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				01CD56C718FCD2C7007731E1 /* TKMapCell.h */,
+				01CD56C818FCD2C7007731E1 /* TKMapCell.m */,
+				01CD56C918FCD2C7007731E1 /* HotCityView.h */,
+				01CD56CA18FCD2C7007731E1 /* HotCityView.m */,
+				01CD56CB18FCD2C7007731E1 /* DownloadMapView.h */,
+				01CD56CC18FCD2C7007731E1 /* DownloadMapView.m */,
+				01CD56CD18FCD2C7007731E1 /* ViewerMapView.h */,
+				01CD56CE18FCD2C7007731E1 /* ViewerMapView.m */,
+				01CD56CF18FCD2C7007731E1 /* OnlineBackDelegate.h */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1648,8 +1696,10 @@
 				01C2EECB18F2937600B37603 /* TKLabelSwitchCell.m in Sources */,
 				01C2F0CF18F4DD7500B37603 /* MonitorPersonViewController.m in Sources */,
 				01C2EE1318F24FD600B37603 /* NSTimer+TPCategory.m in Sources */,
+				01CD56D318FCD2C7007731E1 /* ViewerMapView.m in Sources */,
 				01C2F12E18F4E89900B37603 /* UIImageView+WebCache.m in Sources */,
 				01C2EE7318F28FB400B37603 /* TrajectoryHistory.m in Sources */,
+				01CD56D118FCD2C7007731E1 /* HotCityView.m in Sources */,
 				01C2F02318F3DC8E00B37603 /* TKBSwitch.m in Sources */,
 				01C2F03418F3F07F00B37603 /* UserInfoViewController.m in Sources */,
 				01C2EF1818F29DA900B37603 /* GDataXMLNode.m in Sources */,
@@ -1709,11 +1759,13 @@
 				01C2EF0D18F29C5E00B37603 /* ASIServiceHTTPRequest.m in Sources */,
 				01CD567318F68DC3007731E1 /* WeatherView.m in Sources */,
 				01C2F08818F4DCC700B37603 /* TrajectorySearch.m in Sources */,
+				01CD56D218FCD2C7007731E1 /* DownloadMapView.m in Sources */,
 				01C2F16818F5219500B37603 /* AreaPaoView.m in Sources */,
 				01C2EE8E18F2909000B37603 /* BasicViewController.m in Sources */,
 				01CD567918F691EB007731E1 /* AdView.m in Sources */,
 				01C2F0A018F4DCFC00B37603 /* CaseCameraImage.m in Sources */,
 				01C2EE7418F28FB400B37603 /* TrajectoryMessage.m in Sources */,
+				01CD56D018FCD2C7007731E1 /* TKMapCell.m in Sources */,
 				01C2EECC18F2937600B37603 /* TKLabelCell.m in Sources */,
 				01C2EE8418F2905500B37603 /* GeneralLoginViewController.m in Sources */,
 				01C2F12918F4E89900B37603 /* SDWebImagePrefetcher.m in Sources */,
@@ -1726,6 +1778,7 @@
 				01C2EE0B18F24FD600B37603 /* NSDate+TPCategory.m in Sources */,
 				01C2EEDC18F2958600B37603 /* BasicNavigationController.m in Sources */,
 				01C2F0C018F4DD0900B37603 /* TrajectoryMessageController.m in Sources */,
+				01CD56D918FCD2D3007731E1 /* OfflineHelper.m in Sources */,
 				01C2F13F18F4F60300B37603 /* CVUICalendar.m in Sources */,
 				01C2F0D618F4DDCF00B37603 /* BMKAnnotationView+TPCategory.m in Sources */,
 				01C2EF1918F29DA900B37603 /* XmlNode.m in Sources */,
@@ -1745,6 +1798,7 @@
 				01C2F15018F5140600B37603 /* TKEmptyCell.m in Sources */,
 				01C2F07718F3FE7900B37603 /* BSMenu.m in Sources */,
 				01CD569E18FB7182007731E1 /* WeatherPopView.m in Sources */,
+				01CD56D818FCD2D3007731E1 /* OnlineMapViewController.mm in Sources */,
 				01C2EEA518F2916700B37603 /* NetWorkConnection.m in Sources */,
 				01C2F12418F4E89900B37603 /* SDWebImageCompat.m in Sources */,
 				01C2F0BF18F4DD0900B37603 /* TrajectoryViewController.m in Sources */,

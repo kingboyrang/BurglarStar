@@ -29,4 +29,21 @@
     }
     return self;
 }
+- (void)setCenterTopTitle:(NSString*)title{
+    UIImage *titleViewImg=[UIImage imageNamed:@"top_bg01.png"];
+    titleViewImg=[titleViewImg stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+    NSString *memo=[NSString stringWithFormat:@"名称:%@",title];
+    CGSize size=[memo textSize:[UIFont fontWithName:DeviceFontName size:DeviceFontSize] withWidth:self.frame.size.width];
+    
+    _label.frame=CGRectMake(0,(self.frame.size.height-size.height)/2,self.frame.size.width, size.height);
+    _label.textAlignment=NSTextAlignmentCenter;
+    _label.text=memo;
+    [_backroundView setImage:titleViewImg];
+}
+- (void)setLeftTopTitle:(NSString*)title{
+    UIImage *header1Img=[UIImage imageNamed:@"top_bg03.png"];
+    header1Img=[header1Img stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+    _label.text=title;
+    [_backroundView setImage:header1Img];
+}
 @end

@@ -31,6 +31,7 @@
     self.labName.lineBreakMode=NSLineBreakByWordWrapping;
     
     if (row%2==0) {
+        [self.arrowButton setImage:[UIImage imageNamed:@"arrow_right_n.png"] forState:UIControlStateNormal];
         self.backgroundColor=[UIColor colorFromHexRGB:@"efeedc"];
         self.labName.textColor=[UIColor colorFromHexRGB:@"252930"];
         

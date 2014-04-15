@@ -12,7 +12,8 @@
 #import "AnimateErrorView.h"
 #import "Account.h"
 #import "ASIServiceHelper.h"
-@interface BasicViewController : UIViewController
+#import "BasicNavigationController.h"
+@interface BasicViewController : UIViewController<BasicNavigationDelegate>
 @property(nonatomic,retain) ASIServiceHelper *ServiceHelper;
 @property(nonatomic,readonly) BOOL hasNetWork;
 @property(nonatomic,readonly) float topHeight;

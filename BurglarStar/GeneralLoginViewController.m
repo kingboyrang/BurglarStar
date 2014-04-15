@@ -300,28 +300,24 @@
     ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
     [request setCompletionBlock:^{
         BOOL boo=NO;
-        if ([request.ServiceResult.xmlString length]>0) {
-            NSString *xml=[request.ServiceResult.xmlString stringByReplacingOccurrencesOfString:request.ServiceResult.xmlnsAttr withString:@""];
-            [request.ServiceResult.xmlParse setDataSource:xml];
-            XmlNode *node=[request.ServiceResult.xmlParse soapXmlSelectSingleNode:@"//UIDLoginResult"];
-            NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:[node.InnerText dataUsingEncoding:NSUTF8StringEncoding] options:1 error:nil];
-            if ([dic objectForKey:@"Account"]) {
+        if (request.ServiceResult.success) {
+            NSDictionary *dic=[request.ServiceResult json];
+            if (dic&&[dic objectForKey:@"WorkNo"]) {
                 boo=YES;
                 [self hideLoadingViewAnimated:^(AnimateLoadView *hideView) {
                     submit.enabled=YES;
                     //登录
-                    [Account    loginGeneralWithUserId:[cell1.textField.text Trim] password:[cell2.textField.text Trim] encrypt:[cell2.textField.text Trim] rememberPassword:cell3.check.hasRemember withData:dic];
-                    
+                    [Account loginGeneralWithUserId:[cell1.textField.text Trim] password:[cell2.textField.text Trim] encrypt:[cell2.textField.text Trim] rememberPassword:cell3.check.hasRemember withData:dic];
+                      NSLog(@"OK====!");
                     [self.navigationController popViewControllerAnimated:YES];
                 }];
             }
         }
-        if (!boo) {
-            [self hideLoadingFailedWithTitle:@"输入的帐号或密码错误,请重新输入!" completed:^(AnimateErrorView *failedView) {
-                submit.enabled=YES;
-            }];
-        }
-
+             if (!boo) {
+                 [self hideLoadingFailedWithTitle:@"输入的帐号或密码错误,请重新输入!" completed:^(AnimateErrorView *failedView) {
+                     submit.enabled=YES;
+                 }];
+             }
     }];
     [request setFailedBlock:^{
         NSLog(@"error=%@",request.error.description);

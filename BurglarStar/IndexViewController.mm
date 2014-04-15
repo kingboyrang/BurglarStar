@@ -280,6 +280,8 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [_toolBarView setSelectedItemIndex:0];
+    
     //更新记录总数
     if([self canShowTrajectory])
     {

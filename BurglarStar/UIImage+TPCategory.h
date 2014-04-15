@@ -42,6 +42,10 @@
  */
 +(UIImage*)createImageWithColor:(UIColor*)color;
 /*
+ * 生成圆角图片
+ */
++ (id)createRoundedRectImage:(UIImage*)image size:(CGSize)size radius:(NSInteger)r;
+/*
  * convert base64string to image
  */
 -(NSString *) imageBase64String;

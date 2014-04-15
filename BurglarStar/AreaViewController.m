@@ -267,12 +267,18 @@
         [imageView setImage:image];
         cell.accessoryView=imageView;
         [imageView release];
-        //
+        
+       
+       
     }
     cell.textLabel.backgroundColor=[UIColor clearColor];
     UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
     backgrdView.backgroundColor = indexPath.row%2==0?[UIColor colorFromHexRGB:@"bebeb8"]:[UIColor colorFromHexRGB:@"efeedc"];
     cell.backgroundView = backgrdView;
+    
+    //cell.selectedBackgroundView = [[[UIView alloc] initWithFrame:cell.frame] autorelease];
+    //cell.selectedBackgroundView.backgroundColor = indexPath.row%2==0?[UIColor colorFromHexRGB:@"bebeb8"]:[UIColor colorFromHexRGB:@"efeedc"];
+    
     [backgrdView release];
     
     

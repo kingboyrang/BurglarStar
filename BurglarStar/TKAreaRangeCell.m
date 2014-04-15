@@ -51,7 +51,7 @@
     [_deleteButton setImage:[UIImage imageNamed:@"error.png"] forState:UIControlStateNormal];
     [self.contentView addSubview:_deleteButton];
     
-    self.contentView.backgroundColor=[UIColor colorFromHexRGB:@"fceada"];
+    self.contentView.backgroundColor=[UIColor colorFromHexRGB:@"f9faf2"];
 	return self;
 }
 

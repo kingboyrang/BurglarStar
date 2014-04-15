@@ -64,7 +64,6 @@
 #pragma mark -
 #pragma mark 私有方法
 -(void) start {
-    NSLog(@"为什么会执行两次!");
     if (locationManager) {
         [locationManager stopUpdatingLocation];
         [locationManager release],locationManager=nil;

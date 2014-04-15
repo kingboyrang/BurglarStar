@@ -11,4 +11,6 @@
 @interface LoginButtons : UIView
 @property(nonatomic,strong) UIButton *submit;
 @property(nonatomic,strong) UIButton *cancel;
+- (void)setLeftButtonsWithCancelTitle:(NSString*)cancleTitle confirmTitle:(NSString*)submitTitle;
+- (void)setRightButtonsWithCancelTitle:(NSString*)cancleTitle confirmTitle:(NSString*)submitTitle;
 @end

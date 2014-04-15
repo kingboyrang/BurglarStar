@@ -27,7 +27,13 @@
             mod.tag=100+i;
             mod.dayMemo=[self dayToString:i];
             mod.imageURL=[NSString stringWithFormat:WeatherImageURLString,[entity objectForKey:@"fa"]];
-            mod.Temperature=[NSString stringWithFormat:@"%@°",[entity objectForKey:@"fc"]];
+            //fd
+            if ([[entity objectForKey:@"fc"] length]>0) {
+                mod.Temperature=[NSString stringWithFormat:@"%@°",[entity objectForKey:@"fc"]];
+            }
+            else{
+                mod.Temperature=[NSString stringWithFormat:@"%@°",[entity objectForKey:@"fd"]];
+            }
             [arr addObject:mod];
             [mod release];
         }

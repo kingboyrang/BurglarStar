@@ -41,4 +41,40 @@
     }
     return self;
 }
+- (void)setLeftButtonsWithCancelTitle:(NSString*)cancleTitle confirmTitle:(NSString*)submitTitle{
+    CGRect r=_cancel.frame;
+    r.origin.x=0;
+    r.size.width=self.frame.size.width/3;
+    _cancel.frame=r;
+    
+    r=_submit.frame;
+    r.origin.x=_cancel.frame.size.width;
+    r.size.width=r.origin.x;
+    _submit.frame=r;
+    
+    if (cancleTitle&&[cancleTitle length]>0) {
+        [_cancel setTitle:cancleTitle forState:UIControlStateNormal];
+    }
+    if (submitTitle&&[submitTitle length]>0) {
+        [_submit setTitle:submitTitle forState:UIControlStateNormal];
+    }
+}
+- (void)setRightButtonsWithCancelTitle:(NSString*)cancleTitle confirmTitle:(NSString*)submitTitle{
+    CGRect r=_cancel.frame;
+    r.origin.x=self.frame.size.width*2/3;
+    r.size.width=self.frame.size.width/3;
+    _cancel.frame=r;
+    
+    r=_submit.frame;
+    r.origin.x=self.frame.size.width/3;
+    r.size.width=r.origin.x;
+    _submit.frame=r;
+    
+    if (cancleTitle&&[cancleTitle length]>0) {
+        [_cancel setTitle:cancleTitle forState:UIControlStateNormal];
+    }
+    if (submitTitle&&[submitTitle length]>0) {
+        [_submit setTitle:submitTitle forState:UIControlStateNormal];
+    }
+}
 @end

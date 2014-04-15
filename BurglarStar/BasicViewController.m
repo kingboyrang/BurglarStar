@@ -8,13 +8,12 @@
 
 #import "BasicViewController.h"
 #import "NetWorkConnection.h"
-//#import "IndexViewController.h"
+#import "IndexViewController.h"
 @interface BasicViewController (){
     AnimateLoadView *_loadView;
     AnimateErrorView *_errorView;
     AnimateErrorView *_successView;
 }
--(void)buttonBackClick;
 @end
 
 @implementation BasicViewController
@@ -40,25 +39,7 @@
     return self;
 }
 - (BOOL)backPrevViewController{
-    /***
-    if (self.navigationController) {
-        if (self.navigationController.viewControllers.count==2) {
-            id v=self.navigationController.viewControllers[0];
-            if ([v isKindOfClass:[IndexViewController class]]) {
-                IndexViewController *index=(IndexViewController*)v;
-                [index.toolBarView setSelectedItemIndex:0];
-            }
-        }
-    }
-      ***/
     return YES;
-    
-}
--(void)buttonBackClick{
-    if (![self backPrevViewController]) {
-        return;
-    }
-    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)viewDidLoad
 {
@@ -72,6 +53,12 @@ self.view.backgroundColor=[UIColor colorFromHexRGB:@"e5e2d0"];
          self.edgesForExtendedLayout = UIRectEdgeBottom | UIRectEdgeLeft | UIRectEdgeRight;
     }
 #endif
+    
+    if (self.navigationController) {
+        BasicNavigationController *nav=(BasicNavigationController*)self.navigationController;
+        nav.basicNavDelegate=self;
+    }
+    
 }
 - (float)topHeight{
     float h=0;
@@ -106,6 +93,10 @@ self.view.backgroundColor=[UIColor colorFromHexRGB:@"e5e2d0"];
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+#pragma mark BasicNavigationDelegate Methods
+- (BOOL)prevLeftBackJude{
+  return  [self backPrevViewController];
 }
 #pragma mark 动画提示
 -(AnimateErrorView*) errorView {

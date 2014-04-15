@@ -35,7 +35,7 @@
 - (void)handlerTrajectoryResult:(ASIServiceResult*)result;
 - (void)handlerShipResult:(ASIServiceResult*)result;
 - (int)getRowFindbyId:(NSString*)carId;
-
+- (void)addSelectRule:(float)topY;
 @end
 
 @implementation AreaRuleViewController
@@ -73,50 +73,17 @@
     self.ruleId=@"";
     self.operateType=1;
     CGFloat topY=0;
-	
-    UIImage *titleViewImg=[UIImage imageNamed:@"top_bg01.png"];
-    titleViewImg=[titleViewImg stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+
     RangHeader *titleView=[[RangHeader alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 31)];
-    titleView.label.frame=CGRectMake(0, 5, titleView.frame.size.width, 20);
-    titleView.label.text=[NSString stringWithFormat:@"名称:%@",self.AreaName];
-    titleView.label.textAlignment=NSTextAlignmentCenter;
-    [titleView.backroundView setImage:titleViewImg];
+    [titleView setCenterTopTitle:self.AreaName];
     [self.view addSubview:titleView];
     [titleView release];
     
-    topY+=31+5;
-    NSString *title=@"规则";
-    CGSize size=[title textSize:[UIFont fontWithName:DeviceFontName size:DeviceFontSize] withWidth:self.view.bounds.size.width];
-    UILabel *labTitle=[[UILabel alloc] initWithFrame:CGRectMake(37, (45-size.height)/2+44+30, size.width, size.height)];
-    labTitle.text=title;
-    labTitle.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];
-    labTitle.backgroundColor=[UIColor clearColor];
-    [self.view addSubview:labTitle];
-    
-    _ruleSelect=[[CVUISelect alloc] initWithFrame:CGRectMake(labTitle.frame.size.width+labTitle.frame.origin.x+5, topY, 206, 35)];
-    _ruleSelect.popoverText.popoverTextField.borderStyle=UITextBorderStyleRoundedRect;
-    _ruleSelect.popoverText.popoverTextField.placeholder=@"请选择规则";
-   
-    UIImage *img=[UIImage imageNamed:@"DownAccessory.png"];
-    UIImageView *imageView=[[[UIImageView alloc] initWithImage:img] autorelease];
-    _ruleSelect.popoverText.popoverTextField.enabled=NO;
-    _ruleSelect.popoverText.popoverTextField.rightView=imageView;
-   _ruleSelect.popoverText.popoverTextField.rightViewMode=UITextFieldViewModeAlways;
-    _ruleSelect.popoverText.popoverTextField.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];
-    //设置数据源
-    NSMutableArray *saveArr=[NSMutableArray array];
-    [saveArr addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"限入",@"key",@"1",@"value", nil]];
-    [saveArr addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"限出",@"key",@"2",@"value", nil]];
-    [saveArr addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"限停",@"key",@"3",@"value", nil]];
-    [_ruleSelect setDataSourceForArray:saveArr dataTextName:@"key" dataValueName:@"value"];
-    [self.view addSubview:_ruleSelect];
-    
-    topY+=35+5;
-    UIImage *header1Img=[UIImage imageNamed:@"top_bg03.png"];
-    header1Img=[header1Img stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+    topY+=31;
+    [self addSelectRule:topY];
+    topY+=45;
     RangHeader *header1=[[RangHeader alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 35)];
-    header1.label.text=@"关联对象";
-    [header1.backroundView setImage:header1Img];
+    [header1 setLeftTopTitle:@"关联对象"];
     [self.view addSubview:header1];
     [header1 release];
     topY+=35;
@@ -152,6 +119,47 @@
     [self.view addSubview:buttons];
     [buttons release];
     
+}
+- (void)addSelectRule:(float)topY{
+    UIImage *imgV=[UIImage imageNamed:@"top_bg02.png"];
+    imgV=[imgV stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+    UIView *bgView=[[UIView alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 45)];
+    UIImageView *imgView=[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, bgView.frame.size.height)];
+    [imgView setImage:imgV];
+    [bgView addSubview:imgView];
+    [imgView release];
+    
+    
+    NSString *title=@"规则";
+    CGSize size=[title textSize:[UIFont fontWithName:DeviceFontName size:DeviceFontSize] withWidth:self.view.bounds.size.width];
+    UILabel *labTitle=[[UILabel alloc] initWithFrame:CGRectMake(37,(bgView.frame.size.height-size.height)/2, size.width, size.height)];
+    labTitle.text=title;
+    labTitle.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];
+    labTitle.textColor=[UIColor colorFromHexRGB:DeviceFontColorName];
+    labTitle.backgroundColor=[UIColor clearColor];
+    [bgView addSubview:labTitle];
+    
+    _ruleSelect=[[CVUISelect alloc] initWithFrame:CGRectMake(labTitle.frame.size.width+labTitle.frame.origin.x+5, (bgView.frame.size.height-35)/2, 206, 35)];
+    _ruleSelect.popoverText.popoverTextField.borderStyle=UITextBorderStyleRoundedRect;
+    _ruleSelect.popoverText.popoverTextField.placeholder=@"请选择规则";
+    
+    UIImage *img=[UIImage imageNamed:@"DownAccessory.png"];
+    UIImageView *imageView=[[[UIImageView alloc] initWithImage:img] autorelease];
+    _ruleSelect.popoverText.popoverTextField.enabled=NO;
+    _ruleSelect.popoverText.popoverTextField.rightView=imageView;
+    _ruleSelect.popoverText.popoverTextField.rightViewMode=UITextFieldViewModeAlways;
+    _ruleSelect.popoverText.popoverTextField.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];
+    //设置数据源
+    NSMutableArray *saveArr=[NSMutableArray array];
+    [saveArr addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"限入",@"key",@"1",@"value", nil]];
+    [saveArr addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"限出",@"key",@"2",@"value", nil]];
+    [saveArr addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"限停",@"key",@"3",@"value", nil]];
+    [_ruleSelect setDataSourceForArray:saveArr dataTextName:@"key" dataValueName:@"value"];
+    [bgView addSubview:_ruleSelect];
+    
+    [labTitle release];
+    [self.view addSubview:bgView];
+    [bgView release];
 }
 - (void)buttonPrevClick{
     [self.navigationController popViewControllerAnimated:YES];
@@ -391,7 +399,6 @@
             }
         }
     }];
-    
     cell.textLabel.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];
     cell.textLabel.text=entity.Name;
     return cell;
