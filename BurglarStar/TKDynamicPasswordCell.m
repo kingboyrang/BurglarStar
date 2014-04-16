@@ -112,8 +112,9 @@
             [_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             _button.enabled=YES;
             _hasVeryFailed=YES;
-            if (self.controlers&&[self.controlers respondsToSelector:@selector(dynamicCodeTimeOut)]) {
-                [self.controlers performSelector:@selector(dynamicCodeTimeOut) withObject:nil];
+            SEL sel=NSSelectorFromString(@"dynamicCodeTimeOut");
+            if (self.controlers&&[self.controlers respondsToSelector:sel]) {
+                [self.controlers performSelector:sel withObject:nil];
             }
             return;
         }
@@ -134,8 +135,9 @@
         [_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _button.enabled=YES;
         _hasVeryFailed=YES;
-        if (self.controlers&&[self.controlers respondsToSelector:@selector(dynamicCodeTimeOut)]) {
-            [self.controlers performSelector:@selector(dynamicCodeTimeOut) withObject:nil];
+        SEL sel=NSSelectorFromString(@"dynamicCodeTimeOut");
+        if (self.controlers&&[self.controlers respondsToSelector:sel]) {
+            [self.controlers performSelector:sel withObject:nil];
         }
     }else{
         [_button setTitle:[NSString stringWithFormat:@"%d秒",second] forState:UIControlStateNormal];

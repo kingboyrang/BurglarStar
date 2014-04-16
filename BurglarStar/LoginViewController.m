@@ -10,6 +10,7 @@
 
 #import "GeneralLoginViewController.h"
 #import "DynamicLoginViewController.h"
+#import "UIButton+TPCategory.h"
 @interface LoginViewController ()
 @end
 
@@ -36,8 +37,6 @@
     DynamicLoginViewController *_dynamic=[[[DynamicLoginViewController alloc] init] autorelease];
     [self addChildViewController:_general];
     [self addChildViewController:_dynamic];
-
-    
 }
 -(void)selectedMenuItemIndex:(NSNumber*)number{
     int index=[number intValue];

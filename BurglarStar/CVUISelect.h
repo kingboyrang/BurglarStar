@@ -14,6 +14,7 @@
 @optional
 -(void)doneChooseItem:(id)sender;
 -(void)closeSelect:(id)sender;
+-(void)showPopoverSelect:(id)sender;
 @end
 
 @interface CVUISelect : UIView<CVUIPopoverTextDelegate,UIPickerViewDelegate,UIPickerViewDataSource,CVUIPopoverViewDelegate>

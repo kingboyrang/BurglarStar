@@ -8,10 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol BasicNavigationDelegate <NSObject>
-- (BOOL)prevLeftBackJude;
-@end
+
 
 @interface BasicNavigationController : UINavigationController
-@property (nonatomic,assign) id<BasicNavigationDelegate> basicNavDelegate;
+@property (nonatomic,assign) id basicNavDelegate;
 @end

@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0198F8E618FE114C00F2DABE /* SosMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F8E518FE114C00F2DABE /* SosMessageViewController.m */; };
+		0198F8E918FE11A000F2DABE /* SOSMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F8E818FE11A000F2DABE /* SOSMessage.m */; };
+		0198F8ED18FE164E00F2DABE /* SOSManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F8EC18FE164E00F2DABE /* SOSManagerViewController.m */; };
+		0198F8F118FE18C100F2DABE /* TKSOSCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F8F018FE18C100F2DABE /* TKSOSCell.m */; };
+		0198F8F418FE272100F2DABE /* SOSAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F8F318FE272100F2DABE /* SOSAddViewController.m */; };
+		0198F8F818FE298300F2DABE /* GCPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F8F718FE298300F2DABE /* GCPlaceholderTextView.m */; };
+		0198F8FB18FE2A0700F2DABE /* TKTextViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F8FA18FE2A0700F2DABE /* TKTextViewCell.m */; };
+		0198F8FE18FE2B3F00F2DABE /* TKSoSBusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F8FD18FE2B3F00F2DABE /* TKSoSBusCell.m */; };
+		0198F90118FE2E5200F2DABE /* TKHeadPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F90018FE2E5200F2DABE /* TKHeadPhotoCell.m */; };
+		0198F90518FE4EB700F2DABE /* ManagerPhotoSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F90418FE4EB700F2DABE /* ManagerPhotoSelectViewController.m */; };
+		0198F90818FE66EA00F2DABE /* SOSEditNotHandleController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F90718FE66EA00F2DABE /* SOSEditNotHandleController.m */; };
+		0198F90B18FE671000F2DABE /* SOSEditHandleController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F90A18FE671000F2DABE /* SOSEditHandleController.m */; };
 		01C2ED9118F22E5100B37603 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C2ED9018F22E5100B37603 /* Foundation.framework */; };
 		01C2ED9318F22E5100B37603 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C2ED9218F22E5100B37603 /* CoreGraphics.framework */; };
 		01C2ED9518F22E5100B37603 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C2ED9418F22E5100B37603 /* UIKit.framework */; };
@@ -227,6 +239,31 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0198F8E418FE114C00F2DABE /* SosMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SosMessageViewController.h; sourceTree = "<group>"; };
+		0198F8E518FE114C00F2DABE /* SosMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SosMessageViewController.m; sourceTree = "<group>"; };
+		0198F8E718FE11A000F2DABE /* SOSMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOSMessage.h; sourceTree = "<group>"; };
+		0198F8E818FE11A000F2DABE /* SOSMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOSMessage.m; sourceTree = "<group>"; };
+		0198F8EB18FE164E00F2DABE /* SOSManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOSManagerViewController.h; sourceTree = "<group>"; };
+		0198F8EC18FE164E00F2DABE /* SOSManagerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOSManagerViewController.m; sourceTree = "<group>"; };
+		0198F8EF18FE18C100F2DABE /* TKSOSCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKSOSCell.h; sourceTree = "<group>"; };
+		0198F8F018FE18C100F2DABE /* TKSOSCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSOSCell.m; sourceTree = "<group>"; };
+		0198F8F218FE272100F2DABE /* SOSAddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOSAddViewController.h; sourceTree = "<group>"; };
+		0198F8F318FE272100F2DABE /* SOSAddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOSAddViewController.m; sourceTree = "<group>"; };
+		0198F8F618FE298300F2DABE /* GCPlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCPlaceholderTextView.h; sourceTree = "<group>"; };
+		0198F8F718FE298300F2DABE /* GCPlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCPlaceholderTextView.m; sourceTree = "<group>"; };
+		0198F8F918FE2A0700F2DABE /* TKTextViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKTextViewCell.h; sourceTree = "<group>"; };
+		0198F8FA18FE2A0700F2DABE /* TKTextViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKTextViewCell.m; sourceTree = "<group>"; };
+		0198F8FC18FE2B3F00F2DABE /* TKSoSBusCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKSoSBusCell.h; sourceTree = "<group>"; };
+		0198F8FD18FE2B3F00F2DABE /* TKSoSBusCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSoSBusCell.m; sourceTree = "<group>"; };
+		0198F8FF18FE2E5200F2DABE /* TKHeadPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKHeadPhotoCell.h; sourceTree = "<group>"; };
+		0198F90018FE2E5200F2DABE /* TKHeadPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKHeadPhotoCell.m; sourceTree = "<group>"; };
+		0198F90218FE4DAB00F2DABE /* ManagerPhotoDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ManagerPhotoDelegate.h; sourceTree = "<group>"; };
+		0198F90318FE4EB700F2DABE /* ManagerPhotoSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManagerPhotoSelectViewController.h; sourceTree = "<group>"; };
+		0198F90418FE4EB700F2DABE /* ManagerPhotoSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManagerPhotoSelectViewController.m; sourceTree = "<group>"; };
+		0198F90618FE66EA00F2DABE /* SOSEditNotHandleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOSEditNotHandleController.h; sourceTree = "<group>"; };
+		0198F90718FE66EA00F2DABE /* SOSEditNotHandleController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOSEditNotHandleController.m; sourceTree = "<group>"; };
+		0198F90918FE671000F2DABE /* SOSEditHandleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOSEditHandleController.h; sourceTree = "<group>"; };
+		0198F90A18FE671000F2DABE /* SOSEditHandleController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOSEditHandleController.m; sourceTree = "<group>"; };
 		01C2ED8D18F22E5100B37603 /* BurglarStar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BurglarStar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01C2ED9018F22E5100B37603 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		01C2ED9218F22E5100B37603 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -679,6 +716,55 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0198F8E318FE111A00F2DABE /* SOSMessage */ = {
+			isa = PBXGroup;
+			children = (
+				0198F8E418FE114C00F2DABE /* SosMessageViewController.h */,
+				0198F8E518FE114C00F2DABE /* SosMessageViewController.m */,
+			);
+			name = SOSMessage;
+			sourceTree = "<group>";
+		};
+		0198F8EA18FE161A00F2DABE /* SOSManager */ = {
+			isa = PBXGroup;
+			children = (
+				0198F90618FE66EA00F2DABE /* SOSEditNotHandleController.h */,
+				0198F90718FE66EA00F2DABE /* SOSEditNotHandleController.m */,
+				0198F8EE18FE189600F2DABE /* UI */,
+				0198F8EB18FE164E00F2DABE /* SOSManagerViewController.h */,
+				0198F8EC18FE164E00F2DABE /* SOSManagerViewController.m */,
+				0198F8F218FE272100F2DABE /* SOSAddViewController.h */,
+				0198F8F318FE272100F2DABE /* SOSAddViewController.m */,
+				0198F90318FE4EB700F2DABE /* ManagerPhotoSelectViewController.h */,
+				0198F90418FE4EB700F2DABE /* ManagerPhotoSelectViewController.m */,
+				0198F90918FE671000F2DABE /* SOSEditHandleController.h */,
+				0198F90A18FE671000F2DABE /* SOSEditHandleController.m */,
+			);
+			name = SOSManager;
+			sourceTree = "<group>";
+		};
+		0198F8EE18FE189600F2DABE /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				0198F8EF18FE18C100F2DABE /* TKSOSCell.h */,
+				0198F8F018FE18C100F2DABE /* TKSOSCell.m */,
+				0198F8FC18FE2B3F00F2DABE /* TKSoSBusCell.h */,
+				0198F8FD18FE2B3F00F2DABE /* TKSoSBusCell.m */,
+				0198F8FF18FE2E5200F2DABE /* TKHeadPhotoCell.h */,
+				0198F90018FE2E5200F2DABE /* TKHeadPhotoCell.m */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		0198F8F518FE297200F2DABE /* Text */ = {
+			isa = PBXGroup;
+			children = (
+				0198F8F618FE298300F2DABE /* GCPlaceholderTextView.h */,
+				0198F8F718FE298300F2DABE /* GCPlaceholderTextView.m */,
+			);
+			name = Text;
+			sourceTree = "<group>";
+		};
 		01C2ED8418F22E5100B37603 = {
 			isa = PBXGroup;
 			children = (
@@ -800,6 +886,8 @@
 		01C2EDEF18F24C5600B37603 /* viewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				0198F8EA18FE161A00F2DABE /* SOSManager */,
+				0198F8E318FE111A00F2DABE /* SOSMessage */,
 				01CD56C518FCD24B007731E1 /* OnlineMap */,
 				01C2F15D18F5217300B37603 /* Area */,
 				01C2F0FA18F4E46E00B37603 /* More */,
@@ -900,6 +988,8 @@
 				01C2EE7018F28FB400B37603 /* AreaTimeSpan.m */,
 				01CD568F18F79B5F007731E1 /* WeatherHelper.h */,
 				01CD569018F79B5F007731E1 /* WeatherHelper.m */,
+				0198F8E718FE11A000F2DABE /* SOSMessage.h */,
+				0198F8E818FE11A000F2DABE /* SOSMessage.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1027,6 +1117,8 @@
 			children = (
 				01C2EEC018F2936000B37603 /* TKTextFieldCell.h */,
 				01C2EEC118F2936000B37603 /* TKTextFieldCell.m */,
+				0198F8F918FE2A0700F2DABE /* TKTextViewCell.h */,
+				0198F8FA18FE2A0700F2DABE /* TKTextViewCell.m */,
 			);
 			name = Text;
 			sourceTree = "<group>";
@@ -1119,6 +1211,7 @@
 		01C2EFFF18F3CDE800B37603 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				0198F8F518FE297200F2DABE /* Text */,
 				01C2F14A18F4F62C00B37603 /* Select */,
 				01C2F13C18F4F5F900B37603 /* Calendar */,
 				01C2F00018F3CDFA00B37603 /* switch */,
@@ -1253,6 +1346,7 @@
 				01C2F07B18F4DCAA00B37603 /* UI */,
 				01CD566C18F68820007731E1 /* BusLocationViewController.h */,
 				01CD566D18F68820007731E1 /* BusLocationViewController.m */,
+				0198F90218FE4DAB00F2DABE /* ManagerPhotoDelegate.h */,
 			);
 			name = Target;
 			sourceTree = "<group>";
@@ -1692,6 +1786,7 @@
 				01C2EE1018F24FD600B37603 /* UIColor+TPCategory.m in Sources */,
 				01C2EF0C18F29C5E00B37603 /* ASIServiceResult.m in Sources */,
 				01C2EED818F2954F00B37603 /* RIButtonItem.m in Sources */,
+				0198F8E918FE11A000F2DABE /* SOSMessage.m in Sources */,
 				01C2F14718F4F61900B37603 /* NVUIGradientButton.m in Sources */,
 				01C2EECB18F2937600B37603 /* TKLabelSwitchCell.m in Sources */,
 				01C2F0CF18F4DD7500B37603 /* MonitorPersonViewController.m in Sources */,
@@ -1699,6 +1794,7 @@
 				01CD56D318FCD2C7007731E1 /* ViewerMapView.m in Sources */,
 				01C2F12E18F4E89900B37603 /* UIImageView+WebCache.m in Sources */,
 				01C2EE7318F28FB400B37603 /* TrajectoryHistory.m in Sources */,
+				0198F90818FE66EA00F2DABE /* SOSEditNotHandleController.m in Sources */,
 				01CD56D118FCD2C7007731E1 /* HotCityView.m in Sources */,
 				01C2F02318F3DC8E00B37603 /* TKBSwitch.m in Sources */,
 				01C2F03418F3F07F00B37603 /* UserInfoViewController.m in Sources */,
@@ -1728,8 +1824,10 @@
 				01C2EE0C18F24FD600B37603 /* NSString+TPCategory.m in Sources */,
 				01C2EEBD18F2922A00B37603 /* LoginButtons.m in Sources */,
 				01C2F13118F4EC6F00B37603 /* TKLabelLabelCell.m in Sources */,
+				0198F90B18FE671000F2DABE /* SOSEditHandleController.m in Sources */,
 				01C2F12C18F4E89900B37603 /* UIImage+MultiFormat.m in Sources */,
 				01C2EEF618F29BBA00B37603 /* ASIFormDataRequest.m in Sources */,
+				0198F8F118FE18C100F2DABE /* TKSOSCell.m in Sources */,
 				01C2EE1118F24FD600B37603 /* UITextField+TPCategory.m in Sources */,
 				01C2F12718F4E89900B37603 /* SDWebImageDownloaderOperation.m in Sources */,
 				01C2EE0F18F24FD600B37603 /* UIImage+TPCategory.m in Sources */,
@@ -1748,6 +1846,7 @@
 				01C2F0D918F4DE0500B37603 /* TrajectoryPaoView.m in Sources */,
 				01C2EE0E18F24FD600B37603 /* NSData+TPCategory.m in Sources */,
 				01C2F01D18F3D79200B37603 /* DCRoundSwitchToggleLayer.m in Sources */,
+				0198F8FE18FE2B3F00F2DABE /* TKSoSBusCell.m in Sources */,
 				01C2EEF218F29BBA00B37603 /* ASIAuthenticationDialog.m in Sources */,
 				01C2EE6018F28F8B00B37603 /* FileHelper.m in Sources */,
 				01C2F12618F4E89900B37603 /* SDWebImageDownloader.m in Sources */,
@@ -1756,6 +1855,7 @@
 				01C2F0E918F4DF4B00B37603 /* PinView.m in Sources */,
 				01C2EF0B18F29C5E00B37603 /* ASIServiceArgs.m in Sources */,
 				01C2F0E618F4DEDD00B37603 /* ToolBarMenu.m in Sources */,
+				0198F8ED18FE164E00F2DABE /* SOSManagerViewController.m in Sources */,
 				01C2EF0D18F29C5E00B37603 /* ASIServiceHTTPRequest.m in Sources */,
 				01CD567318F68DC3007731E1 /* WeatherView.m in Sources */,
 				01C2F08818F4DCC700B37603 /* TrajectorySearch.m in Sources */,
@@ -1770,6 +1870,7 @@
 				01C2EE8418F2905500B37603 /* GeneralLoginViewController.m in Sources */,
 				01C2F12918F4E89900B37603 /* SDWebImagePrefetcher.m in Sources */,
 				01CD568118F6A5D6007731E1 /* SVPlacemark.m in Sources */,
+				0198F8F418FE272100F2DABE /* SOSAddViewController.m in Sources */,
 				01C2F0E318F4DE3600B37603 /* SingleMapShowViewController.mm in Sources */,
 				01C2EEC218F2936000B37603 /* TKTextFieldCell.m in Sources */,
 				01C2EEF918F29BBA00B37603 /* ASINetworkQueue.m in Sources */,
@@ -1781,6 +1882,9 @@
 				01CD56D918FCD2D3007731E1 /* OfflineHelper.m in Sources */,
 				01C2F13F18F4F60300B37603 /* CVUICalendar.m in Sources */,
 				01C2F0D618F4DDCF00B37603 /* BMKAnnotationView+TPCategory.m in Sources */,
+				0198F8FB18FE2A0700F2DABE /* TKTextViewCell.m in Sources */,
+				0198F8E618FE114C00F2DABE /* SosMessageViewController.m in Sources */,
+				0198F90118FE2E5200F2DABE /* TKHeadPhotoCell.m in Sources */,
 				01C2EF1918F29DA900B37603 /* XmlNode.m in Sources */,
 				01C2F12518F4E89900B37603 /* SDWebImageDecoder.m in Sources */,
 				01C2EE9C18F290A400B37603 /* AnimateLoadView.m in Sources */,
@@ -1792,6 +1896,7 @@
 				01C2EEF818F29BBA00B37603 /* ASIInputStream.m in Sources */,
 				01C2EE8A18F2906200B37603 /* PagerViewController.m in Sources */,
 				01C2F01B18F3D79200B37603 /* DCRoundSwitchKnobLayer.m in Sources */,
+				0198F90518FE4EB700F2DABE /* ManagerPhotoSelectViewController.m in Sources */,
 				01C2EEF318F29BBA00B37603 /* ASIDataCompressor.m in Sources */,
 				01C2F0BC18F4DD0900B37603 /* AddSupervision.m in Sources */,
 				01C2F17618F5219F00B37603 /* AreaRuleViewController.m in Sources */,
@@ -1805,6 +1910,7 @@
 				01C2EF0E18F29C5E00B37603 /* ASIServiceHelper.m in Sources */,
 				01C2F09418F4DCE100B37603 /* NLImageCropperView.m in Sources */,
 				01C2F16718F5219500B37603 /* RangHeader.m in Sources */,
+				0198F8F818FE298300F2DABE /* GCPlaceholderTextView.m in Sources */,
 				01C2EF1A18F29DA900B37603 /* XmlParseHelper.m in Sources */,
 				01C2F0C518F4DD0900B37603 /* ExceptionViewController.m in Sources */,
 				01C2F0D318F4DDBD00B37603 /* KYPointAnnotation.m in Sources */,

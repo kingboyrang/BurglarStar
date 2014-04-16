@@ -15,7 +15,7 @@
 #import "ASIHTTPRequest.h"
 #import "SupervisionViewController.h"
 #import "UserInfoViewController.h"
-
+#import "SOSManagerViewController.h"
 @interface MainViewController ()
 - (void)buttonLoginClick:(id)sender;
 - (void)buttonRegisterClick:(id)sender;
@@ -166,7 +166,9 @@
     }
     else if(itemIndex==102)//sos
     {
-        
+        SOSManagerViewController *sos=[[SOSManagerViewController alloc] init];
+        [self.navigationController pushViewController:sos animated:YES];
+        [sos release];
     }
     else if(itemIndex==103)//车辆管理
     {

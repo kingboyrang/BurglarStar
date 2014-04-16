@@ -308,7 +308,6 @@
                     submit.enabled=YES;
                     //登录
                     [Account loginGeneralWithUserId:[cell1.textField.text Trim] password:[cell2.textField.text Trim] encrypt:[cell2.textField.text Trim] rememberPassword:cell3.check.hasRemember withData:dic];
-                      NSLog(@"OK====!");
                     [self.navigationController popViewControllerAnimated:YES];
                 }];
             }
@@ -320,7 +319,6 @@
              }
     }];
     [request setFailedBlock:^{
-        NSLog(@"error=%@",request.error.description);
         [self hideLoadingFailedWithTitle:@"输入的帐号或密码错误,请重新输入!" completed:^(AnimateErrorView *failedView) {
             submit.enabled=YES;
         }];

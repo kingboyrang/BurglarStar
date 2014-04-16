@@ -85,7 +85,9 @@
     if (self.popoverView) {
         [self.popoverView show:self];
     }
-    
+    if (self.delegate&&[self.delegate respondsToSelector:@selector(showPopoverSelect:)]) {
+        [self.delegate showPopoverSelect:self];
+    }
 }
 #pragma mark -
 #pragma mark CVUIPopoverViewDelegate Methods

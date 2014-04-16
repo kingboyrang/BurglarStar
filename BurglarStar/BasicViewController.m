@@ -9,11 +9,13 @@
 #import "BasicViewController.h"
 #import "NetWorkConnection.h"
 #import "IndexViewController.h"
+#import "UIButton+TPCategory.h"
 @interface BasicViewController (){
     AnimateLoadView *_loadView;
     AnimateErrorView *_errorView;
     AnimateErrorView *_successView;
 }
+- (void)buttonBackClick:(id)sender;
 @end
 
 @implementation BasicViewController
@@ -54,7 +56,7 @@ self.view.backgroundColor=[UIColor colorFromHexRGB:@"e5e2d0"];
     }
 #endif
     
-    if (self.navigationController) {
+    if (self.navigationController&&[self.navigationController isKindOfClass:[BasicNavigationController class]]) {
         BasicNavigationController *nav=(BasicNavigationController*)self.navigationController;
         nav.basicNavDelegate=self;
     }
@@ -73,6 +75,17 @@ self.view.backgroundColor=[UIColor colorFromHexRGB:@"e5e2d0"];
         return 44;
     }
     return h;
+}
+- (UIBarButtonItem*)barBackButtonItem{
+    UIButton *btn=[UIButton buttonWithImageName:@"left_back.png" target:self action:@selector(buttonBackClick:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *barBtn=[[UIBarButtonItem alloc] initWithCustomView:btn];
+    return [barBtn autorelease];
+}
+- (void)buttonBackClick:(id)sender{
+    if (![self backPrevViewController]) {
+        return;
+    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (BOOL)hasNetWork{
     return [NetWorkConnection IsEnableConnection];
@@ -93,10 +106,6 @@ self.view.backgroundColor=[UIColor colorFromHexRGB:@"e5e2d0"];
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-#pragma mark BasicNavigationDelegate Methods
-- (BOOL)prevLeftBackJude{
-  return  [self backPrevViewController];
 }
 #pragma mark 动画提示
 -(AnimateErrorView*) errorView {

@@ -15,8 +15,8 @@
 #import "SupervisionViewController.h"
 #import "AreaViewController.h"
 #import "OnlineMapViewController.h"
+#import "UIButton+TPCategory.h"
 @interface MoreViewController ()
-
 @end
 
 @implementation MoreViewController
@@ -72,10 +72,11 @@
         [AlertHelper initWithTitle:@"提示" message:@"确认注销?" cancelTitle:@"取消" cancelAction:nil confirmTitle:@"确认" confirmAction:^{
             [Account closed];
             LoginViewController *login=[[[LoginViewController alloc] init] autorelease];
+            login.navigationItem.leftBarButtonItem=[login barBackButtonItem];
             NSMutableArray *arr=[NSMutableArray arrayWithArray:self.navigationController.viewControllers];
             [arr replaceObjectAtIndex:1 withObject:login];
             self.navigationController.viewControllers=arr;
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            [self.navigationController popViewControllerAnimated:YES];
         }];
     }
     if (index==5) {//意见反馈

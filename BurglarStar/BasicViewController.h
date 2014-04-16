@@ -13,7 +13,7 @@
 #import "Account.h"
 #import "ASIServiceHelper.h"
 #import "BasicNavigationController.h"
-@interface BasicViewController : UIViewController<BasicNavigationDelegate>
+@interface BasicViewController : UIViewController
 @property(nonatomic,retain) ASIServiceHelper *ServiceHelper;
 @property(nonatomic,readonly) BOOL hasNetWork;
 @property(nonatomic,readonly) float topHeight;
@@ -43,4 +43,5 @@
 - (CATransition *)getAnimation:(NSInteger)type subtype:(NSInteger)subtype;
 
 - (BOOL)backPrevViewController;
+- (UIBarButtonItem*)barBackButtonItem;
 @end
