@@ -15,7 +15,7 @@
 @property(nonatomic,copy) NSString *encryptPwd;//加密密码
 @property(nonatomic,copy) NSString *Name;//姓名
 @property(nonatomic,copy) NSString *Phone;//电话
-@property(nonatomic,copy) NSString *WorkNo;//电话
+@property(nonatomic,copy) NSString *WorkNo;//唯一码
 @property(nonatomic,assign) BOOL isFirstRun;//第一次启动App
 @property(nonatomic,assign) BOOL isLogin;//是否已登入
 @property(nonatomic,assign) BOOL isRememberPwd;//是否记住密码

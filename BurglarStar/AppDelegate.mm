@@ -9,8 +9,7 @@
 #import "AppDelegate.h"
 #import "MainViewController.h"
 #import "BasicNavigationController.h"
-
-
+#import "AppHelper.h"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -30,6 +29,9 @@
     self.window.backgroundColor = [UIColor whiteColor];
     self.window.rootViewController=nav;
     [self.window makeKeyAndVisible];
+    
+    [AppHelper startRunAnimation];
+    
     return YES;
 }
 
@@ -68,6 +70,7 @@
                                                            [UIColor colorFromHexRGB:@"eaeaec"], NSForegroundColorAttributeName,
                                                            shadow, NSShadowAttributeName,
                                                            [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:19.0], NSFontAttributeName, nil]];
+    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTintColor:[UIColor colorFromHexRGB:@"45b1ce"]];
 }
 - (void)registerBaiduMap{
     //百度地图注册

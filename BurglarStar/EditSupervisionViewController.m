@@ -55,7 +55,7 @@
 }
 //回列表
 - (void)buttonListClick{
-    [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:2] animated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)viewDidLoad
 {

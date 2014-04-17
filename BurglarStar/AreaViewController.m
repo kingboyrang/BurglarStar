@@ -19,6 +19,7 @@
 @interface AreaViewController ()<UITableViewDataSource,UITableViewDelegate>{
     UITableView *_tableView;
     ToolBarView *_toolBar;
+    BOOL isFirstLoad;
 }
 - (void)loadingArea;
 - (void)buttonAddClick;
@@ -50,6 +51,7 @@
 {
     [super viewDidLoad];
     self.title=@"电子围栏";
+    isFirstLoad=YES;
     
     UIBarButtonItem *btn1=[UIBarButtonItem barButtonWithTitle:@"添加" target:self action:@selector(buttonAddClick) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *btn2=[UIBarButtonItem barButtonWithTitle:@"编辑" target:self action:@selector(buttonEditClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -86,6 +88,10 @@
     [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.WorkNo,@"workno", nil]];
     [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"",@"areaID", nil]];
     
+    if (isFirstLoad) {
+        [self showLoadingAnimatedWithTitle:@"正在加载,请稍后..."];
+    }
+    
     ASIServiceArgs *args=[[[ASIServiceArgs alloc] init] autorelease];
     args.serviceURL=DataWebservice1;
     args.serviceNameSpace=DataNameSpace1;
@@ -93,6 +99,10 @@
     args.soapParams=params;
     ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
     [request setCompletionBlock:^{
+        if (isFirstLoad) {
+            isFirstLoad=NO;
+            [self hideLoadingViewAnimated:nil];
+        }
         if (request.ServiceResult.success) {
             NSDictionary *dic=(NSDictionary*)[request.ServiceResult json];
             NSArray *source=[dic objectForKey:@"AreaList"];
@@ -101,7 +111,10 @@
         }
     }];
     [request setFailedBlock:^{
-        
+        if (isFirstLoad) {
+            isFirstLoad=NO;
+            [self hideLoadingFailedWithTitle:@"加载失败!" completed:nil];
+        }
     }];
     [request startAsynchronous];
 }
@@ -150,12 +163,12 @@
     args.soapParams=[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:[self.removeList.allKeys componentsJoinedByString:@","],@"areaID", nil], nil];
     ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
     [request setCompletionBlock:^{
+        btn.enabled=YES;
         BOOL boo=NO;
         if (request.ServiceResult.success) {
             NSDictionary *dic=(NSDictionary*)[request.ServiceResult json];
             if (dic!=nil&&![[dic objectForKey:@"Result"] isEqualToString:@"0"]) {
                 boo=YES;
-                btn.enabled=YES;
                 [self.list removeObjectsInArray:delSource];
                 [_tableView beginUpdates];
                 [_tableView deleteRowsAtIndexPaths:[NSArray arrayWithArray:[self.removeList allValues]] withRowAnimation:UITableViewRowAnimationFade];
@@ -164,10 +177,11 @@
                 [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
                 
                 [self hideLoadingSuccessWithTitle:@"删除成功!" completed:nil];
+                [_tableView reloadData];
             }
         }
         if (!boo) {
-            btn.enabled=YES;
+           
             [self hideLoadingFailedWithTitle:@"删除失败!" completed:nil];
         }
     }];
@@ -189,15 +203,6 @@
 }
 //新增
 - (void)buttonAddClick{
-   /**
-    AreaRangeViewController *range=[[AreaRangeViewController alloc] init];
-    range.AreaName=@"羊台山";
-    range.AreaId=@"567fa24e-8546-4e66-a1d4-0ab4adab03ac";
-    range.RuleId=@"";
-    [self.navigationController pushViewController:range animated:YES];
-    [range release];
-    return;
-      ***/
     ModifyAreaViewController *modify=[[ModifyAreaViewController alloc] init];
     modify.operateType=1;//新增
     [self.navigationController pushViewController:modify animated:YES];

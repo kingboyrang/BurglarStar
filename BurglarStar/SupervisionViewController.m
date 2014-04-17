@@ -24,15 +24,15 @@
 @interface SupervisionViewController ()<UITableViewDataSource,UITableViewDelegate>{
     UITableView *_tableView;
     ToolBarView *_toolBar;
+    BOOL isFirstLoad;
 }
 - (void)buttonAddClick;
 - (void)buttonEditClick:(id)sender;
 - (void)loadSupervision;
 - (NSArray*)arrayToSupervisions:(NSArray*)source;
-- (void)buttonSubmitRemoveClick;
-- (void)buttonCancelRemoveClick;
+- (void)buttonSubmitRemoveClick:(UIButton*)btn;
 - (SupervisionPerson*)FindById:(NSString*)guid;
-- (void)deleteSupervisons;
+- (void)deleteSupervisons:(UIButton*)btn;
 @end
 
 @implementation SupervisionViewController
@@ -58,6 +58,7 @@
     [super viewDidLoad];
     self.title=@"车辆管理";
     
+    isFirstLoad=YES;
     UIBarButtonItem *btn1=[UIBarButtonItem barButtonWithTitle:@"添加"  target:self action:@selector(buttonAddClick) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *btn2=[UIBarButtonItem barButtonWithTitle:@"编辑"  target:self action:@selector(buttonEditClick:) forControlEvents:UIControlEventTouchUpInside];
     NSArray *actionButtonItems = [NSArray arrayWithObjects:btn2,btn1, nil];
@@ -76,7 +77,7 @@
     
     _toolBar=[[ToolBarView alloc] initWithFrame:CGRectMake(0, r.size.height+r.origin.y+44, self.view.bounds.size.width, 44)];
     [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
-    [_toolBar.button addTarget:self action:@selector(buttonSubmitRemoveClick) forControlEvents:UIControlEventTouchUpInside];
+    [_toolBar.button addTarget:self action:@selector(buttonSubmitRemoveClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_toolBar];
     
 }
@@ -92,21 +93,29 @@
     args.serviceNameSpace=DataNameSpace1;
     args.methodName=@"GetSuperviseInfo";
     args.soapParams=[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:acc.WorkNo,@"WorkNo", nil], nil];
-    [self showLoadingAnimatedWithTitle:@"正在加载,请稍后..."];
+    if (isFirstLoad) {
+         [self showLoadingAnimatedWithTitle:@"正在加载,请稍后..."];
+    }
     ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
     [request setCompletionBlock:^{
-        [self hideLoadingViewAnimated:nil];
+        if (isFirstLoad) {
+            isFirstLoad=NO;
+            [self hideLoadingViewAnimated:nil];
+        }
         NSDictionary *dic=[request.ServiceResult json];
         if (dic!=nil) {
             NSArray *source=[dic objectForKey:@"Person"];
             self.cells=[NSMutableArray arrayWithArray:[self arrayToSupervisions:source]];
             [_tableView reloadData];
-            
         }
 
     }];
     [request setFailedBlock:^{
-        [self hideLoadingFailedWithTitle:@"加载失败!" completed:nil];
+        if (isFirstLoad) {
+            isFirstLoad=NO;
+            [self hideLoadingFailedWithTitle:@"加载失败!" completed:nil];
+        }
+        
     }];
     [request startAsynchronous];
 }
@@ -160,21 +169,6 @@
     [self.navigationController pushViewController:controler animated:YES];
     [controler release];
 }
-//取消删除
-- (void)buttonCancelRemoveClick{
-    if (self.removeList&&self.removeList.count>0) {
-        NSArray *indexPaths=[[self.removeList allValues] retain];
-        for (NSString *item in indexPaths) {
-            NSIndexPath *indexPath=[NSIndexPath indexPathForRow:[item intValue] inSection:0];
-            [_tableView deselectRowAtIndexPath:indexPath animated:YES]; 
-            [self tableView:_tableView didDeselectRowAtIndexPath:indexPath];
-        }
-        [indexPaths release];
-    }else{
-       [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
-    }
-   
-}
 - (SupervisionPerson*)FindById:(NSString*)guid{
     if (self.cells&&[self.cells count]>0) {
         NSString *match=[NSString stringWithFormat:@"SELF.ID =='%@'",guid];
@@ -189,7 +183,8 @@
 
 }
 //删除
-- (void)deleteSupervisons{
+- (void)deleteSupervisons:(UIButton*)btn{
+    btn.enabled=NO;
     [self showLoadingAnimatedWithTitle:@"正在删除,请稍后..."];
     NSMutableArray *delSource=[NSMutableArray array];
     NSMutableArray *indexPaths=[NSMutableArray array];
@@ -207,6 +202,7 @@
     
     ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
     [request setCompletionBlock:^{
+        btn.enabled=YES;
         BOOL boo=NO;
         if (request.ServiceResult.success) {
             XmlNode *node=[request.ServiceResult methodNode];
@@ -220,6 +216,8 @@
                 [self.removeList removeAllObjects];
                 [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
                 [self hideLoadingSuccessWithTitle:@"删除成功!" completed:nil];
+                
+                [_tableView reloadData];//重新加载显示
             }
         }
         if (!boo) {
@@ -228,15 +226,16 @@
         
     }];
     [request setFailedBlock:^{
+        btn.enabled=YES;
         [self hideLoadingFailedWithTitle:@"删除失败!" completed:nil];
     }];
     [request startAsynchronous];
 }
 //确认删除
-- (void)buttonSubmitRemoveClick{
+- (void)buttonSubmitRemoveClick:(UIButton*)btn{
     if (self.removeList&&[self.removeList count]>0) {
         [AlertHelper confirmWithTitle:@"删除" confirm:^{
-            [self deleteSupervisons];
+            [self deleteSupervisons:btn];
         } innnerView:self.view];
     }
 }
@@ -266,7 +265,6 @@
         }];
     }
 	else {
-        //[self buttonCancelRemoveClick];
         if (self.removeList&&[self.removeList count]>0) {
             [self.removeList removeAllObjects];
         }

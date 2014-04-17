@@ -201,14 +201,19 @@
         [AlertHelper initWithTitle:@"提示" message:@"请输入意见反馈!"];
         return;
     }
+    if (!self.hasNetWork) {
+        [self showErrorNetWorkNotice:nil];
+        return;
+    }
+    
     NSString *imageStr=@"";
-    if (cell1.imageView.image) {
-        imageStr=[cell1.imageView.image imageBase64String];
+    if (cell1.hasImage) {
+        imageStr=[cell1.photo imageBase64String];
     }
     btn.enabled=NO;
     Account *acc=[Account unarchiverAccount];
     NSMutableArray *params=[NSMutableArray array];
-    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.WorkNo,@"UserID", nil]];
+    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.UserId,@"UserID", nil]];
     [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:[cell2.select value],@"CarID", nil]];
     [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:imageStr,@"Image", nil]];
     [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:cell3.textView.text,@"Contents", nil]];
@@ -227,7 +232,7 @@
             NSDictionary *dic=[request.ServiceResult json];
             if (dic&&[dic.allKeys containsObject:@"Result"]&&[[dic objectForKey:@"Result"] length]>2) {
                 boo=YES;
-                [self hideLoadingViewAnimated:^(AnimateLoadView *hideView) {
+                [self hideLoadingSuccessWithTitle:@"新增SOS报警成功!" completed:^(AnimateErrorView *successView) {
                     [self.navigationController popViewControllerAnimated:YES];
                 }];
             }
@@ -256,11 +261,9 @@
     [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationNone];
 }
 - (UIImage*)viewerShowImage{
+   
     TKHeadPhotoCell *cell1=self.cells[0];
-    if (cell1.hasImage) {
-        return cell1.imageView.image;
-    }
-    return nil;
+    return cell1.photo;
 }
 #pragma mark UITableViewDataSource Methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{

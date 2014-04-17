@@ -8,15 +8,18 @@
 
 #import "AppHelper.h"
 #import "Account.h"
+#import "ASIServiceHTTPRequest.h"
+#import "UIImageView+WebCache.h"
+#import "UIImage+TPCategory.h"
 @interface AppHelper ()
-- (void)runningAnimation:(void(^)())completed;
-- (void)changeViewIndex:(void(^)())completed;
-- (void)removeRunningAnimation:(void(^)())completed;
+- (void)runAnimation;
+- (void)watiAnimationShow:(UIImage*)image;
+- (void)timerFireMethod:(NSTimer*)theTimer;
 - (void)removeView;
+- (void)removeRunningAnimation;
 @end
 
 @implementation AppHelper
-
 + (NSArray*)arrayWithSource:(NSArray*)source className:(NSString*)name{
     if (source&&[source count]>0) {
         NSMutableArray *result=[NSMutableArray arrayWithCapacity:source.count];
@@ -35,61 +38,86 @@
     }
     return [NSArray array];
 }
-+ (void)runAnimation:(void(^)())completed{
-    Account *acc=[Account unarchiverAccount];
-    if (!acc.isFirstRun) {return;}
++ (void)startRunAnimation{
     AppHelper *app=[[[AppHelper alloc] init] autorelease];
-    [app runningAnimation:completed];
+    [app runAnimation];//启动动画
 }
-
-- (void)runningAnimation:(void(^)())completed{
-    UIWindow *window=[[UIApplication sharedApplication] keyWindow];
-
-    UIImageView *tovalue=[[[UIImageView alloc] initWithFrame:DeviceRect] autorelease];
-    tovalue.tag=800;
-    [tovalue setImage:[UIImage imageNamed:@"load02.jpg"]];
-    [window addSubview:tovalue];
+#pragma mark -启动动画处理
+- (void)runAnimation{
     
-    UIImageView *imageView2=[[[UIImageView alloc] initWithFrame:DeviceRect] autorelease];
-    imageView2.tag=801;
-    [imageView2 setImage:[UIImage imageNamed:@"load01.jpg"]];
-    [window addSubview:imageView2];
-    
-    [self performSelector:@selector(changeViewIndex:) withObject:completed afterDelay:2.0f];
-}
-- (void)changeViewIndex:(void(^)())completed{
-    UIWindow *window=[[UIApplication sharedApplication] keyWindow];
-    
-    UIImageView *fromvalue=(UIImageView*)[window viewWithTag:801];
-    UIImageView *tovalue=(UIImageView*)[window viewWithTag:800];
-    
-    [UIView transitionFromView:fromvalue toView:tovalue duration:1.0f options:UIViewAnimationOptionTransitionCrossDissolve completion:^(BOOL finished) {
-        if (finished) {
-            [fromvalue removeFromSuperview];
-            [self performSelector:@selector(removeRunningAnimation:) withObject:completed afterDelay:2.0f];
+    ASIServiceArgs *args=[[[ASIServiceArgs alloc] init] autorelease];
+    args.serviceURL=DataSOSWebservice;
+    args.serviceNameSpace=DataSOSNameSpace;
+    args.methodName=@"GetExcessive";
+    ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
+    [request setCompletionBlock:^{
+        if (request.ServiceResult.success) {
+            NSDictionary *dic=[request.ServiceResult json];
+            if (dic&&[dic count]>0) {
+                NSString *imgURL=[dic objectForKey:@"Result"];
+                if ([imgURL length]>0) {
+                    //显示图片
+                    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+                    [manager downloadWithURL:[NSURL URLWithString:imgURL] options:0
+                                    progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+                                        if (image && finished)
+                                        {
+                                            // 下载完成
+                                            [self watiAnimationShow:image];
+                                        }
+                                    }];
+                    //图片下载完成
+                }
+            }
         }
     }];
+    [request setFailedBlock:^{
+        
+    }];
+    [request startAsynchronous];
+}
+- (void)watiAnimationShow:(UIImage*)image{
+    UIView *bgView=[[UIView alloc] initWithFrame:DeviceRect];
+    bgView.tag=900;
+    bgView.backgroundColor=[UIColor colorFromHexRGB:@"e5e2d0"];
+    
+    UIImage *img=[image imageByScalingToSize:bgView.bounds.size];
+    UIImageView *imageView=[[UIImageView alloc] initWithFrame:bgView.bounds];
+    [imageView setImage:img];
+    [bgView addSubview:imageView];
+    [imageView release];
+    
+    UIWindow *window=[[UIApplication sharedApplication] keyWindow];
+    [window addSubview:bgView];
+    [bgView release];
+    total=5;
+    //执行5秒
+    [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES];
+}
+//5秒后移除启动动画
+- (void)timerFireMethod:(NSTimer*)theTimer{
+    total--;
+    if (total==1) {
+        [theTimer invalidate];
+        [self removeRunningAnimation];
+    }
 }
 - (void)removeView{
     UIWindow *window=[[UIApplication sharedApplication] keyWindow];
-    UIImageView *imageView=(UIImageView*)[window viewWithTag:800];
+    UIView *imageView=(UIView*)[window viewWithTag:900];
     [imageView removeFromSuperview];
-    
-    Account *acc=[Account unarchiverAccount];
-    acc.isFirstRun=NO;
-    [acc save];
 }
-- (void)removeRunningAnimation:(void(^)())completed{
-   
+- (void)removeRunningAnimation{
+    
     UIWindow *window=[[UIApplication sharedApplication] keyWindow];
-    UIImageView *imageView=(UIImageView*)[window viewWithTag:800];
+    UIView *imageView=(UIView*)[window viewWithTag:900];
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView setAnimationDuration:1.0];
     [UIView setAnimationDelegate:self];
     [UIView setAnimationDidStopSelector:@selector(removeView)];
-     imageView.alpha= 0.0;
+    imageView.alpha= 0.0;
     [UIView commitAnimations];
 }
 @end

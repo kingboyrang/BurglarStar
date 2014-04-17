@@ -3,7 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "btn_top.png"
+      "filename" : "amplify.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x",
+      "filename" : "amplify@2x.png"
     }
   ],
   "info" : {

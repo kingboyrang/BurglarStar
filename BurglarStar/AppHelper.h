@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AppHelper : NSObject
-+ (void)runAnimation:(void(^)())completed;
+@interface AppHelper : NSObject{
+    NSInteger total;
+}
 + (NSArray*)arrayWithSource:(NSArray*)source className:(NSString*)name;
++ (void)startRunAnimation;
 @end

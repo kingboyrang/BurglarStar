@@ -13,6 +13,7 @@
     BMKMapView* _mapView;
 }
 @property (nonatomic,retain) TrajectoryMessage *Entity;
+@property (nonatomic,assign) BOOL flagRead;
 //@property (nonatomic,copy) NSString *PersonName;
 //- (void)selectedMetaWithEntity:(SupervisionPerson*)entity;//进放仪表画面
 @end

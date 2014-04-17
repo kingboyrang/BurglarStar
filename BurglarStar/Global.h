@@ -12,7 +12,7 @@
 #define DeviceWidth [UIScreen mainScreen].bounds.size.width
 #define DeviceHeight [UIScreen mainScreen].bounds.size.height
 #define StatusBarHeight 20 //状态栏高度
-#define TabHeight 66 //工具栏高度
+#define TabHeight 59 //工具栏高度
 #define DeviceRealHeight DeviceHeight-20
 #define DeviceRealRect CGRectMake(0, 0, DeviceWidth, DeviceRealHeight)
 //路径设置

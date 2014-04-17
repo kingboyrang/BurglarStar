@@ -16,11 +16,14 @@
 #import "SupervisionViewController.h"
 #import "UserInfoViewController.h"
 #import "SOSManagerViewController.h"
+//#import "UserInfoViewController.h"
+#import "MoreViewController.h"
 @interface MainViewController ()
 - (void)buttonLoginClick:(id)sender;
 - (void)buttonRegisterClick:(id)sender;
 - (void)loadInitControls;
 - (void)buttonPopWeatherClick:(UIButton*)btn;
+- (void)buttonUserInfoClick;
 @end
 
 @implementation MainViewController
@@ -82,7 +85,7 @@
     Account *acc=[Account unarchiverAccount];
     if (acc.isLogin) {//表示已登录
          if (self.navigationItem.rightBarButtonItems.count!=1) {
-           UIBarButtonItem *btn1=[UIBarButtonItem barButtonWithImage:@"head" target:self action:nil forControlEvents:UIControlEventTouchUpInside];
+           UIBarButtonItem *btn1=[UIBarButtonItem barButtonWithImage:@"head" target:self action:@selector(buttonUserInfoClick) forControlEvents:UIControlEventTouchUpInside];
            NSArray *actionButtonItems = [NSArray arrayWithObjects:btn1, nil];
            self.navigationItem.rightBarButtonItems = actionButtonItems;
          }
@@ -122,6 +125,12 @@
        }];
 
    }
+}
+//个人信息
+- (void)buttonUserInfoClick{
+    UserInfoViewController *userInfo=[[UserInfoViewController alloc] init];
+    [self.navigationController pushViewController:userInfo animated:YES];
+    [userInfo release];
 }
 //登录
 - (void)buttonLoginClick:(id)sender
@@ -176,9 +185,9 @@
         [self.navigationController pushViewController:Supervision animated:YES];
         [Supervision release];
     }else{//人物
-        UserInfoViewController *userInfo=[[UserInfoViewController alloc] init];
-        [self.navigationController pushViewController:userInfo animated:YES];
-        [userInfo release];
+        MoreViewController *more=[[MoreViewController alloc] init];
+        [self.navigationController pushViewController:more animated:YES];
+        [more release];
     }
 }
 

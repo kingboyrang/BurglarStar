@@ -19,6 +19,7 @@
 		0198F90518FE4EB700F2DABE /* ManagerPhotoSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F90418FE4EB700F2DABE /* ManagerPhotoSelectViewController.m */; };
 		0198F90818FE66EA00F2DABE /* SOSEditNotHandleController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F90718FE66EA00F2DABE /* SOSEditNotHandleController.m */; };
 		0198F90B18FE671000F2DABE /* SOSEditHandleController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F90A18FE671000F2DABE /* SOSEditHandleController.m */; };
+		0198F91218FF765500F2DABE /* MapAutoPointer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F91118FF765500F2DABE /* MapAutoPointer.m */; };
 		01C2ED9118F22E5100B37603 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C2ED9018F22E5100B37603 /* Foundation.framework */; };
 		01C2ED9318F22E5100B37603 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C2ED9218F22E5100B37603 /* CoreGraphics.framework */; };
 		01C2ED9518F22E5100B37603 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C2ED9418F22E5100B37603 /* UIKit.framework */; };
@@ -264,6 +265,10 @@
 		0198F90718FE66EA00F2DABE /* SOSEditNotHandleController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOSEditNotHandleController.m; sourceTree = "<group>"; };
 		0198F90918FE671000F2DABE /* SOSEditHandleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOSEditHandleController.h; sourceTree = "<group>"; };
 		0198F90A18FE671000F2DABE /* SOSEditHandleController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOSEditHandleController.m; sourceTree = "<group>"; };
+		0198F91018FF765500F2DABE /* MapAutoPointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapAutoPointer.h; sourceTree = "<group>"; };
+		0198F91118FF765500F2DABE /* MapAutoPointer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapAutoPointer.m; sourceTree = "<group>"; };
+		0198F91518FF9FE900F2DABE /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		0198F91618FF9FE900F2DABE /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		01C2ED8D18F22E5100B37603 /* BurglarStar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BurglarStar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01C2ED9018F22E5100B37603 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		01C2ED9218F22E5100B37603 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -728,6 +733,7 @@
 		0198F8EA18FE161A00F2DABE /* SOSManager */ = {
 			isa = PBXGroup;
 			children = (
+				0198F90218FE4DAB00F2DABE /* ManagerPhotoDelegate.h */,
 				0198F90618FE66EA00F2DABE /* SOSEditNotHandleController.h */,
 				0198F90718FE66EA00F2DABE /* SOSEditNotHandleController.m */,
 				0198F8EE18FE189600F2DABE /* UI */,
@@ -1346,7 +1352,6 @@
 				01C2F07B18F4DCAA00B37603 /* UI */,
 				01CD566C18F68820007731E1 /* BusLocationViewController.h */,
 				01CD566D18F68820007731E1 /* BusLocationViewController.m */,
-				0198F90218FE4DAB00F2DABE /* ManagerPhotoDelegate.h */,
 			);
 			name = Target;
 			sourceTree = "<group>";
@@ -1429,6 +1434,8 @@
 				01C2F0D218F4DDBD00B37603 /* KYPointAnnotation.m */,
 				01C2F0E418F4DEDD00B37603 /* ToolBarMenu.h */,
 				01C2F0E518F4DEDD00B37603 /* ToolBarMenu.m */,
+				0198F91018FF765500F2DABE /* MapAutoPointer.h */,
+				0198F91118FF765500F2DABE /* MapAutoPointer.m */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -1690,6 +1697,8 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				"zh-Hans-CN",
+				"zh-Hans",
 			);
 			mainGroup = 01C2ED8418F22E5100B37603;
 			productRefGroup = 01C2ED8E18F22E5100B37603 /* Products */;
@@ -1813,6 +1822,7 @@
 				01C2EEF418F29BBA00B37603 /* ASIDataDecompressor.m in Sources */,
 				01C2F0BE18F4DD0900B37603 /* EditSupervisionHead.m in Sources */,
 				01C2F14918F4F61900B37603 /* CVUIPopoverText.m in Sources */,
+				0198F91218FF765500F2DABE /* MapAutoPointer.m in Sources */,
 				01C2F12218F4E89900B37603 /* NSData+GIF.m in Sources */,
 				01C2EE6118F28F8B00B37603 /* AppHelper.m in Sources */,
 				01C2F02018F3DC2E00B37603 /* TKSwitchKnobLayer.m in Sources */,
@@ -1949,6 +1959,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				01C2ED9A18F22E5100B37603 /* en */,
+				0198F91518FF9FE900F2DABE /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1957,6 +1968,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				01C2EDB318F22E5200B37603 /* en */,
+				0198F91618FF9FE900F2DABE /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1981,7 +1993,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Bai Fu (KJ93M4ECNB)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2004,7 +2016,7 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "FF36FDE6-DEB5-4D21-8004-008EC8B0C8D4";
+				PROVISIONING_PROFILE = "A72E3DFC-2E8E-4727-A169-9E09209E83ED";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -2026,7 +2038,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Bai Fu (KJ93M4ECNB)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2042,7 +2054,7 @@
 					/usr/include/libxml2,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				PROVISIONING_PROFILE = "FF36FDE6-DEB5-4D21-8004-008EC8B0C8D4";
+				PROVISIONING_PROFILE = "A72E3DFC-2E8E-4727-A169-9E09209E83ED";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

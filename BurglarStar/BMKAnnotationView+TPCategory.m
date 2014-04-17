@@ -13,7 +13,7 @@
 @implementation BMKAnnotationView (TPCategory)
 - (void)setPinImageWithEntity:(SupervisionPerson*)entity mapLevel:(float)level{
     if (level<6) {
-        self.image=[UIImage imageNamed:@"circule.png"];
+        self.image=[UIImage imageNamed:@"record.png"];
          [self setNeedsDisplay];
     }else{ 
         PinView *bgView=[[[PinView alloc] initWithFrame:CGRectMake(0, 0, 90, 174)] autorelease];

@@ -7,7 +7,7 @@
 //
 
 #import "ReadMessageViewController.h"
-#import "LoginButtons.h"
+#import "ToolBarView.h"
 #import "MessageCell.h"
 #import "TrajectoryMessage.h"
 #import "AppHelper.h"
@@ -16,7 +16,7 @@
 #import "UIBarButtonItem+TPCategory.h"
 #import "ASIServiceHTTPRequest.h"
 @interface ReadMessageViewController (){
-   LoginButtons *_toolBar;
+   ToolBarView *_toolBar;
 }
 - (BOOL)existsFindyById:(NSString*)msgId;
 - (void)loadData;
@@ -74,13 +74,9 @@
     [self.view addSubview:_tableView];
     
     CGFloat topY=_tableView.frame.size.height+_tableView.frame.origin.y+44;
-    _toolBar=[[LoginButtons alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 44)];
-    _toolBar.cancel.hidden=YES;
-    _toolBar.submit.frame=CGRectMake(0, 0, _toolBar.frame.size.width, _toolBar.frame.size.height);
-    [_toolBar.cancel setTitle:@"清空" forState:UIControlStateNormal];
-    [_toolBar.submit setTitle:@"删除(0)" forState:UIControlStateNormal];
-    [_toolBar.cancel addTarget:self action:@selector(buttonClearClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_toolBar.submit addTarget:self action:@selector(buttonRemoveClick:) forControlEvents:UIControlEventTouchUpInside];
+    _toolBar=[[ToolBarView alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 44)];
+    [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
+    [_toolBar.button addTarget:self action:@selector(buttonRemoveClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_toolBar];
     
     curPage=0;
@@ -107,7 +103,7 @@
         if (self.removeList&&[self.removeList count]>0) {
             [self.removeList removeAllObjects];
         }
-        [_toolBar.submit setTitle:@"删除(0)" forState:UIControlStateNormal];
+        [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
         [btn setTitle:@"编辑" forState:UIControlStateNormal];
         CGRect r=_toolBar.frame;
         //r.origin.y=self.view.bounds.size.height+44;
@@ -162,6 +158,7 @@
     
     ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
     [request setCompletionBlock:^{
+        btn.enabled=YES;
         BOOL boo=NO;
         if (request.ServiceResult.success) {
             NSDictionary *dic=[request.ServiceResult json];
@@ -173,14 +170,16 @@
                 [_tableView endUpdates];
                 //更新操作
                 [self.removeList removeAllObjects];
-                [_toolBar.submit setTitle:@"删除(0)" forState:UIControlStateNormal];//更新操作
+                [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];//更新操作
                 [self hideLoadingSuccessWithTitle:@"删除成功!" completed:nil];
+                
+                [_tableView reloadData];//重新加载
             }
         }
         if (!boo) {
             [self hideLoadingFailedWithTitle:@"删除失败!" completed:nil];
         }
-        btn.enabled=YES;
+       
     }];
     [request setFailedBlock:^{
         btn.enabled=YES;
@@ -196,20 +195,6 @@
         [AlertHelper confirmWithTitle:@"删除" confirm:^{
             [self deleteMessagesWithButton:btn];
         } innnerView:self.view];
-    }
-}
-//清空
-- (void)buttonClearClick:(id)sender{
-    if (self.removeList&&self.removeList.count>0) {
-        NSArray *indexPaths=[[self.removeList allValues] retain];
-        for (NSString *item in indexPaths) {
-            NSIndexPath *indexPath=[NSIndexPath indexPathForRow:[item intValue] inSection:0];
-            [_tableView deselectRowAtIndexPath:indexPath animated:YES];
-            [self tableView:_tableView didDeselectRowAtIndexPath:indexPath];
-        }
-        [indexPaths release];
-    }else{
-        [_toolBar.submit setTitle:@"删除(0)" forState:UIControlStateNormal];
     }
 }
 - (void)didReceiveMemoryWarning
@@ -358,7 +343,7 @@
         }
         TrajectoryMessage *entity=self.cells[indexPath.row];
         [self.removeList setValue:indexPath forKey:entity.ID];
-        [_toolBar.submit setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
+        [_toolBar.button setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
     }
 }
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -369,7 +354,7 @@
     if ([btn.currentTitle isEqualToString:@"取消"]) {
         TrajectoryMessage *entity=self.cells[indexPath.row];
         [self.removeList removeObjectForKey:entity.ID];
-        [_toolBar.submit setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
+        [_toolBar.button setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
     }
 }
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath

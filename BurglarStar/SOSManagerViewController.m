@@ -73,13 +73,16 @@
     isFirstLoad=YES;
 }
 - (void)loadSosSource{
-
+    if (!self.hasNetWork) {
+        [self showErrorNetWorkNotice:nil];
+        return;
+    }
     Account *acc=[Account unarchiverAccount];
     ASIServiceArgs *args=[[[ASIServiceArgs alloc] init] autorelease];
     args.serviceURL=DataSOSWebservice;
     args.serviceNameSpace=DataSOSNameSpace;
     args.methodName=@"GetUserSosList";
-    args.soapParams=[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:acc.WorkNo,@"UserID", nil], nil];
+    args.soapParams=[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:acc.UserId,@"UserID", nil], nil];
     //NSLog(@"soap=%@",args.bodyMessage);
     if (isFirstLoad) {
        [self showLoadingAnimatedWithTitle:@"正在加载,请稍后..."];
@@ -90,7 +93,7 @@
             isFirstLoad=NO;
             [self hideLoadingViewAnimated:nil];
         }
-        NSLog(@"xml=%@",request.responseString);
+        //NSLog(@"xml=%@",request.responseString);
         if (request.ServiceResult.success) {
             XmlNode *node=[request.ServiceResult json];
             NSArray *arr=[SOSMessage jsonSerializationSOSMessages:node.InnerText];
@@ -193,6 +196,7 @@
                 [_toolBarView.button setTitle:@"删除(0)" forState:UIControlStateNormal];
                 
                 [self hideLoadingSuccessWithTitle:@"删除成功!" completed:nil];
+                [_tableView reloadData];
             }
         }
         if (!boo) {

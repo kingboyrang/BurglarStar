@@ -176,6 +176,8 @@
                         [_toolBar.submit setTitle:@"标记已读(0)" forState:UIControlStateNormal];//更新操作
                         [_toolBar.cancel setTitle:@"删除(0)" forState:UIControlStateNormal];//更新操作
                         [self hideLoadingSuccessWithTitle:@"删除成功!" completed:nil];
+                        
+                        [_tableView reloadData];//重新加载
                     }
                 }
                 if (!boo) {
@@ -226,6 +228,7 @@
                     [_toolBar.submit setTitle:@"标记已读(0)" forState:UIControlStateNormal];//更新操作
                     [_toolBar.cancel setTitle:@"删除(0)" forState:UIControlStateNormal];//更新操作
                     [self hideLoadingSuccessWithTitle:@"标记已读操作成功!" completed:nil];
+                    [_tableView reloadData];//重新加载
                 }else{
                     [self hideLoadingFailedWithTitle:@"标记已读操作失败!" completed:nil];
                 }
@@ -408,6 +411,7 @@
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
           TrajectoryMessage *entity=self.cells[indexPath.row];
         ExceptionViewController *control=[[ExceptionViewController alloc] init];
+        control.flagRead=YES;
         control.Entity=entity;
         [self.navigationController pushViewController:control animated:YES];
         [control release];
@@ -423,6 +427,7 @@
         [_tableView beginUpdates];
         [_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationNone];
         [_tableView endUpdates];
+        [_tableView reloadData];//重新加载
         
     }else{
         if (!self.removeList) {

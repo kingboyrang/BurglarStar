@@ -14,6 +14,7 @@
 @property (nonatomic,strong) UIImageView *imageHead;
 @property (nonatomic,strong) UIButton *button;
 @property (nonatomic,assign) BOOL hasImage;
+@property (nonatomic,readonly) UIImage *photo;
 - (void)setPhotoWithImage:(UIImage*)img;
 - (void)setPhotoWithImageUrlString:(NSString*)url;
 @end

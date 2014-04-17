@@ -12,8 +12,9 @@
 #import "UIImage+TPCategory.h"
 #import "AlertHelper.h"
 #import "UIImageView+WebCache.h"
-@interface ManagerPhotoSelectViewController ()
-@property (nonatomic, strong) CaseCameraImage *cameraImage;
+@interface ManagerPhotoSelectViewController (){
+   CaseCameraImage *_cameraImage;
+}
 - (void)buttonViewerClick;
 - (void)buttonCameraClick;
 - (void)buttonPrevClick;
@@ -26,6 +27,7 @@
     if (_imageCropper) {
         [_imageCropper release];
     }
+    [_cameraImage release],_cameraImage=nil;
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -39,16 +41,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.cameraImage=[[CaseCameraImage alloc] init];
-    self.cameraImage.delegate=self;
+    _cameraImage=[[CaseCameraImage alloc] init];
+    _cameraImage.delegate=self;
+    
+    _imageCropper=nil;
 	
-    CGFloat topY=25;
+    CGFloat topY=10;
     UIImage *placeImg=[UIImage imageNamed:@"head_big_photo.png"];
     _preview=[[UIImageView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width-placeImg.size.width)/2, topY, placeImg.size.width, placeImg.size.height)];
+    _preview.contentMode=UIViewContentModeScaleAspectFill;
     BOOL hasImg=NO;
     if (self.photoDelegate&&[self.photoDelegate respondsToSelector:@selector(viewerShowImage)]) {
         UIImage *img=[self.photoDelegate viewerShowImage];
-        if (img) {
+        if (img!=nil) {
             hasImg=YES;
             [_preview setImage:img];
         }
@@ -66,7 +71,7 @@
     [self.view addSubview:_preview];
     [self.view sendSubviewToBack:_preview];
     
-    topY=310;
+    topY=275;
     UIImage *imgPhotos=[UIImage imageNamed:@"head_photos.png"];
     UIButton *_button=[UIButton buttonWithType:UIButtonTypeCustom];
     _button.frame=CGRectMake((self.view.bounds.size.width-imgPhotos.size.width)/2, topY, imgPhotos.size.width, imgPhotos.size.height);
@@ -95,11 +100,11 @@
 }
 //浏览
 - (void)buttonViewerClick{
-    [self.cameraImage showAlbumInController:self];
+    [_cameraImage showAlbumInController:self];
 }
 //照相
 - (void)buttonCameraClick{
-    [self.cameraImage showCameraInController:self];
+    [_cameraImage showCameraInController:self];
 }
 //上一步
 - (void)buttonPrevClick{
@@ -130,7 +135,7 @@
         [_imageCropper release],_imageCropper=nil;
     }
     
-    UIImage *realImage=[image scaleToSize:CGSizeMake(300, 300)];
+    UIImage *realImage=[image scaleToSize:CGSizeMake(270, 270)];
     
     CGRect r=CGRectMake((self.view.bounds.size.width-realImage.size.width)/2,(310-realImage.size.height)/2, realImage.size.width, realImage.size.height);
     _imageCropper = [[NLImageCropperView alloc] initWithFrame:r];
@@ -143,16 +148,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

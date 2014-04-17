@@ -59,7 +59,8 @@
     self.cameraImage=[[CaseCameraImage alloc] init];
     self.cameraImage.delegate=self;
 	
-    CGFloat topY=25;
+    //CGFloat topY=25;
+    CGFloat topY=10;
     UIImage *placeImg=[UIImage imageNamed:@"head_big_photo.png"];
     _preview=[[UIImageView alloc] initWithFrame:CGRectMake((self.view.bounds.size.width-placeImg.size.width)/2, topY, placeImg.size.width, placeImg.size.height)];
     if (self.Entity&&self.Entity.Photo&&[self.Entity.Photo length]>0) {
@@ -70,7 +71,8 @@
     [self.view addSubview:_preview];
     [self.view sendSubviewToBack:_preview];
     
-    topY=310;
+    //topY=310;
+    topY=275;
     UIImage *imgPhotos=[UIImage imageNamed:@"head_photos.png"];
     UIButton *_button=[UIButton buttonWithType:UIButtonTypeCustom];
     _button.frame=CGRectMake((self.view.bounds.size.width-imgPhotos.size.width)/2, topY, imgPhotos.size.width, imgPhotos.size.height);
@@ -154,7 +156,8 @@
         [_imageCropper release];
     }
     
-    UIImage *realImage=[image scaleToSize:CGSizeMake(300, 300)];
+    //UIImage *realImage=[image scaleToSize:CGSizeMake(300, 300)];
+    UIImage *realImage=[image scaleToSize:CGSizeMake(270, 270)];
     
     CGRect r=CGRectMake((self.view.bounds.size.width-realImage.size.width)/2,(310-realImage.size.height)/2, realImage.size.width, realImage.size.height);
     _imageCropper = [[NLImageCropperView alloc] initWithFrame:r];

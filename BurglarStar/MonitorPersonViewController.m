@@ -17,6 +17,7 @@
     UITableView *_tableView;
 }
 - (void)loadingMonitors:(NSString*)name message:(NSString*)msg;
+- (void)done:(id)sender;
 @end
 
 @implementation MonitorPersonViewController
@@ -88,9 +89,22 @@
     _tableView.delegate=self;
     _tableView.dataSource=self;
     _tableView.backgroundColor=[UIColor clearColor];
+    _tableView.separatorColor=[UIColor colorFromHexRGB:@"b8b8b8"];
     [self.view addSubview:_tableView];
+    //点击空白处，聊藏键盘
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(done:)];
+    tapGestureRecognizer.numberOfTapsRequired =1;
+    tapGestureRecognizer.cancelsTouchesInView =NO;
+    [_tableView addGestureRecognizer:tapGestureRecognizer];  //只需要点击非文字输入区域就会响应hideKeyBoard
+    [tapGestureRecognizer release];
     
     [self loadingMonitors:@"" message:@"加载"];
+}
+-(void)done:(id)sender
+{
+    UISearchBar *searchBar=(UISearchBar*)self.navigationItem.titleView;
+    [searchBar resignFirstResponder];
+    [self loadingMonitors:searchBar.text message:@"查询"];//查询
 }
 - (void)loadingMonitors:(NSString*)name message:(NSString*)msg{
     if (![self hasNetWork]) {
@@ -179,6 +193,8 @@
             }else{
                 [cell.imageView setImage:image];
             }
+            //NSIndexPath *reloadIndexPath=[_tableView indexPathForCell:cell];
+            //[_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:reloadIndexPath, nil] withRowAnimation:UITableViewRowAnimationNone];
         }
     }];
     cell.textLabel.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];

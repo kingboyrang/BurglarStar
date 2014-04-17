@@ -45,6 +45,7 @@
     btn.showsTouchWhenHighlighted=YES;
     return leftBtn;
 }
+/***
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     if (![self.topViewController isKindOfClass:[viewController class]]) {
@@ -56,6 +57,7 @@
          viewController.navigationItem.leftBarButtonItem =[self customLeftBackButton];
      }
 }
+ ***/
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

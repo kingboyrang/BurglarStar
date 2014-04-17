@@ -61,9 +61,10 @@
     _mapView= [[BMKMapView alloc]initWithFrame:r];
     [self.view addSubview:_mapView];
     
-    //标记已读
-    [self readRemove];
-    
+    if (self.flagRead) {
+        //标记已读
+        [self readRemove];
+    }
 }
 //标记已读
 - (void)readRemove{
@@ -72,8 +73,7 @@
     args.serviceNameSpace=DataNameSpace1;
     args.methodName=@"BatchHandleAlarmData";
     args.soapParams=[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:self.Entity.ID,@"id", nil], nil];
-    
-    ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
+    ASIHTTPRequest *request=[args request];
     [request setCompletionBlock:^{
         
     }];

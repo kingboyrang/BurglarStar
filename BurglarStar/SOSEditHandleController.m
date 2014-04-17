@@ -10,30 +10,21 @@
 #import "TKHeadPhotoCell.h"
 #import "TKLabelCell.h"
 #import "TKTextViewCell.h"
-#import "LoginButtons.h"
 #import "ASIServiceHTTPRequest.h"
 #import "ManagerPhotoSelectViewController.h"
 @interface SOSEditHandleController ()<UITableViewDelegate,UITableViewDataSource>{
     UITableView *_tableView;
-    LoginButtons *_buttons;
 }
 @property (nonatomic,assign) CGRect tableRect;
-- (void)buttonCancelClick;
-- (void)buttonSubmitClick:(UIButton*)btn;
 - (void)loadSingleSosInfo;
 - (void)updateFormUI;
 - (void)updateFormUI:(NSDictionary*)item;
-- (void)buttonSelectedPhotoClick;
-- (void)done:(id)sender;
-- (void)handleKeyboardWillShowHideNotification:(NSNotification *)notification;
 @end
 
 @implementation SOSEditHandleController
 - (void)dealloc{
     [super dealloc];
-    [_buttons release];
     [_tableView release];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -54,7 +45,7 @@
     self.title=@"SOS报警";
     
     CGRect r=self.view.bounds;
-    r.size.height-=[self topHeight]+44;
+    r.size.height-=[self topHeight];
     _tableView=[[UITableView alloc] initWithFrame:r style:UITableViewStylePlain];
     _tableView.delegate=self;
     _tableView.dataSource=self;
@@ -65,14 +56,9 @@
     [self.view addSubview:_tableView];
     self.tableRect=r;
     
-    _buttons=[[LoginButtons alloc] initWithFrame:CGRectMake(0, r.size.height+r.origin.y, self.view.bounds.size.width, 44)];
-    [_buttons.submit setTitle:@"提交" forState:UIControlStateNormal];
-    [_buttons.cancel addTarget:self action:@selector(buttonCancelClick) forControlEvents:UIControlEventTouchUpInside];
-    [_buttons.submit addTarget:self action:@selector(buttonSubmitClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_buttons];
+   
     
     TKHeadPhotoCell *cell1=[[[TKHeadPhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
-    [cell1.button addTarget:self action:@selector(buttonSelectedPhotoClick) forControlEvents:UIControlEventTouchUpInside];
     
     TKLabelCell *cell2=[[[TKLabelCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
     cell2.label.text=@"车牌号码:";
@@ -81,77 +67,18 @@
     cell3.label.text=@"内容";
     
     TKTextViewCell *cell4=[[[TKTextViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
-    cell4.textView.placeholder=@"请输入内容";
+    //cell4.textView.placeholder=@"请输入内容";
+    cell4.textView.editable=NO;
     
     TKLabelCell *cell5=[[[TKLabelCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
     cell5.label.text=@"处理回复";
     
     TKTextViewCell *cell6=[[[TKTextViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
     cell6.textView.placeholder=@"请输入处理回复";
+    cell6.textView.editable=NO;
     
     self.cells=[NSMutableArray arrayWithObjects:cell1,cell2,cell3,cell4,cell5,cell6, nil];
     
-    //点击空白处，聊藏键盘
-    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(done:)];
-    tapGestureRecognizer.numberOfTapsRequired =1;
-    tapGestureRecognizer.cancelsTouchesInView =NO;
-    [_tableView addGestureRecognizer:tapGestureRecognizer];  //只需要点击非文字输入区域就会响应hideKeyBoard
-    [tapGestureRecognizer release];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleKeyboardWillShowHideNotification:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleKeyboardWillShowHideNotification:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
-}
--(void)done:(id)sender
-{
-    TKTextViewCell *cell1=self.cells[3];
-    [cell1.textView resignFirstResponder];
-    
-    TKTextViewCell *cell2=self.cells[5];
-    [cell2.textView resignFirstResponder];
-}
-#pragma mark - Notifications
-- (void)handleKeyboardWillShowHideNotification:(NSNotification *)notification
-{
-    NSDictionary *info = [notification userInfo];
-    //取得键盘的大小
-    CGRect kbFrame = [[info valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    if ([notification.name isEqualToString:UIKeyboardWillShowNotification]) {//显示键盘
-        CGRect r=_tableView.frame;
-        CGRect r1=_buttons.frame;
-        r.size.height=self.tableRect.size.height-kbFrame.size.height;
-        r1.origin.y=r.origin.y+r.size.height;
-        
-        NSNumber *curve = [info objectForKey:UIKeyboardAnimationCurveUserInfoKey];
-        NSNumber *duration = [info objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-        // 添加移动动画，使视图跟随键盘移动
-        [UIView animateWithDuration:duration.doubleValue animations:^{
-            [UIView setAnimationBeginsFromCurrentState:YES];
-            [UIView setAnimationCurve:[curve intValue]];
-            _tableView.frame=r;
-            _buttons.frame=r1;
-        }];
-        
-    }
-    else  {//隐藏键盘
-        CGRect r=_tableView.frame;
-        CGRect r1=_buttons.frame;
-        r.size.height=self.tableRect.size.height;
-        
-        r1.origin.y=self.tableRect.origin.y+r.size.height;
-        
-        [UIView animateWithDuration:[[info valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue] animations:^{
-            _tableView.frame=r;
-            _buttons.frame=r1;
-        }];
-    }
 }
 //加载单笔信息
 - (void)loadSingleSosInfo{
@@ -203,38 +130,6 @@
     TKTextViewCell *cell4=self.cells[5];
     cell4.textView.text=[item objectForKey:@"BackContent"];
     [_tableView reloadData];
-}
-//选头像
-- (void)buttonSelectedPhotoClick{
-    ManagerPhotoSelectViewController *photo=[[ManagerPhotoSelectViewController alloc] init];
-    photo.title=@"SOS报警头像";
-    photo.photoDelegate=self;
-    [self.navigationController pushViewController:photo animated:YES];
-    [photo release];
-}
-//取消
-- (void)buttonCancelClick{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-//提交
-- (void)buttonSubmitClick:(UIButton*)btn{
-    /***
-    btn.enabled=NO;
-    Account *acc=[Account unarchiverAccount];
-    NSMutableArray *params=[NSMutableArray array];
-    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.WorkNo,@"UserID", nil]];
-    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:[cell2.select value],@"CarID", nil]];
-    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:imageStr,@"Image", nil]];
-    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:cell3.textView.text,@"Contents", nil]];
-    
-    ASIServiceArgs *args=[[[ASIServiceArgs alloc] init] autorelease];
-    args.serviceURL=DataSOSWebservice;
-    args.serviceNameSpace=DataSOSNameSpace;
-    args.methodName=@"AddSOSInfo";
-    args.soapParams=params;
-    [self showLoadingAnimatedWithTitle:@"正在新增SOS报警,请稍后..."];
-    ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
-     ***/
 }
 - (void)didReceiveMemoryWarning
 {

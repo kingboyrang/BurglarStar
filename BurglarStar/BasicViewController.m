@@ -48,7 +48,7 @@
     
     [super viewDidLoad];
     self.ServiceHelper=[[ASIServiceHelper alloc] init];
-self.view.backgroundColor=[UIColor colorFromHexRGB:@"e5e2d0"];
+    self.view.backgroundColor=[UIColor colorFromHexRGB:@"e5e2d0"];
 #ifdef __IPHONE_7_0
     if (IOSVersion>= 7.0) {
          self.extendedLayoutIncludesOpaqueBars = NO;
@@ -56,9 +56,8 @@ self.view.backgroundColor=[UIColor colorFromHexRGB:@"e5e2d0"];
     }
 #endif
     
-    if (self.navigationController&&[self.navigationController isKindOfClass:[BasicNavigationController class]]) {
-        BasicNavigationController *nav=(BasicNavigationController*)self.navigationController;
-        nav.basicNavDelegate=self;
+    if (self.navigationController&&[self.navigationController.viewControllers count]>1) {
+        self.navigationItem.leftBarButtonItem=[self barBackButtonItem];
     }
     
 }
@@ -244,7 +243,7 @@ self.view.backgroundColor=[UIColor colorFromHexRGB:@"e5e2d0"];
         [self showSuccessViewAnimated:^(AnimateErrorView *errorView) {
             errorView.labelTitle.text=title;
         }];
-        [self performSelector:@selector(hideSuccessViewAnimated:) withObject:complete afterDelay:2.0f];
+        [self performSelector:@selector(hideSuccessViewAnimated:) withObject:complete afterDelay:1.0f];
     }];
 }
 -(CATransition *)getAnimation:(NSInteger)type subtype:(NSInteger)subtype{

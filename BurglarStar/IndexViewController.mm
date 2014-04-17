@@ -32,6 +32,7 @@
 #import "NetWorkConnection.h"
 #import "ASIServiceHTTPRequest.h"
 #import "UIButton+TPCategory.h"
+#import "MapAutoPointer.h"
 @interface IndexViewController (){
     RecordView *_recordView;
     NSTimer *_updateTimer;
@@ -54,6 +55,8 @@
 - (void)removeSupervisionAnnotations;
 - (void)reloadDataSupervisionAnnotations;
 - (void)setChoosetTarget;
+- (void)buttonBigMapClick;
+- (void)buttonSmallMapClick;
 @end
 
 @implementation IndexViewController
@@ -115,10 +118,17 @@
     //定位
     UIImage *imgCompass=[UIImage imageNamed:@"Compass.png"];
     UIButton *btnCompass=[UIButton buttonWithType:UIButtonTypeCustom];
-    btnCompass.frame=CGRectMake(15, _toolBarView.frame.origin.y-imgCompass.size.height-10, imgCompass.size.width, imgCompass.size.height);
+    btnCompass.frame=CGRectMake(10, _toolBarView.frame.origin.y-imgCompass.size.height-10, imgCompass.size.width, imgCompass.size.height);
     [btnCompass setImage:imgCompass forState:UIControlStateNormal];
     [btnCompass addTarget:self action:@selector(buttonCompassClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnCompass];
+    
+    //放大与缩小
+    MapAutoPointer *pointer=[[MapAutoPointer alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-10-35, _toolBarView.frame.origin.y-70-10, 35, 69)];
+    [pointer.autoBigButton addTarget:self action:@selector(buttonBigMapClick) forControlEvents:UIControlEventTouchUpInside];
+    [pointer.autoSmallButton addTarget:self action:@selector(buttonSmallMapClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:pointer];
+    [pointer release];
     
     CGFloat w=self.view.bounds.size.width;
     _recordView=[[RecordView alloc] initWithFrame:CGRectMake(w*3/4-w/8, self.view.bounds.size.height-[self topHeight]-50, 25, 25)];
@@ -127,6 +137,24 @@
     [self loadSupervision];
     //30秒刷新一次
      _updateTimer=[[NSTimer scheduledTimerWithTimeInterval:30.0f target:self selector:@selector(changedAdTimer:) userInfo:nil repeats:YES] retain];
+}
+//放大地图
+- (void)buttonBigMapClick{
+   float zoom=_mapView.zoomLevel;
+    zoom+=1;
+    if (zoom>=19) {
+        zoom=19;
+    }
+    _mapView.zoomLevel=zoom;
+}
+//缩小地图
+- (void)buttonSmallMapClick{
+    float zoom=_mapView.zoomLevel;
+    zoom-=1;
+    if (zoom<=3) {
+        zoom=3;
+    }
+    _mapView.zoomLevel=zoom;
 }
 - (void)selectedMetaWithEntity:(SupervisionPerson*)entity{
     MeterViewController *meter=[[MeterViewController alloc] init];
