@@ -11,6 +11,7 @@
 #import "ASIServiceHTTPRequest.h"
 #import "UIImageView+WebCache.h"
 #import "UIImage+TPCategory.h"
+#import "AlertHelper.h"
 @interface AppHelper ()
 - (void)runAnimation;
 - (void)watiAnimationShow:(UIImage*)image;
@@ -95,15 +96,14 @@
     int64_t delayInSeconds = 4.0f;
     dispatch_time_t popTime =dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        NSLog(@"bb==remove");
         [self removeRunningAnimation];
     });
 }
 - (void)removeView{
-    NSLog(@"remove ok!");
     UIWindow *window=[[UIApplication sharedApplication] keyWindow];
-    UIView *imageView=(UIView*)[window viewWithTag:970];
-    [imageView removeFromSuperview];
+    if ([window viewWithTag:970]) {
+        [[window viewWithTag:970] removeFromSuperview];
+    }
 }
 - (void)removeRunningAnimation{
     
