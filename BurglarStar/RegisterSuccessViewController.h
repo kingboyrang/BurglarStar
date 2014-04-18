@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "Account.h"
 @interface RegisterSuccessViewController : BasicViewController
-@property(nonatomic,strong) Account *Entity;
+@property(nonatomic,retain) Account *Entity;
+@property(nonatomic,strong) UIImageView *imageView;
 @end

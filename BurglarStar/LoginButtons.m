@@ -22,7 +22,7 @@
         NSString *btnName=@"取消";
         CGSize size=[btnName textSize:[UIFont fontWithName:DeviceFontName size:DeviceFontSize] withWidth:self.bounds.size.width];
         _cancel=[UIButton buttonWithType:UIButtonTypeCustom];
-        _cancel.frame=CGRectMake(0,(frame.size.height-size.height)/2+5, frame.size.width/2, size.height);
+        _cancel.frame=CGRectMake(0,(frame.size.height-size.height)/2, frame.size.width/2, size.height);
         [_cancel setTitle:@"取消" forState:UIControlStateNormal];
         [_cancel setTitleColor:[UIColor colorFromHexRGB:@"1e313f"] forState:UIControlStateNormal];
         _cancel.titleLabel.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];
@@ -31,7 +31,7 @@
         [self addSubview:_cancel];
         
         _submit=[UIButton buttonWithType:UIButtonTypeCustom];
-        _submit.frame=CGRectMake(frame.size.width/2, (frame.size.height-size.height)/2+5, frame.size.width/2, size.height);
+        _submit.frame=CGRectMake(frame.size.width/2, (frame.size.height-size.height)/2, frame.size.width/2, size.height);
         [_submit setTitle:@"确认" forState:UIControlStateNormal];
         [_submit setTitleColor:[UIColor colorFromHexRGB:@"1e313f"] forState:UIControlStateNormal];
         _submit.titleLabel.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];

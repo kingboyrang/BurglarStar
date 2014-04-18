@@ -133,8 +133,7 @@
         }else{
            self.finishBlock(request);
         }
-    }
-    
+    }    
 }
 -(void)requestFetchFailed:(ASIHTTPRequest*)request{
     if (self.failedBlock) {

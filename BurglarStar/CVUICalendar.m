@@ -72,9 +72,6 @@
     self.popoverText=[[CVUIPopoverText alloc] initWithFrame:frame];
     self.popoverText.delegate=self;
     [self addSubview:self.popoverText];
-
-    
-    
     //設定日曆格式
     self.dateForFormat=[[NSDateFormatter alloc] init];
     [self.dateForFormat setDateFormat:@"yyyy-MM-dd"];
@@ -84,6 +81,7 @@
         self.datePicker=[[UIDatePicker alloc] initWithFrame:CGRectMake(0, 0, 320, 216)];
         self.datePicker.datePickerMode=1;
 		self.datePicker.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];//zh_CN
+        self.datePicker.backgroundColor=[UIColor clearColor];
         //self.datePicker.maximumDate=[NSDate date];//设置最大日期
     }
     

@@ -7,7 +7,7 @@
 //
 
 #import "UIButton+TPCategory.h"
-
+#import "UIImage+TPCategory.h"
 @implementation UIButton (TPCategory)
 + (id)backButtonTarget:(id)sender action:(SEL)action forControlEvents:(UIControlEvents)controlEvents{
     UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];

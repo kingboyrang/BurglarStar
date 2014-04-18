@@ -7,6 +7,7 @@
 //
 
 #import "CVUIPopoverView.h"
+#import "UIImage+TPCategory.h"
 #define screenRect [[UIScreen mainScreen] bounds]
 
 @interface CVUIPopoverView()
@@ -14,6 +15,7 @@
 -(BOOL)isIPad;
 -(void)addBackgroundView;
 -(void)setControlTitle:(NSString*)title withIndex:(int)tag;
+- (UIButton*)barButtonItemWithFrame:(CGRect)frame title:(NSString*)title target:(id)sender action:(SEL)action forControlEvents:(UIControlEvents)controlEvents;
 @end
 
 @implementation CVUIPopoverView
@@ -25,6 +27,7 @@
     if (self) {
         // Initialization code
         [self loadControl:frame];
+        self.backgroundColor=[UIColor colorFromHexRGB:@"efeedc"];
     }
     return self;
 }
@@ -36,7 +39,12 @@
         [title copy];
         popoverTitle=title;
     }
-    [self setControlTitle:[self popoverTitle] withIndex:2];
+    CGSize size=[title textSize:_labTitle.font withWidth:self.bounds.size.width];
+    CGRect r=_labTitle.frame;
+    r.size=size;
+    r.origin.x=(self.frame.size.width-size.width)/2;
+    _labTitle.frame=r;
+    _labTitle.text=title;
 }
 -(void)setCancelButtonTitle:(NSString *)title{
     if (cancelButtonTitle!=title) {
@@ -61,13 +69,7 @@
         [title copy];
         clearButtonTitle=title;
     }
-    for (UIView *v in self.subviews) {
-        if ([v isKindOfClass:[NVUIGradientButton class]]) {
-            NVUIGradientButton *btn=(NVUIGradientButton*)v;
-            btn.text=[self clearButtonTitle];
-            break;
-        }
-    }
+     [self setControlTitle:[self clearButtonTitle] withIndex:3];
 
 }
 #pragma mark -
@@ -187,51 +189,65 @@
 -(void)loadControl:(CGRect)frame{
         self.backgroundColor=[UIColor grayColor];
         //Tool Bar
-        self.toolBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-        self.toolBar.barStyle=UIBarStyleBlackTranslucent;
-        
-        UIBarButtonItem *leftButton=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStyleBordered target:self action:@selector(buttonCancelClick)];
+    self.toolBar=[[UIToolbar alloc] initWithFrame:CGRectMake(0, 0,320, 44)];
+    if (IOSVersion>=7.0) {
+        UIImage *root_image = [UIImage imageNamed:@"navbg.png"];
+        if ([self.toolBar respondsToSelector:@selector(setBackgroundImage:forToolbarPosition:barMetrics:)]) {
+            [self.toolBar setBackgroundImage:root_image forToolbarPosition:0 barMetrics:0];         //仅5.0以上版本适用
+        }else{
+            self.toolBar.barStyle = UIToolbarPositionTop;
+        }
+    }else{
+        self.toolBar.barStyle =UIBarStyleBlackTranslucent;
+    }
+    
+    UIBarButtonItem *leftButton;
+    if (IOSVersion>=7.0) {
+        UIButton *btn1=[self barButtonItemWithFrame:CGRectMake(0, 0, 30, 30) title:@"取消" target:self action:@selector(buttonCancelClick) forControlEvents:UIControlEventTouchUpInside];
+        leftButton=[[UIBarButtonItem alloc] initWithCustomView:btn1];
+    }else{
+       leftButton=[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(buttonCancelClick)];
+    }
         
         UIBarButtonItem *midleButton=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        
-        UILabel *labTitle=[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 230, 44)];
-        labTitle.text=@"请选择";
-        labTitle.font=[UIFont boldSystemFontOfSize:14];
-        labTitle.textColor=[UIColor whiteColor];
-        labTitle.backgroundColor=[UIColor clearColor];
-        labTitle.textAlignment=NSTextAlignmentCenter;
-        UIBarButtonItem *customBtn=[[UIBarButtonItem alloc] initWithCustomView:labTitle];
-        [labTitle release];
-        
+    
+        NSString *memo=@"请选择";
+        CGSize size=[memo textSize:[UIFont boldSystemFontOfSize:14] withWidth:320];
+        _labTitle=[[UILabel alloc] initWithFrame:CGRectMake((320-size.width)/2,(44-size.height)/2, size.width, size.height)];
+        _labTitle.text=memo;
+        _labTitle.font=[UIFont boldSystemFontOfSize:14];
+        _labTitle.textColor=[UIColor whiteColor];
+        _labTitle.backgroundColor=[UIColor clearColor];
+        _labTitle.textAlignment=NSTextAlignmentCenter;
+
         UIBarButtonItem *fixButton=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        
-        
-        UIBarButtonItem *rightButton=[[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStyleBordered target:self action:@selector(buttonDoneClick)];
-        
-        [self.toolBar setItems:[NSArray arrayWithObjects:leftButton,midleButton,customBtn,fixButton,rightButton, nil]];
+    
+    UIBarButtonItem *clearButton;
+    if (IOSVersion>=7.0) {
+        UIButton *btn2=[self barButtonItemWithFrame:CGRectMake(0, 0, 30, 30) title:@"清除" target:self action:@selector(buttonClearClick) forControlEvents:UIControlEventTouchUpInside];
+        clearButton=[[UIBarButtonItem alloc] initWithCustomView:btn2];
+    }else{
+        clearButton=[[UIBarButtonItem alloc] initWithTitle:@"清除" style:UIBarButtonItemStylePlain target:self action:@selector(buttonClearClick)];
+    }
+    
+    UIBarButtonItem *rightButton;
+     if (IOSVersion>=7.0) {
+        UIButton *btn3=[self barButtonItemWithFrame:CGRectMake(0, 0, 30, 30) title:@"确定" target:self action:@selector(buttonDoneClick) forControlEvents:UIControlEventTouchUpInside];
+         rightButton=[[UIBarButtonItem alloc] initWithCustomView:btn3];
+     }else{
+         rightButton=[[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(buttonDoneClick)];
+     }
+        [self.toolBar setItems:[NSArray arrayWithObjects:leftButton,midleButton,fixButton,clearButton,rightButton, nil]];
         [self addSubview:self.toolBar];
         [leftButton release];
         [rightButton release];
         [midleButton release];
         [fixButton release];
-        [customBtn release];
-        //[navItem release];
-        
-        //[contentView addSubview:self.datePicker];
-        
-        CGFloat topY=49,w=227,h=35,leftX=(320-w)/2;
-        
-        //清空
-        NVUIGradientButton *clearBtn=[[NVUIGradientButton alloc] initWithFrame:CGRectMake(leftX, topY, w, h)];
-        clearBtn.text=@"清空";
-        //clearBtn.textColor=[UIColor whiteColor];
-        clearBtn.textShadowColor=[UIColor darkGrayColor];
-        [clearBtn addTarget:self action:@selector(buttonClearClick) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:clearBtn];
-        [clearBtn release];
-        
-        topY+=h+5;
-        
+        [clearButton release];
+    
+        [self addSubview:_labTitle];
+    
+        CGFloat topY=44;
         CGFloat viewY=screenRect.size.height+topY;
         if ([self isIPad]) {
             viewY=0;
@@ -243,12 +259,8 @@
 -(void)setControlTitle:(NSString*)title withIndex:(int)tag{
     if (self.toolBar&&[self.toolBar.items objectAtIndex:tag]) {
         UIBarButtonItem *barBtn=(UIBarButtonItem*)[self.toolBar.items objectAtIndex:tag];
-        if (tag==2) {
-            UILabel *lab=(UILabel*)barBtn.customView;
-            lab.text=title;
-            return;
-        }
-        [barBtn setTitle:title];
+        UIButton *btn=(UIButton*)barBtn.customView;
+        [btn setTitle:title forState:UIControlStateNormal];
     }
 }
 -(void)addBackgroundView{
@@ -262,6 +274,18 @@
     }
     
 }
+- (UIButton*)barButtonItemWithFrame:(CGRect)frame title:(NSString*)title target:(id)sender action:(SEL)action forControlEvents:(UIControlEvents)controlEvents{
+    //CGSize size=[title textSize:[UIFont boldSystemFontOfSize:14] withWidth:320];
+    UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame=frame;
+    [btn setTitle:title forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor colorFromHexRGB:@"1e313f"] forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor colorFromHexRGB:@"2f3029"] forState:UIControlStateHighlighted];
+    btn.titleLabel.font=[UIFont boldSystemFontOfSize:14];
+    btn.showsTouchWhenHighlighted=YES;
+    [btn addTarget:sender action:action forControlEvents:controlEvents];
+    return btn;
+}
 -(void)dealloc{
     [popController release];
     [popoverTitle release];
@@ -272,13 +296,4 @@
     [super dealloc];
     
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
-
 @end

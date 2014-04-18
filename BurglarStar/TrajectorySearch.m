@@ -79,12 +79,21 @@
         _endCalendar.popoverText.popoverTextField.text=[time stringWithFormat:@"yyyy/MM/dd HH:mm"];
         [self addSubview:_endCalendar];
         
-        UIImage *leftImage=[UIImage imageNamed:@"btn_search.png"];
-      
+
+        /**
+        UIImage *leftImage=[UIImage imageNamed:@"btn_round_bg.png"];
+        leftImage=[leftImage stretchableImageWithLeftCapWidth:10 topCapHeight:16];
+       **/
+        UIImage *leftImage=[UIImage imageNamed:@"buttonBg_01.png"];
+        UIEdgeInsets leftInsets = UIEdgeInsetsMake(5,10, 5, 10);
+        leftImage=[leftImage resizableImageWithCapInsets:leftInsets resizingMode:UIImageResizingModeStretch];
         
         _button=[UIButton buttonWithType:UIButtonTypeCustom];
-        _button.frame=CGRectMake(frame.size.width-leftImage.size.width-5, (frame.size.height-leftImage.size.height)/2, leftImage.size.width, leftImage.size.height);
-        [_button setImage:leftImage forState:UIControlStateNormal];
+        _button.frame=CGRectMake(frame.size.width-75, (frame.size.height-35)/2, 70, 35);
+        [_button setBackgroundImage:leftImage forState:UIControlStateNormal];
+        [_button setTitle:@"搜索" forState:UIControlStateNormal];
+        [_button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _button.titleLabel.font=[UIFont boldSystemFontOfSize:DeviceFontSize];
         [self addSubview:_button];
         
         

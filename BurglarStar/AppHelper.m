@@ -14,7 +14,6 @@
 @interface AppHelper ()
 - (void)runAnimation;
 - (void)watiAnimationShow:(UIImage*)image;
-- (void)timerFireMethod:(NSTimer*)theTimer;
 - (void)removeView;
 - (void)removeRunningAnimation;
 @end
@@ -78,7 +77,7 @@
 }
 - (void)watiAnimationShow:(UIImage*)image{
     UIView *bgView=[[UIView alloc] initWithFrame:DeviceRect];
-    bgView.tag=900;
+    bgView.tag=970;
     bgView.backgroundColor=[UIColor colorFromHexRGB:@"e5e2d0"];
     
     UIImage *img=[image imageByScalingToSize:bgView.bounds.size];
@@ -90,27 +89,26 @@
     UIWindow *window=[[UIApplication sharedApplication] keyWindow];
     [window addSubview:bgView];
     [bgView release];
-    total=5;
-    //执行5秒
-    [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES];
-}
-//5秒后移除启动动画
-- (void)timerFireMethod:(NSTimer*)theTimer{
-    total--;
-    if (total==1) {
-        [theTimer invalidate];
+    
+    
+    //4秒过后执行其它操作
+    int64_t delayInSeconds = 4.0f;
+    dispatch_time_t popTime =dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        NSLog(@"bb==remove");
         [self removeRunningAnimation];
-    }
+    });
 }
 - (void)removeView{
+    NSLog(@"remove ok!");
     UIWindow *window=[[UIApplication sharedApplication] keyWindow];
-    UIView *imageView=(UIView*)[window viewWithTag:900];
+    UIView *imageView=(UIView*)[window viewWithTag:970];
     [imageView removeFromSuperview];
 }
 - (void)removeRunningAnimation{
     
     UIWindow *window=[[UIApplication sharedApplication] keyWindow];
-    UIView *imageView=(UIView*)[window viewWithTag:900];
+    UIView *imageView=(UIView*)[window viewWithTag:970];
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];

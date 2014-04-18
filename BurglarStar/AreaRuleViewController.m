@@ -58,7 +58,8 @@
 }
 //返回列表
 - (void)buttonListClick{
-    [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:2] animated:YES];
+    NSInteger index=[self.navigationController.viewControllers count]-1-1-1;
+    [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:index] animated:YES];
 }
 - (void)viewDidLoad
 {

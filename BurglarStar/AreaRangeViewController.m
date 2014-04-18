@@ -65,7 +65,8 @@
 }
 //返回列表
 - (void)buttonListClick{
-    [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:2] animated:YES];
+     NSInteger index=[self.navigationController.viewControllers count]-1-1-1-1;
+    [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:index] animated:YES];
 }
 - (void)viewDidLoad
 {
@@ -156,7 +157,6 @@
     _sCalendar.popoverText.popoverTextField.placeholder=@"开始时间";
     _sCalendar.popoverText.popoverTextField.text=[NSDate stringFromDate:date withFormat:@"yyyy-MM-dd"];
     _sCalendar.popoverView.popoverTitle=@"开始时间";
-    _sCalendar.popoverView.clearButtonTitle=@"取消";
     _sCalendar.isClearEmpty=NO;
     //添加事件监听事件
     //[_sCalendar.popoverText.popoverTextField addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
@@ -168,7 +168,6 @@
     _eCalendar.popoverText.popoverTextField.placeholder=@"结束时间";
     _eCalendar.popoverText.popoverTextField.text=[NSDate stringFromDate:date1 withFormat:@"yyyy-MM-dd"];
     _eCalendar.popoverView.popoverTitle=@"结束时间";
-    _eCalendar.popoverView.clearButtonTitle=@"取消";
     _eCalendar.isClearEmpty=NO;
     //添加属性事件监听
     //[_eCalendar.popoverText.popoverTextField addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];

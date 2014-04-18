@@ -35,7 +35,15 @@
         self.picker.delegate = self;
         self.picker.dataSource = self;
         self.picker.showsSelectionIndicator = YES;
-        self.picker.backgroundColor=[UIColor whiteColor];
+        self.picker.backgroundColor=[UIColor clearColor];
+        
+        if (IOSVersion<7.0) {
+            
+        }
+        
+        //[(UIView*)[[self.picker subviews] objectAtIndex:0] setAlpha:0.0f];
+        //[(UIView*)[[self.picker subviews] objectAtIndex:1] setAlpha:0.0f];
+        //[(UIView*)[[self.picker subviews] objectAtIndex:3] setAlpha:0.0f];
         //初始化弹出框
         self.popoverView=[[CVUIPopoverView alloc] initWithFrame:CGRectZero];
         self.popoverView.delegate=self;

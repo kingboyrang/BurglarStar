@@ -24,7 +24,7 @@
     _select.popoverText.popoverTextField.borderStyle=UITextBorderStyleRoundedRect;
     _select.popoverText.popoverTextField.placeholder=@"请选择车牌号码";
     
-    UIImage *img=[UIImage imageNamed:@"DownAccessory.png"];
+    UIImage *img=[UIImage imageNamed:@"DownAccessory@2x.png"];//  arrowdown.png
     UIImageView *imageView=[[[UIImageView alloc] initWithImage:img] autorelease];
     _select.popoverText.popoverTextField.enabled=NO;
     _select.popoverText.popoverTextField.rightView=imageView;

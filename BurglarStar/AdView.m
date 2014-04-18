@@ -287,19 +287,19 @@ static float maxLoc = 0.f, minLoc = 0.f;
         }
     } while (TRUE);
     
-    switch (bJmp)
+    switch ((int)bJmp)
     {
-        case FIRST:
+        case (int)FIRST:
         {
             pc_AdPage.currentPage = 0;
         }
             break;
-        case LAST:
+        case (int)LAST:
         {
             pc_AdPage.currentPage = ([_ads count]>0?[_ads count]:0);
         }
             break;
-        case NORMAL:
+        case (int)NORMAL:
         {
             [pc_AdPage setCurrentPage:scrollView.contentOffset.x/320.f];
         }

@@ -21,6 +21,7 @@
 }
 @property(nonatomic,retain) UIPopoverController *popController;
 @property(nonatomic,retain) UIToolbar *toolBar;
+@property(nonatomic,strong) UILabel *labTitle;
 @property(nonatomic,copy) NSString *popoverTitle;
 @property(nonatomic,copy) NSString *cancelButtonTitle;
 @property(nonatomic,copy) NSString *doneButtonTitle;
