@@ -76,6 +76,8 @@
     cell2.textField.layer.borderColor=[UIColor colorFromHexRGB:@"6ab3c3"].CGColor;
     cell2.textField.delegate=self;
     cell2.textField.keyboardType=UIKeyboardTypeAlphabet;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textUserChange:) name:UITextFieldTextDidChangeNotification object:nil];
+    [cell2.textField addTarget:self action:@selector(textUserChange:) forControlEvents:UIControlEventValueChanged];
     
     TKLabelCell *cell3=[[[TKLabelCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
     cell3.label.text=@"密码";
@@ -113,6 +115,14 @@
 
     
     
+}
+//检测帐号
+- (void)textUserChange:(NSNotification*)notifice{
+    UITextField *field=[notifice object];
+    TKTextFieldCell *cell1=self.cells[1];
+    if (cell1.textField==field) {
+       [self replaceUIDstring];
+    }
 }
 #pragma mark - Notifications
 - (void)handleKeyboardWillShowHideNotification:(NSNotification *)notification
@@ -229,7 +239,8 @@
                                                      error:nil];
     TKTextFieldCell *cell1=self.cells[1];
     NSString *str=[cell1.textField.text Trim];
-    cell1.textField.text = [regular stringByReplacingMatchesInString:str options:NSRegularExpressionCaseInsensitive  range:NSMakeRange(0, [str length]) withTemplate:@""];  
+    //NSRegularExpressionCaseInsensitive
+    cell1.textField.text = [regular stringByReplacingMatchesInString:str options:2  range:NSMakeRange(0, [str length]) withTemplate:@""];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -339,7 +350,6 @@
     BOOL boo=YES;
     TKTextFieldCell *cell=self.cells[1];
     if (cell.textField==textField) {
-        [self replaceUIDstring];
         if(strlen([textField.text UTF8String]) >= 12 && range.length != 1)
             boo=NO;
     }else{

@@ -33,8 +33,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.title=@"个人中心";
     CGRect r=self.view.bounds;
     r.size.height-=[self topHeight];
 	MoreMenuView *menu=[[MoreMenuView alloc] initWithFrame:r];

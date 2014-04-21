@@ -42,19 +42,23 @@
 }
 //回列表
 - (void)buttonListClick{
-    [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:2] animated:YES];
+    NSInteger index=[self.navigationController.viewControllers count]-1-1;
+    NSInteger total=[self.navigationController.viewControllers count]-1-1;
+    for (NSInteger i=total; i>=0; i--) {
+        if ([[self.navigationController.viewControllers objectAtIndex:i] isKindOfClass:[SupervisionViewController class]]) {
+            index=i;
+            break;
+        }
+    }
+    [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:index] animated:YES];
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.title=self.Entity.Name;
     
-    if (self.navigationController.viewControllers.count>=3) {
-        if ([self.navigationController.viewControllers[2] isKindOfClass:[SupervisionViewController class]]) {
-            UIBarButtonItem *rightBtn=[UIBarButtonItem barButtonWithTitle:@"列表" target:self action:@selector(buttonListClick) forControlEvents:UIControlEventTouchUpInside];
-            self.navigationItem.rightBarButtonItem=rightBtn;
-        }
-    }
+    UIBarButtonItem *rightBtn=[UIBarButtonItem barButtonWithTitle:@"列表" target:self action:@selector(buttonListClick) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem=rightBtn;
     
     self.cameraImage=[[CaseCameraImage alloc] init];
     self.cameraImage.delegate=self;
@@ -127,8 +131,6 @@
                     [self.delegate performSelector:sel1 withObject:fileName];
                 }
             }];
-        }else{
-            //[AlertHelper initWithTitle:@"提示" message:@"未选择头像!"];
         }
     }else{
         if (_imageCropper) {
@@ -139,8 +141,6 @@
             }
             [self.navigationController popViewControllerAnimated:YES];
             return;
-        }else{
-            //[AlertHelper initWithTitle:@"提示" message:@"未选择头像!"];
         }
     }
     [self.navigationController popViewControllerAnimated:YES];
@@ -203,7 +203,6 @@
                     if (completed) {
                         completed(name);
                     }
-                    NSLog(@"name=%@",name);
                     [self.navigationController popViewControllerAnimated:YES];
                 }];
             }

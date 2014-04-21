@@ -30,13 +30,6 @@
 }
 -(void)popself
 {
-    SEL sel=NSSelectorFromString(@"backPrevViewController");
-    if (self.basicNavDelegate&&[self.basicNavDelegate respondsToSelector:sel]) {
-        BOOL boo=(BOOL)[self.basicNavDelegate performSelector:sel withObject:nil];
-        if (!boo) {
-            return;
-        }
-    }
    [self popViewControllerAnimated:YES];
 }
 -(UIBarButtonItem*)customLeftBackButton{

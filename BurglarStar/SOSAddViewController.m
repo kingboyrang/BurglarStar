@@ -213,7 +213,7 @@
     btn.enabled=NO;
     Account *acc=[Account unarchiverAccount];
     NSMutableArray *params=[NSMutableArray array];
-    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.UserId,@"UserID", nil]];
+    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.WorkNo,@"UserID", nil]];
     [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:[cell2.select value],@"CarID", nil]];
     [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:imageStr,@"Image", nil]];
     [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:cell3.textView.text,@"Contents", nil]];

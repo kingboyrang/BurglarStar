@@ -18,12 +18,13 @@
     
     [self registerBaiduMap];//百度地图注册
     [self appInitSet];//初始化设置
-   
+    
+    //推播数清0
+    [application setApplicationIconBadgeNumber:0];
     
     MainViewController *main=[[[MainViewController alloc] init] autorelease];
     BasicNavigationController *nav=[[[BasicNavigationController alloc] initWithRootViewController:main] autorelease];
 
-    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
@@ -65,6 +66,9 @@
 }
 #pragma mark - custom Methods
 - (void)appInitSet{
+    //注册推播
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound)];
+    //控件颜色设置
     NSShadow *shadow = [[NSShadow alloc] init];
     shadow.shadowColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8];
     shadow.shadowOffset = CGSizeMake(0, 1);
@@ -91,5 +95,33 @@
 - (void)onGetPermissionState:(int)iError
 {
     NSLog(@"onGetPermissionState %d",iError);
+}
+#pragma mark - APNS 回傳結果
+// 成功取得設備編號token
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    
+    NSString *deviceId = [[deviceToken description]
+                          substringWithRange:NSMakeRange(1, [[deviceToken description] length]-2)];
+    deviceId = [deviceId stringByReplacingOccurrencesOfString:@" " withString:@""];
+    deviceId = [deviceId stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    Account *acc=[Account unarchiverAccount];
+    acc.appToken=deviceId;
+    [acc save];
+    /***
+    [BPush registerDeviceToken: deviceToken];
+    [BPush bindChannel];
+     ***/
+    
+}
+#pragma mark - 接收推播信息
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+   
+    [application setApplicationIconBadgeNumber:0];
+    /***
+    [BPush handleNotification:userInfo];
+    MainViewController *main=(MainViewController*)self.window.rootViewController;
+    [main setSelectedItemIndex:2];
+     ***/
 }
 @end

@@ -210,7 +210,7 @@
             NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:[node.InnerText dataUsingEncoding:NSUTF8StringEncoding] options:1 error:nil];
             if ([[dic objectForKey:@"Result"] isEqualToString:@"1"]) {
                 boo=YES;
-                [self hideLoadingViewAnimated:^(AnimateLoadView *hideView) {
+                [self hideLoadingSuccessWithTitle:@"个人信息更新成功!" completed:^(AnimateErrorView *successView) {
                     [Account updateInfo:[cell1.textField.text Trim] nick:[cell2.textField.text Trim]];
                     [self.navigationController popViewControllerAnimated:YES];
                 }];

@@ -25,7 +25,7 @@
    
 }
 @property (nonatomic,assign) CGRect tableRect;
-- (void)buttonSubmit;
+- (void)buttonSubmit:(UIButton*)btn;
 - (void)buttonCancel;
 - (void)buttonChooseImage;
 - (void)finishEditTrajectory:(void(^)(NSString *personId))completed;
@@ -85,7 +85,7 @@
     //_toolBar.submit.frame=CGRectMake(self.view.bounds.size.width/3, 0, self.view.bounds.size.width/3, 44);
     //[_toolBar.cancel setTitle:@"下一步" forState:UIControlStateNormal];
     [_toolBar.button setTitle:@"完成" forState:UIControlStateNormal];
-    [_toolBar.button addTarget:self action:@selector(buttonSubmit) forControlEvents:UIControlEventTouchUpInside];
+    [_toolBar.button addTarget:self action:@selector(buttonSubmit:) forControlEvents:UIControlEventTouchUpInside];
     //[_toolBar.cancel addTarget:self action:@selector(buttonCancel) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_toolBar];
     
@@ -288,6 +288,7 @@
         [self showErrorNetWorkNotice:nil];
         return;
     }
+    _toolBar.button.enabled=NO;
     [self showLoadingAnimatedWithTitle:@"修改车辆管理,请稍后..."];
     
         NSMutableArray *params=[NSMutableArray arrayWithCapacity:6];
@@ -306,6 +307,7 @@
         args.soapParams=params;
        ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
     [request setCompletionBlock:^{
+         _toolBar.button.enabled=YES;
         BOOL boo=NO;
         NSString *status=@"";
         if (request.ServiceResult.success) {
@@ -313,7 +315,7 @@
             NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:[node.InnerText dataUsingEncoding:NSUTF8StringEncoding] options:1 error:nil];
             if ([[dic objectForKey:@"Result"] isEqualToString:@"1"]) {
                 boo=YES;
-                [self hideLoadingViewAnimated:^(AnimateLoadView *hideView) {
+                [self hideLoadingSuccessWithTitle:@"修改成功!" completed:^(AnimateErrorView *successView) {
                     if (completed) {
                         completed(self.Entity.ID);
                     }
@@ -347,12 +349,13 @@
         }
     }];
     [request setFailedBlock:^{
+        _toolBar.button.enabled=YES;
          [self hideLoadingFailedWithTitle:@"修改车辆管理失败!" completed:nil];
     }];
     [request startAsynchronous];
 }
 //完成
-- (void)buttonSubmit{
+- (void)buttonSubmit:(UIButton*)btn{
     [self finishEditTrajectory:^(NSString *personId) {
         [self.navigationController popViewControllerAnimated:YES];
     }];
@@ -389,7 +392,7 @@
                                                    options:NSRegularExpressionCaseInsensitive
                                                      error:nil];
     NSString *str=[field.text Trim];
-    field.text = [regular stringByReplacingMatchesInString:str options:NSRegularExpressionCaseInsensitive  range:NSMakeRange(0, [str length]) withTemplate:@""];
+    field.text =[regular stringByReplacingMatchesInString:str options:NSRegularExpressionCaseInsensitive  range:NSMakeRange(0, [str length]) withTemplate:@""];
 }
 - (CGRect)fieldToRect:(UITextField*)field{
     id v=[field superview];

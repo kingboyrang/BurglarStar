@@ -634,8 +634,9 @@
             if([[dic objectForKey:@"Result"] isEqualToString:@"Success"])
             {
                 boo=YES;
+                NSInteger index=[self.navigationController.viewControllers count]-1-1-1-1;
                 [self hideLoadingViewAnimated:^(AnimateLoadView *hideView) {
-                    [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:2] animated:YES];
+                    [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:index] animated:YES];
                 }];
             }
         }

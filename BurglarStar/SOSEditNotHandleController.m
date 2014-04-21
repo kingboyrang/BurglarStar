@@ -122,7 +122,7 @@
             NSArray *source=[dic objectForKey:@"Person"];
             //ID,Name
             [cell.select setDataSourceForArray:source dataTextName:@"Name" dataValueName:@"ID"];
-            [cell.select findBindValue:self.Entity.CarNo];
+            [cell.select findBindValue:self.Entity.carID];
         }
         
     }];

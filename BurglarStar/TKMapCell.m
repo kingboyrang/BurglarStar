@@ -63,8 +63,9 @@
     _progressView.progress=updateInfo.ratio/100.0;
     if (updateInfo.ratio==100) {//表示下载完成
         isFinished=YES;
-        if (self.controlers&&[self.controlers respondsToSelector:@selector(finishedDownloadWithRow:element:)]) {
-            [self.controlers performSelector:@selector(finishedDownloadWithRow:element:) withObject:self withObject:updateInfo];
+         SEL sel=NSSelectorFromString(@"finishedDownloadWithRow:element:");
+        if (self.controlers&&[self.controlers respondsToSelector:sel]) {
+            [self.controlers performSelector:sel withObject:self withObject:updateInfo];
         }
     }
 }

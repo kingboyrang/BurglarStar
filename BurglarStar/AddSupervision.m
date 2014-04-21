@@ -57,28 +57,19 @@
 }
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
-   
-   
-
-    
     [self loadingPersonInfo];//修改时，加载信息
 }
 //回列表
 - (void)buttonListClick{
-   [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:2] animated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.title=@"车辆管理";
     
-    if (self.navigationController.viewControllers.count>=3) {
-        if ([self.navigationController.viewControllers[2] isKindOfClass:[SupervisionViewController class]]) {
-            UIBarButtonItem *rightBtn=[UIBarButtonItem barButtonWithTitle:@"列表" target:self action:@selector(buttonListClick) forControlEvents:UIControlEventTouchUpInside];
-            self.navigationItem.rightBarButtonItem=rightBtn;
-        }
-    }
+    UIBarButtonItem *rightBtn=[UIBarButtonItem barButtonWithTitle:@"列表" target:self action:@selector(buttonListClick) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem=rightBtn;
     
 	CGRect r=self.view.bounds;
     r.size.height-=[self topHeight]+44;
@@ -285,7 +276,7 @@
         [self showErrorNetWorkNotice:nil];
         return;
     }
-    
+    _toolBar.button.enabled=NO;
     [self showLoadingAnimatedWithTitle:@"新增车辆管理,请稍后..."];
     [self uploadImageWithId:@"" completed:^(NSString *fileName) {
         NSMutableArray *params=[NSMutableArray arrayWithCapacity:6];
@@ -304,6 +295,7 @@
         //NSLog(@"soap=%@",args.soapMessage);
         ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
         [request setCompletionBlock:^{
+             _toolBar.button.enabled=YES;
             BOOL boo=NO;
             NSString *status=@"0";
             if (request.ServiceResult.success) {
@@ -311,7 +303,7 @@
                 NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:[node.InnerText dataUsingEncoding:NSUTF8StringEncoding] options:1 error:nil];
                 if ([dic.allKeys containsObject:@"ID"]) {
                     boo=YES;
-                    [self hideLoadingViewAnimated:^(AnimateLoadView *hideView) {
+                    [self hideLoadingSuccessWithTitle:@"新增成功!" completed:^(AnimateErrorView *successView) {
                         if (completed) {
                             self.PhoneName=fileName;
                             completed([dic objectForKey:@"ID"],[dic objectForKey:@"DeviceCode"]);
@@ -343,6 +335,7 @@
             }
         }];
         [request setFailedBlock:^{
+             _toolBar.button.enabled=YES;
             [self hideLoadingFailedWithTitle:@"新增车辆管理失败!" completed:nil];
         }];
         [request startAsynchronous];

@@ -20,6 +20,7 @@
 @property(nonatomic,assign) BOOL isLogin;//是否已登入
 @property(nonatomic,assign) BOOL isRememberPwd;//是否记住密码
 @property(nonatomic,assign) float zoomLevel;//地图等级
+@property(nonatomic,copy) NSString *appToken;//推播token
 //保存
 - (void)save;
 //注销

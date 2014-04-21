@@ -18,6 +18,7 @@
     [encoder encodeObject:self.Name forKey:@"Name"];
     [encoder encodeObject:self.Phone forKey:@"Phone"];
     [encoder encodeObject:self.WorkNo forKey:@"WorkNo"];
+    [encoder encodeObject:self.appToken forKey:@"appToken"];
     
     [encoder encodeBool:self.isFirstRun forKey:@"isFirstRun"];
     [encoder encodeBool:self.isLogin forKey:@"isLogin"];
@@ -39,6 +40,7 @@
         self.isLogin=[aDecoder decodeBoolForKey:@"isLogin"];
         self.isRememberPwd=[aDecoder decodeBoolForKey:@"isRememberPwd"];
         self.zoomLevel=[aDecoder decodeFloatForKey:@"zoomLevel"];
+        self.appToken=[aDecoder decodeObjectForKey:@"appToken"];
     }
     return self;
 }
@@ -57,6 +59,7 @@
     acc.Phone=@"";
     acc.WorkNo=@"";
     acc.Way=@"";
+    acc.appToken=@"";
     acc.zoomLevel=11.0;
     [acc save];
 }

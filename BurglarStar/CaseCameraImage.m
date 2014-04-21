@@ -43,8 +43,9 @@
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
 	UIImage *image=[info objectForKey:UIImagePickerControllerEditedImage];
-    if (self.delegate&&[self.delegate respondsToSelector:@selector(finishedImage:)]) {
-        [self.delegate performSelector:@selector(finishedImage:) withObject:image];
+    SEL sel=NSSelectorFromString(@"finishedImage:");
+    if (self.delegate&&[self.delegate respondsToSelector:sel]) {
+        [self.delegate performSelector:sel withObject:image];
     }
 }
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker

@@ -44,9 +44,9 @@
     self.labAddress.lineBreakMode=NSLineBreakByWordWrapping;
     if (entity.Address&&[entity.Address length]>0) {
         CGSize size=[entity.Address textSize:[UIFont systemFontOfSize:12] withWidth:253];
-        if (size.height>20) {
+        if (size.height>15) {
             CGRect r=self.frame;
-            r.size.height+=size.height-20;
+            r.size.height+=size.height-15;
             self.frame=r;
         }
     }

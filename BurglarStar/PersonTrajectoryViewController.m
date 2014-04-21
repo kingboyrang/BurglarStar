@@ -18,6 +18,7 @@
 #import "ASIServiceHTTPRequest.h"
 @interface PersonTrajectoryViewController ()<UITableViewDataSource,UITableViewDelegate>{
     UITableView *_tableView;
+    BOOL isFirstLoad;
 }
 - (void)loadingHistory;
 @end
@@ -49,7 +50,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    isFirstLoad=YES;
     if (self.Entity&&self.Entity.Name&&[self.Entity.Name length]>0) {
         self.title=[NSString stringWithFormat:@"%@--足迹",self.Entity.Name];
     }
@@ -173,8 +174,10 @@
     args.serviceURL=DataWebservice1;
     args.serviceNameSpace=DataNameSpace1;
     args.soapParams=params;
-    
-    [self showLoadingAnimatedWithTitle:@"正在加载,请稍后..."];
+    if (isFirstLoad) {
+         [self showLoadingAnimatedWithTitle:@"正在加载,请稍后..."];
+    }
+   
     ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
     [request setCompletionBlock:^{
         BOOL boo=NO;
@@ -182,6 +185,9 @@
             XmlNode *node=[request.ServiceResult methodNode];
             NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:[node.InnerText dataUsingEncoding:NSUTF8StringEncoding] options:1 error:nil];
             if ([dic.allKeys containsObject:@"Person"]) {
+                if (isFirstLoad) {
+                    isFirstLoad=NO;
+                }
                 boo=YES;
                 [self hideLoadingViewAnimated:^(AnimateLoadView *hideView) {
                     NSArray *source=[dic objectForKey:@"Person"];
@@ -191,11 +197,18 @@
             }
         }
         if (!boo) {
-            [self hideLoadingFailedWithTitle:@"加载失败!" completed:nil];
+            if (isFirstLoad) {
+                isFirstLoad=NO;
+                [self hideLoadingFailedWithTitle:@"加载失败!" completed:nil];
+            }
         }
     }];
     [request setFailedBlock:^{
-        [self hideLoadingFailedWithTitle:@"加载失败!" completed:nil];
+        if (isFirstLoad) {
+            isFirstLoad=NO;
+            [self hideLoadingFailedWithTitle:@"加载失败!" completed:nil];
+        }
+        
     }];
     [request startAsynchronous];
     
@@ -236,10 +249,10 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     TrajectoryHistory *entity=self.cells[indexPath.row];
-    CGFloat w=self.view.bounds.size.width-105-26-10;
+    CGFloat w=self.view.bounds.size.width-110-26-5;
     CGSize size=[entity.address textSize:[UIFont fontWithName:DeviceFontName size:14] withWidth:w];
-    if (size.height+10>44) {
-        return size.height+10+2;
+    if (size.height>18) {
+        return size.height-18+44;
     }
     return 44;
 }

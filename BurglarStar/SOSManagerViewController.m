@@ -82,7 +82,7 @@
     args.serviceURL=DataSOSWebservice;
     args.serviceNameSpace=DataSOSNameSpace;
     args.methodName=@"GetUserSosList";
-    args.soapParams=[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:acc.UserId,@"UserID", nil], nil];
+    args.soapParams=[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:acc.WorkNo,@"UserID", nil], nil];
     //NSLog(@"soap=%@",args.bodyMessage);
     if (isFirstLoad) {
        [self showLoadingAnimatedWithTitle:@"正在加载,请稍后..."];
@@ -93,9 +93,10 @@
             isFirstLoad=NO;
             [self hideLoadingViewAnimated:nil];
         }
-        //NSLog(@"xml=%@",request.responseString);
+      
         if (request.ServiceResult.success) {
-            XmlNode *node=[request.ServiceResult json];
+            [request.ServiceResult.xmlParse setDataSource:request.ServiceResult.filterXml];
+            XmlNode *node=[request.ServiceResult.xmlParse selectSingleNode:request.ServiceResult.xpath];
             NSArray *arr=[SOSMessage jsonSerializationSOSMessages:node.InnerText];
             if (arr&&[arr count]>0) {
                 self.list=[NSMutableArray arrayWithArray:arr];

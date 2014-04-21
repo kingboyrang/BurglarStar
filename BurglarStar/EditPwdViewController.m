@@ -254,7 +254,7 @@
             stauts=[dic objectForKey:@"Result"];
             if ([stauts isEqualToString:@"2"]) {
                 boo=YES;
-                [self hideLoadingViewAnimated:^(AnimateLoadView *hideView) {
+                [self hideLoadingSuccessWithTitle:@"密码修改成功!" completed:^(AnimateErrorView *successView) {
                     [Account editPwd:[cell2.textField.text Trim] encrypt:@""];
                     [self.navigationController popViewControllerAnimated:YES];
                 }];

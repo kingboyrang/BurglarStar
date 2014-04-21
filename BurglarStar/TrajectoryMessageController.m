@@ -395,10 +395,11 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     TrajectoryMessage *entity=self.cells[indexPath.row];
+    
     if (entity.Address&&[entity.Address length]>0) {
-        CGSize size=[entity.Address textSize:[UIFont systemFontOfSize:16] withWidth:280];
-        if (size.height>20) {
-            return 65+size.height-20;
+        CGSize size=[entity.Address textSize:[UIFont systemFontOfSize:12] withWidth:253];
+        if (size.height>15) {
+            return 65+size.height-15;
         }
     }
     return 65;

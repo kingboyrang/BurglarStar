@@ -7,9 +7,5 @@
 //
 
 #import <UIKit/UIKit.h>
-
-
-
 @interface BasicNavigationController : UINavigationController
-@property (nonatomic,assign) id basicNavDelegate;
 @end
