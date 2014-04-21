@@ -16,6 +16,7 @@
 #import "AreaViewController.h"
 #import "OnlineMapViewController.h"
 #import "UIButton+TPCategory.h"
+#import "BasicWebViewController.h"
 @interface MoreViewController ()
 @end
 
@@ -80,13 +81,25 @@
         }];
     }
     if (index==5) {//意见反馈
-        
+        BasicWebViewController *basiceWeb=[[BasicWebViewController alloc] init];
+        basiceWeb.title=@"意见反馈";
+        basiceWeb.webURL=@"http://www.sina.com.cn";
+        [self.navigationController pushViewController:basiceWeb animated:YES];
+        [basiceWeb release];
     }
     if (index==6) {//关于我们
-        
+        BasicWebViewController *basiceWeb=[[BasicWebViewController alloc] init];
+        basiceWeb.title=@"关于我们";
+        basiceWeb.webURL=@"http://www.apple.cn";
+        [self.navigationController pushViewController:basiceWeb animated:YES];
+        [basiceWeb release];
     }
     if (index==7) {//帮助
-        
+        BasicWebViewController *basiceWeb=[[BasicWebViewController alloc] init];
+        basiceWeb.title=@"帮助";
+        basiceWeb.webURL=@"http://www.sohu.com";
+        [self.navigationController pushViewController:basiceWeb animated:YES];
+        [basiceWeb release];
     }
 }
 @end

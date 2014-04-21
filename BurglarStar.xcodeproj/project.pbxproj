@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		013F7EB41900B00500B924FA /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 013F7EB31900B00500B924FA /* iTunesArtwork */; };
-		0198F8E618FE114C00F2DABE /* SosMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F8E518FE114C00F2DABE /* SosMessageViewController.m */; };
+		0143A2541904AD7E00EB7B6E /* BasicWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0143A2531904AD7E00EB7B6E /* BasicWebViewController.m */; };
+		0198F8E618FE114C00F2DABE /* NoticeMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F8E518FE114C00F2DABE /* NoticeMessageViewController.m */; };
 		0198F8E918FE11A000F2DABE /* SOSMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F8E818FE11A000F2DABE /* SOSMessage.m */; };
 		0198F8ED18FE164E00F2DABE /* SOSManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F8EC18FE164E00F2DABE /* SOSManagerViewController.m */; };
 		0198F8F118FE18C100F2DABE /* TKSOSCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F8F018FE18C100F2DABE /* TKSOSCell.m */; };
@@ -226,8 +227,10 @@
 
 /* Begin PBXFileReference section */
 		013F7EB31900B00500B924FA /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
-		0198F8E418FE114C00F2DABE /* SosMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SosMessageViewController.h; sourceTree = "<group>"; };
-		0198F8E518FE114C00F2DABE /* SosMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SosMessageViewController.m; sourceTree = "<group>"; };
+		0143A2521904AD7E00EB7B6E /* BasicWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicWebViewController.h; sourceTree = "<group>"; };
+		0143A2531904AD7E00EB7B6E /* BasicWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicWebViewController.m; sourceTree = "<group>"; };
+		0198F8E418FE114C00F2DABE /* NoticeMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeMessageViewController.h; sourceTree = "<group>"; };
+		0198F8E518FE114C00F2DABE /* NoticeMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeMessageViewController.m; sourceTree = "<group>"; };
 		0198F8E718FE11A000F2DABE /* SOSMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOSMessage.h; sourceTree = "<group>"; };
 		0198F8E818FE11A000F2DABE /* SOSMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOSMessage.m; sourceTree = "<group>"; };
 		0198F8EB18FE164E00F2DABE /* SOSManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOSManagerViewController.h; sourceTree = "<group>"; };
@@ -691,13 +694,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0198F8E318FE111A00F2DABE /* SOSMessage */ = {
+		0198F8E318FE111A00F2DABE /* NoticeMessage */ = {
 			isa = PBXGroup;
 			children = (
-				0198F8E418FE114C00F2DABE /* SosMessageViewController.h */,
-				0198F8E518FE114C00F2DABE /* SosMessageViewController.m */,
+				0198F8E418FE114C00F2DABE /* NoticeMessageViewController.h */,
+				0198F8E518FE114C00F2DABE /* NoticeMessageViewController.m */,
 			);
-			name = SOSMessage;
+			name = NoticeMessage;
 			sourceTree = "<group>";
 		};
 		0198F8EA18FE161A00F2DABE /* SOSManager */ = {
@@ -848,7 +851,7 @@
 			isa = PBXGroup;
 			children = (
 				0198F8EA18FE161A00F2DABE /* SOSManager */,
-				0198F8E318FE111A00F2DABE /* SOSMessage */,
+				0198F8E318FE111A00F2DABE /* NoticeMessage */,
 				01CD56C518FCD24B007731E1 /* OnlineMap */,
 				01C2F15D18F5217300B37603 /* Area */,
 				01C2F0FA18F4E46E00B37603 /* More */,
@@ -1414,6 +1417,8 @@
 				01C2F10118F4E48E00B37603 /* MoreViewController.h */,
 				01C2F10218F4E48E00B37603 /* MoreViewController.m */,
 				01C2F0FB18F4E47900B37603 /* UI */,
+				0143A2521904AD7E00EB7B6E /* BasicWebViewController.h */,
+				0143A2531904AD7E00EB7B6E /* BasicWebViewController.m */,
 			);
 			name = More;
 			sourceTree = "<group>";
@@ -1804,6 +1809,7 @@
 				01CD567818F691EB007731E1 /* AdModel.m in Sources */,
 				01C2F0E918F4DF4B00B37603 /* PinView.m in Sources */,
 				01C2EF0B18F29C5E00B37603 /* ASIServiceArgs.m in Sources */,
+				0143A2541904AD7E00EB7B6E /* BasicWebViewController.m in Sources */,
 				01C2F0E618F4DEDD00B37603 /* ToolBarMenu.m in Sources */,
 				0198F8ED18FE164E00F2DABE /* SOSManagerViewController.m in Sources */,
 				01C2EF0D18F29C5E00B37603 /* ASIServiceHTTPRequest.m in Sources */,
@@ -1833,7 +1839,7 @@
 				01C2F13F18F4F60300B37603 /* CVUICalendar.m in Sources */,
 				01C2F0D618F4DDCF00B37603 /* BMKAnnotationView+TPCategory.m in Sources */,
 				0198F8FB18FE2A0700F2DABE /* TKTextViewCell.m in Sources */,
-				0198F8E618FE114C00F2DABE /* SosMessageViewController.m in Sources */,
+				0198F8E618FE114C00F2DABE /* NoticeMessageViewController.m in Sources */,
 				0198F90118FE2E5200F2DABE /* TKHeadPhotoCell.m in Sources */,
 				01C2EF1918F29DA900B37603 /* XmlNode.m in Sources */,
 				01C2F12518F4E89900B37603 /* SDWebImageDecoder.m in Sources */,

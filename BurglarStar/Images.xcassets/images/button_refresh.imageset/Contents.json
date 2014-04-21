@@ -2,12 +2,8 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "btn_round_bg.png"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "2x"
+      "scale" : "2x",
+      "filename" : "button_refresh@2x.png"
     }
   ],
   "info" : {

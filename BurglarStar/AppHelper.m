@@ -109,7 +109,17 @@
     
     UIWindow *window=[[UIApplication sharedApplication] keyWindow];
     UIView *imageView=(UIView*)[window viewWithTag:970];
-    
+    [UIView animateWithDuration:1.0f animations:^{
+        imageView.alpha= 0.0;
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [imageView removeFromSuperview];
+            if ([window viewWithTag:970]) {
+                [[window viewWithTag:970] removeFromSuperview];
+            }
+        }
+    }];
+    /***
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
     [UIView setAnimationDuration:1.0];
@@ -117,5 +127,6 @@
     [UIView setAnimationDidStopSelector:@selector(removeView)];
     imageView.alpha= 0.0;
     [UIView commitAnimations];
+     ***/
 }
 @end
