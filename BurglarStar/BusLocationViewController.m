@@ -45,8 +45,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    if (self.Entity&&self.Entity.Name&&[self.Entity.Name length]>0) {
+        self.title=self.Entity.Name;
+    }
     
-    self.title=self.Entity.Name;
 	CGRect r=self.view.bounds;
     r.size.height-=[self topHeight];
     _mapView= [[BMKMapView alloc]initWithFrame:r];
@@ -59,17 +61,19 @@
     
 }
 - (void)showPointAnnotation{
-    CLLocationCoordinate2D coor;
-    coor.latitude=[self.Entity.Latitude floatValue];
-    coor.longitude=[self.Entity.Longitude floatValue];
-    
-    BMKPointAnnotation* item = [[BMKPointAnnotation alloc] init];
-    item.coordinate =coor;
-    item.title=@"当前位置";
-    [_mapView addAnnotation:item];
-    [_mapView setCenterCoordinate:coor animated:YES];
-    [_mapView selectAnnotation:item animated:YES];
-    [item release];
+    if (self.Entity.Latitude&&[self.Entity.Latitude length]>0&&self.Entity.Longitude&&[self.Entity.Longitude length]>0) {
+        CLLocationCoordinate2D coor;
+        coor.latitude=[self.Entity.Latitude floatValue];
+        coor.longitude=[self.Entity.Longitude floatValue];
+        
+        BMKPointAnnotation* item = [[BMKPointAnnotation alloc] init];
+        item.coordinate =coor;
+        item.title=@"当前位置";
+        [_mapView addAnnotation:item];
+        [_mapView setCenterCoordinate:coor animated:YES];
+        [_mapView selectAnnotation:item animated:YES];
+        [item release];
+    }
 }
 -(void)cleanMap
 {
@@ -103,6 +107,7 @@
                 self.Entity.extend=[item objectForKey:@"extend"];
                 //NSLog(@"pctime=%@",self.Entity.PCTime);
                 //[self reloadTableSource:self.Entity];
+                self.title=self.Entity.Name;
             }
         }
         [self showPointAnnotation];

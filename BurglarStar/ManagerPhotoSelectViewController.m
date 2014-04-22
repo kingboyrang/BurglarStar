@@ -12,6 +12,9 @@
 #import "UIImage+TPCategory.h"
 #import "AlertHelper.h"
 #import "UIImageView+WebCache.h"
+
+#define SosHeadImageHeight 270.0f
+
 @interface ManagerPhotoSelectViewController (){
    CaseCameraImage *_cameraImage;
 }
@@ -19,6 +22,8 @@
 - (void)buttonCameraClick;
 - (void)buttonPrevClick;
 - (void)buttonSubmitClick;
+- (CGSize)autoImageSize:(CGSize)imgSize;
+- (void)reLoadPrevImage:(UIImage*)img;
 @end
 
 @implementation ManagerPhotoSelectViewController
@@ -53,25 +58,32 @@
     BOOL hasImg=NO;
     if (self.photoDelegate&&[self.photoDelegate respondsToSelector:@selector(viewerShowImage)]) {
         UIImage *img=[self.photoDelegate viewerShowImage];
-        if (img!=nil) {
+        if (img) {
             hasImg=YES;
-            [_preview setImage:img];
+            [self reLoadPrevImage:img];
         }
     }
     if (!hasImg) {
          if (self.photoDelegate&&[self.photoDelegate respondsToSelector:@selector(viewerImageURLString)]) {
              hasImg=YES;
              NSString *urlString=[self.photoDelegate viewerImageURLString];
-             [_preview setImageWithURL:[NSURL URLWithString:urlString] placeholderImage:placeImg];
+             [_preview setImageWithURL:[NSURL URLWithString:urlString] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+                 if (image) {
+                     [self reLoadPrevImage:image];
+                 }else{
+                    [_preview setImage:placeImg];
+                 }
+             }];
          }
     }
     if (!hasImg) {
         [_preview setImage:placeImg];
     }
+    
     [self.view addSubview:_preview];
     [self.view sendSubviewToBack:_preview];
     
-    topY=275;
+    topY+=placeImg.size.height+10+5;
     UIImage *imgPhotos=[UIImage imageNamed:@"head_photos.png"];
     UIButton *_button=[UIButton buttonWithType:UIButtonTypeCustom];
     _button.frame=CGRectMake((self.view.bounds.size.width-imgPhotos.size.width)/2, topY, imgPhotos.size.width, imgPhotos.size.height);
@@ -135,13 +147,46 @@
         [_imageCropper release],_imageCropper=nil;
     }
     
-    UIImage *realImage=[image scaleToSize:CGSizeMake(270, 270)];
+    UIImage *realImage=[image scaleToSize:[self autoImageSize:image.size]];
     
-    CGRect r=CGRectMake((self.view.bounds.size.width-realImage.size.width)/2,(310-realImage.size.height)/2, realImage.size.width, realImage.size.height);
+    CGRect r=CGRectMake((self.view.bounds.size.width-realImage.size.width)/2,(SosHeadImageHeight-realImage.size.height)/2, realImage.size.width, realImage.size.height);
     _imageCropper = [[NLImageCropperView alloc] initWithFrame:r];
     [self.view addSubview:_imageCropper];
     [_imageCropper setImage:realImage];
     [_imageCropper setCropRegionRect:CGRectMake((realImage.size.width-170)*_imageCropper.scaleReal/2, (realImage.size.width-178)*_imageCropper.scaleReal/2, 170*_imageCropper.scaleReal, 178*_imageCropper.scaleReal)];
+}
+- (CGSize)autoImageSize:(CGSize)imgSize
+{
+    CGFloat oldWidth = imgSize.width;
+    CGFloat oldHeight = imgSize.height;
+    CGSize saveSize =imgSize;
+    
+    CGSize defaultSize =CGSizeMake(self.view.bounds.size.width, SosHeadImageHeight); //默認大小
+    CGFloat wPre = oldWidth / defaultSize.width;
+    CGFloat hPre = oldHeight / defaultSize.height;
+    if (oldWidth > defaultSize.width || oldHeight > defaultSize.height) {
+        if (wPre > hPre) {
+            saveSize.width = defaultSize.width;
+            saveSize.height = oldHeight / wPre;
+        }
+        else {
+            saveSize.width = oldWidth / hPre;
+            saveSize.height = defaultSize.height;
+        }
+    }
+    if (saveSize.width>defaultSize.width) {
+        saveSize.width=defaultSize.width;
+    }
+    if (saveSize.height>defaultSize.height) {
+        saveSize.height=defaultSize.height;
+    }
+    return saveSize;
+}
+- (void)reLoadPrevImage:(UIImage*)img{
+    CGSize size=[self autoImageSize:img.size];
+    CGRect r=CGRectMake((self.view.bounds.size.width-size.width)/2,(SosHeadImageHeight-size.height)/2, size.width, size.height);
+    _preview.frame=r;
+    [_preview setImage:img];
 }
 - (void)didReceiveMemoryWarning
 {

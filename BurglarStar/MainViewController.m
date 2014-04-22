@@ -79,10 +79,11 @@
     _scrollAdView=[[AdView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, topY)];
     _scrollAdView.backgroundColor=[UIColor colorFromHexRGB:@"e5e2d0"];
     [self.view addSubview:_scrollAdView];
-    
+    /***
     NSString *memo=@"深圳宝安区";
      CGSize size=[memo textSize:[UIFont systemFontOfSize:12] withWidth:320];
     NSLog(@"size=%@",NSStringFromCGSize(size));
+     ***/
 }
 - (void)loadInitControls{
     Account *acc=[Account unarchiverAccount];

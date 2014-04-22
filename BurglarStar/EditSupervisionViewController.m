@@ -128,6 +128,9 @@
     cell6.textField.placeholder=@"请输入SIM卡号";
     cell6.textField.delegate=self;
     cell6.textField.text=self.Entity.SimNo;
+    cell6.textField.keyboardType=UIKeyboardTypeNumberPad;
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textUserChange:) name:UITextFieldTextDidChangeNotification object:nil];
+    //[cell6.textField addTarget:self action:@selector(textUserChange:) forControlEvents:UIControlEventValueChanged];
     
     TKLabelCell *cell7=[[[TKLabelCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
     cell7.label.text=@"密码";
@@ -139,7 +142,13 @@
     cell8.textField.text=self.Entity.Password;
     
     self.cells=[NSMutableArray arrayWithObjects:cell9,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8, nil];
-    
+    //点击空白处，聊藏键盘
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(done:)];
+    tapGestureRecognizer.numberOfTapsRequired =1;
+    tapGestureRecognizer.cancelsTouchesInView =NO;
+    [_tableView addGestureRecognizer:tapGestureRecognizer];  //只需要点击非文字输入区域就会响应hideKeyBoard
+    [tapGestureRecognizer release];
+    //监听键盘的显示与隐藏
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleKeyboardWillShowHideNotification:)
                                                  name:UIKeyboardWillShowNotification
@@ -151,6 +160,15 @@
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
 
+}
+-(void)done:(id)sender
+{
+    for (id v in self.cells) {
+        if ([v isKindOfClass:[TKTextFieldCell class]]) {
+            TKTextFieldCell *cell=(TKTextFieldCell*)v;
+            [cell.textField resignFirstResponder];
+        }
+    }
 }
 #pragma mark - Notifications
 - (void)handleKeyboardWillShowHideNotification:(NSNotification *)notification
@@ -392,7 +410,7 @@
                                                    options:NSRegularExpressionCaseInsensitive
                                                      error:nil];
     NSString *str=[field.text Trim];
-    field.text =[regular stringByReplacingMatchesInString:str options:NSRegularExpressionCaseInsensitive  range:NSMakeRange(0, [str length]) withTemplate:@""];
+    field.text =[regular stringByReplacingMatchesInString:str options:2  range:NSMakeRange(0, [str length]) withTemplate:@""];
 }
 - (CGRect)fieldToRect:(UITextField*)field{
     id v=[field superview];
@@ -420,7 +438,6 @@
     //TKTextFieldCell *cell2=self.cells[4];
     TKTextFieldCell *cell3=self.cells[6];
     if (cell3.textField==textField) {
-        [self replacePhonestring:textField];
         if(strlen([textField.text UTF8String]) >= 11 && range.length != 1)
             boo=NO;
     }

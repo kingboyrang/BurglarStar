@@ -75,9 +75,10 @@
     cell4.textField.layer.cornerRadius=5.0;
     cell4.textField.layer.borderColor=[UIColor colorFromHexRGB:@"6ab3c3"].CGColor;
     cell4.textField.text=acc.Phone;
-    cell4.textField.keyboardType=UIKeyboardTypeAlphabet;
+    cell4.textField.keyboardType=UIKeyboardTypeNumberPad;
     cell4.textField.delegate=self;
     cell4.textField.placeholder=@"请输入手机号码";
+    
     
     TKLabelCell *cell5=[[[TKLabelCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
     cell5.label.text=@"昵称";
@@ -101,6 +102,13 @@
     _buttons.submit.enabled=YES;
     [self.view addSubview:_buttons];
     
+    //点击空白处，聊藏键盘
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(done:)];
+    tapGestureRecognizer.numberOfTapsRequired =1;
+    tapGestureRecognizer.cancelsTouchesInView =NO;
+    [_tableView addGestureRecognizer:tapGestureRecognizer];  //只需要点击非文字输入区域就会响应hideKeyBoard
+    [tapGestureRecognizer release];
+    //监听键盘的显示与隐藏
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleKeyboardWillShowHideNotification:)
                                                  name:UIKeyboardWillShowNotification
@@ -112,6 +120,14 @@
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
 	
+}
+-(void)done:(id)sender
+{
+    TKTextFieldCell *cell=self.cells[3];
+    [cell.textField resignFirstResponder];
+    
+    TKTextFieldCell *cell1=self.cells[5];
+    [cell1.textField resignFirstResponder];
 }
 #pragma mark - Notifications
 - (void)handleKeyboardWillShowHideNotification:(NSNotification *)notification
@@ -151,7 +167,7 @@
                                                      error:nil];
     TKTextFieldCell *cell1=self.cells[3];
     NSString *str=[cell1.textField.text Trim];
-    cell1.textField.text = [regular stringByReplacingMatchesInString:str options:NSRegularExpressionCaseInsensitive  range:NSMakeRange(0, [str length]) withTemplate:@""];
+    cell1.textField.text = [regular stringByReplacingMatchesInString:str options:2  range:NSMakeRange(0, [str length]) withTemplate:@""];
 }
 //取消
 - (void)buttonCancel{
@@ -239,7 +255,6 @@
     BOOL boo=YES;
     TKTextFieldCell *cell1=self.cells[3];
     if (cell1.textField==textField) {
-        [self replacePhonestring];
         if(strlen([textField.text UTF8String]) >= 11 && range.length != 1)
             boo=NO;
     }

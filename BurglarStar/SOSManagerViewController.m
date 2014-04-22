@@ -15,6 +15,7 @@
 #import "SOSAddViewController.h"
 #import "SOSEditHandleController.h"
 #import "SOSEditNotHandleController.h"
+#import "BusLocationViewController.h"
 @interface SOSManagerViewController ()<UITableViewDataSource,UITableViewDelegate>{
     UITableView *_tableView;
     BOOL isFirstLoad;
@@ -25,6 +26,7 @@
 - (void)loadSosSource;
 - (SOSMessage*)FindById:(NSString*)guid;
 - (void)deleteSoSWithButton:(UIButton*)btn;
+- (void)buttonLocationClick:(UIButton*)btn;
 @end
 
 @implementation SOSManagerViewController
@@ -93,7 +95,6 @@
             isFirstLoad=NO;
             [self hideLoadingViewAnimated:nil];
         }
-      
         if (request.ServiceResult.success) {
             [request.ServiceResult.xmlParse setDataSource:request.ServiceResult.filterXml];
             XmlNode *node=[request.ServiceResult.xmlParse selectSingleNode:request.ServiceResult.xpath];
@@ -185,10 +186,11 @@
         btn.enabled=YES;
         BOOL boo=NO;
         if (request.ServiceResult.success) {
-            NSDictionary *dic=[request.ServiceResult json];
-            if (dic&&[dic count]>0&&[dic.allKeys containsObject:@"Result"]&&[[dic objectForKey:@"Result"] isEqualToString:@"true"]) {
+            [request.ServiceResult.xmlParse setDataSource:request.ServiceResult.filterXml];
+            XmlNode *node=[request.ServiceResult.xmlParse selectSingleNode:request.ServiceResult.xpath];
+            NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:[node.InnerText dataUsingEncoding:NSUTF8StringEncoding] options:1 error:nil];
+            if (dic&&[dic count]>0&&[dic.allKeys containsObject:@"Result"]&&[[[dic objectForKey:@"Result"] Trim] isEqualToString:@"true"]) {
                 boo=YES;
-                
                 [self.list removeObjectsInArray:delSource];
                 [_tableView beginUpdates];
                 [_tableView deleteRowsAtIndexPaths:[NSArray arrayWithArray:[self.removeList allValues]] withRowAnimation:UITableViewRowAnimationFade];
@@ -222,6 +224,26 @@
     }
     return nil;
 }
+//当前定位
+- (void)buttonLocationClick:(UIButton*)btn{
+    id v=[btn superview];
+    while (![v isKindOfClass:[UITableViewCell class]]) {
+        v=[v superview];
+    }
+    UITableViewCell *cell=(UITableViewCell*)v;
+    NSIndexPath *indexPath=[_tableView indexPathForCell:cell];
+    SOSMessage *entity=self.list[indexPath.row];
+    
+    SupervisionPerson *person=[[[SupervisionPerson alloc] init] autorelease];
+    person.ID=entity.carID;
+    person.Name=entity.CarNo;
+    
+    BusLocationViewController *bus=[[BusLocationViewController alloc] init];
+    bus.Entity=person;
+    [self.navigationController pushViewController:bus animated:YES];
+    [bus release];
+    
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -237,6 +259,7 @@
     TKSOSCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell==nil) {
         cell=[[[TKSOSCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
+        [cell.button addTarget:self action:@selector(buttonLocationClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     if (indexPath.row%2==0) {
@@ -252,7 +275,7 @@
     }
     SOSMessage *entity=self.list[indexPath.row];
     cell.labName.text=entity.CompanyName;
-    cell.labDate.text=entity.formatDateText;
+    cell.labDate.text=entity.CreateDate;
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

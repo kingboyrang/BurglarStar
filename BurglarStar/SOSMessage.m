@@ -22,11 +22,7 @@
    
     if (jsonStr&&[jsonStr length]>0) {
         NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:[jsonStr dataUsingEncoding:NSUTF8StringEncoding] options:1 error:nil];
-         NSLog(@"dic class=%@",[dic class]);
-         NSLog(@"dic=%@",dic);
         NSArray *arr=[dic objectForKey:@"SosList"];
-         NSLog(@"class=%@",[arr class]);
-         NSLog(@"arr=%@",arr);
         if (arr&&[arr count]>0) {
             NSMutableArray *source=[NSMutableArray arrayWithCapacity:arr.count];
             for (NSDictionary *item in arr) {

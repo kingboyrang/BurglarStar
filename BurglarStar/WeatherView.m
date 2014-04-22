@@ -18,6 +18,7 @@
 @property (nonatomic,copy) NSString *weatherCityNumber;
 - (void)updateUIWithJson:(NSData*)data;
 - (void)updateUIWeatherWithJson:(NSData*)data;
+- (void)queueWeatherWithCityNumber:(NSString*)cityNumber;
 @end
 
 
@@ -82,7 +83,6 @@
         _weatherImage=[[UIImageView alloc] initWithFrame:CGRectMake(15,(frame.size.height-imgW.size.height)/2, imgW.size.width, imgW.size.height)];
         [_weatherImage setImage:imgW];
         [self addSubview:_weatherImage];
-        
     }
     return self;
 }
@@ -91,42 +91,40 @@
     [gps startLocation:^(SVPlacemark *place) {
         NSString *cityNumber=[WeatherHelper getWeatherCityCode:place];
         if (cityNumber!=nil) {
-            
-            if (![self.weatherCityNumber isEqualToString:cityNumber]) {
-                self.weatherCityNumber=cityNumber;
-            }else{
-                return;
-            }
+            NSLog(@"aa=weather");
+             _labCurCity.text=[NSString stringWithFormat:@"%@   晴",place.locality];
             if (self.delegate&&[self.delegate respondsToSelector:@selector(locationGPSCityNumber:)]) {
                 [self.delegate locationGPSCityNumber:cityNumber];
             }
-            [_serviceHelper clearAndDelegate];
-            NSURL *dayURL=[NSURL URLWithString:[NSString stringWithFormat:WeatherDayURL,cityNumber]];
-            ASIHTTPRequest *request1=[ASIHTTPRequest requestWithURL:dayURL];
-            [request1 setUserInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"day",@"name", nil]];
-            [request1 setDefaultResponseEncoding:NSUTF8StringEncoding];
-            [_serviceHelper addQueue:request1];
-            
-            NSURL *cityDayURL=[NSURL URLWithString:[NSString stringWithFormat:WeatherCityDayURL,cityNumber]];
-            ASIHTTPRequest *request2=[ASIHTTPRequest requestWithURL:cityDayURL];
-            [request2 setUserInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"city",@"name", nil]];
-            [request2 setDefaultResponseEncoding:NSUTF8StringEncoding];
-            [_serviceHelper addQueue:request2];
-            
-            [_serviceHelper startQueue:^(ASIHTTPRequest *request) {
-                NSString *name=[request.userInfo objectForKey:@"name"];
-                if ([name isEqualToString:@"day"]&&request.responseStatusCode==200) {
-                    [self performSelectorOnMainThread:@selector(updateUIWithJson:) withObject:request.responseData waitUntilDone:NO];
-                }
-                if ([name isEqualToString:@"city"]&&request.responseStatusCode==200) {
-                    [self performSelectorOnMainThread:@selector(updateUIWeatherWithJson:) withObject:request.responseData waitUntilDone:NO];
-                }
-            } failed:nil complete:^(NSArray *results) {
-                
-            }];
+            [self queueWeatherWithCityNumber:cityNumber];
         }
         
     } failed:nil];
+}
+- (void)queueWeatherWithCityNumber:(NSString*)cityNumber{
+    [_serviceHelper clearAndDelegate];
+    NSURL *dayURL=[NSURL URLWithString:[NSString stringWithFormat:WeatherDayURL,cityNumber]];
+    ASIHTTPRequest *request1=[ASIHTTPRequest requestWithURL:dayURL];
+    [request1 setUserInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"day",@"name", nil]];
+    [request1 setDefaultResponseEncoding:NSUTF8StringEncoding];
+    [_serviceHelper addQueue:request1];
+    
+    NSURL *cityDayURL=[NSURL URLWithString:[NSString stringWithFormat:WeatherCityDayURL,cityNumber]];
+    ASIHTTPRequest *request2=[ASIHTTPRequest requestWithURL:cityDayURL];
+    [request2 setUserInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"city",@"name", nil]];
+    [request2 setDefaultResponseEncoding:NSUTF8StringEncoding];
+    [_serviceHelper addQueue:request2];
+    
+    [_serviceHelper startQueue:^(ASIHTTPRequest *request) {
+        NSString *name=[request.userInfo objectForKey:@"name"];
+        if ([name isEqualToString:@"day"]&&request.responseStatusCode==200) {
+            [self performSelectorOnMainThread:@selector(updateUIWithJson:) withObject:request.responseData waitUntilDone:NO];
+        }
+        if ([name isEqualToString:@"city"]&&request.responseStatusCode==200) {
+            [self performSelectorOnMainThread:@selector(updateUIWeatherWithJson:) withObject:request.responseData waitUntilDone:NO];
+        }
+    } failed:nil complete:^(NSArray *results) {
+    }];
 }
 -(void)updateUIWithJson:(NSData*)data{
     NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];

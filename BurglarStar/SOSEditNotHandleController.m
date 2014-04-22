@@ -26,6 +26,10 @@
 - (void)buttonSelectedPhotoClick;
 - (void)done:(id)sender;
 - (void)loadBusSource;//加载车辆号码
+- (void)loadSingleSosInfo;
+- (void)updateFormUI:(NSDictionary*)item;
+- (void)updateFormUI;
+- (NSInteger)findById:(NSString*)sysId source:(NSArray*)source;
 @end
 
 @implementation SOSEditNotHandleController
@@ -43,7 +47,6 @@
     }
     return self;
 }
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -69,10 +72,12 @@
     
     TKHeadPhotoCell *cell1=[[[TKHeadPhotoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
     [cell1.button addTarget:self action:@selector(buttonSelectedPhotoClick) forControlEvents:UIControlEventTouchUpInside];
+    
     TKSoSBusCell *cell2=[[[TKSoSBusCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
     cell2.select.delegate=self;
     TKTextViewCell *cell3=[[[TKTextViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
     cell3.textView.placeholder=@"请输入意见反馈";
+
     
     self.cells=[NSMutableArray arrayWithObjects:cell1,cell2,cell3, nil];
     
@@ -94,7 +99,62 @@
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
+    [self loadSingleSosInfo];
     [self loadBusSource];//加载车辆号码
+}
+- (void)updateFormUI{
+    if (self.Entity.Image&&[self.Entity.Image length]>0) {
+        TKHeadPhotoCell *cell1=self.cells[0];
+        [cell1 setPhotoWithImageUrlString:self.Entity.Image];
+        NSIndexPath *indexPath=[_tableView indexPathForCell:cell1];
+        [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+- (void)updateFormUI:(NSDictionary*)item{
+    /***
+    TKHeadPhotoCell *cell1=self.cells[0];
+    [cell1 setPhotoWithImageUrlString:[item objectForKey:@"Image"]];
+    NSIndexPath *indexPath=[_tableView indexPathForCell:cell1];
+    [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationNone];
+    ***/
+    
+    TKTextViewCell *cell3=self.cells[2];
+    cell3.textView.text=[item objectForKey:@"Contents"];
+    
+}
+//加载单笔信息
+- (void)loadSingleSosInfo{
+    [self updateFormUI];
+    
+    ASIServiceArgs *args=[[[ASIServiceArgs alloc] init] autorelease];
+    args.serviceURL=DataSOSWebservice;
+    args.serviceNameSpace=DataSOSNameSpace;
+    args.methodName=@"GetSOSInfo";
+    args.soapParams=[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:self.Entity.SOSPKID,@"SOSPKID", nil], nil];
+    [self showLoadingAnimatedWithTitle:@"正在加载资料,请稍后..."];
+    ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
+    [request setCompletionBlock:^{
+        BOOL boo=NO;
+        //NSLog(@"xml=%@",request.responseString);
+        if (request.ServiceResult.success) {
+            NSDictionary *dic=[request.ServiceResult json];
+            NSArray *arr=[dic objectForKey:@"Result"];
+            if (arr&&[arr count]>0) {
+                [self hideLoadingViewAnimated:nil];
+                boo=YES;
+                NSDictionary *item=[arr objectAtIndex:0];
+                [self updateFormUI:item];
+            }
+        }
+        if (!boo) {
+            [self hideLoadingFailedWithTitle:@"资料加载失败!" completed:nil];
+        }
+    }];
+    [request setFailedBlock:^{
+        //[self updateFormUI];
+        [self hideLoadingFailedWithTitle:@"资料加载失败!" completed:nil];
+    }];
+    [request startAsynchronous];
 }
 //点击弹出车牌号码选择
 -(void)showPopoverSelect:(id)sender{
@@ -122,7 +182,11 @@
             NSArray *source=[dic objectForKey:@"Person"];
             //ID,Name
             [cell.select setDataSourceForArray:source dataTextName:@"Name" dataValueName:@"ID"];
-            [cell.select findBindValue:self.Entity.carID];
+            NSInteger index=[self findById:self.Entity.carID source:source];
+            if (index>=0&&index<[source count]) {
+                [cell.select setIndex:index];
+            }
+            //[cell.select findBindValue:self.Entity.carID];
         }
         
     }];
@@ -130,6 +194,18 @@
         
     }];
     [request startAsynchronous];
+}
+- (NSInteger)findById:(NSString*)sysId source:(NSArray*)source{
+    if (source&&[source count]>0) {
+        NSString *match=[NSString stringWithFormat:@"SELF.ID =='%@'",sysId];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:match];
+        NSArray *results = [source filteredArrayUsingPredicate:predicate];
+        if (results&&[results count]>0) {
+            NSDictionary *item=[results objectAtIndex:0];
+            return [source indexOfObject:item];
+        }
+    }
+    return -1;
 }
 -(void)done:(id)sender
 {
@@ -202,8 +278,8 @@
         return;
     }
     NSString *imageStr=@"";
-    if (cell1.imageView.image) {
-        imageStr=[cell1.imageView.image imageBase64String];
+    if (cell1.hasImage) {
+        imageStr=[cell1.photo imageBase64String];
     }
     btn.enabled=NO;
     Account *acc=[Account unarchiverAccount];
@@ -220,16 +296,19 @@
     args.serviceNameSpace=DataSOSNameSpace;
     args.methodName=@"UpdateSOS";
     args.soapParams=params;
+    //NSLog(@"soap=%@",args.bodyMessage);
     [self showLoadingAnimatedWithTitle:@"正在修改SOS报警,请稍后..."];
     ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
     [request setCompletionBlock:^{
          btn.enabled=YES;
         BOOL boo=NO;
         if (request.ServiceResult.success) {
-            NSDictionary *dic=[request.ServiceResult json];
-            if (dic&&[dic count]>0&&[[dic objectForKey:@"Result"] isEqualToString:@"true"]) {
+            [request.ServiceResult.xmlParse setDataSource:request.ServiceResult.filterXml];
+            XmlNode *node=[request.ServiceResult.xmlParse selectSingleNode:request.ServiceResult.xpath];
+            NSDictionary *dic=[NSJSONSerialization JSONObjectWithData:[node.InnerText dataUsingEncoding:NSUTF8StringEncoding] options:1 error:nil];
+            if (dic&&[dic count]>0&&[[[dic objectForKey:@"Result"] Trim] isEqualToString:@"true"]) {
                 boo=YES;
-                [self hideLoadingViewAnimated:^(AnimateLoadView *hideView) {
+                [self hideLoadingSuccessWithTitle:@"SOS报警修改成功!" completed:^(AnimateErrorView *successView) {
                     [self.navigationController popViewControllerAnimated:YES];
                 }];
             }
@@ -256,12 +335,8 @@
     NSIndexPath *indexPath=[_tableView indexPathForCell:cell1];
     [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationNone];
 }
-- (UIImage*)viewerShowImage{
-    TKHeadPhotoCell *cell1=self.cells[0];
-    if (cell1.hasImage) {
-        return cell1.imageView.image;
-    }
-    return nil;
+- (NSString*)viewerImageURLString{
+    return self.Entity.Image;
 }
 #pragma mark UITableViewDataSource Methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{

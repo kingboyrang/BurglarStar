@@ -37,7 +37,6 @@
 }
 //取得一周天气
 - (void)locationGPSCityNumber:(NSString*)cityNumber{
-    NSLog(@"number=%@",cityNumber);
     NSString *url=[NSString stringWithFormat:WeatherWeekURL,cityNumber];
     ASIHTTPRequest *request=[ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
     

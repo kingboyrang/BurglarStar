@@ -42,12 +42,14 @@
     _hasImg=YES;
 }
 - (void)setPhotoWithImageUrlString:(NSString*)url{
-    _hasImg=YES;
     CGRect r=_imageHead.frame;
     [_imageHead setImageWithURL:[NSURL URLWithString:url] placeholderImage:[UIImage imageNamed:@"head_photo.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
         if (image) {
+             _hasImg=YES;
             [_imageHead setImage:image];
-            _imageHead.frame=r;
+            //_imageHead.frame=r;
+        }else{
+           _hasImg=NO;
         }
     }];
 }

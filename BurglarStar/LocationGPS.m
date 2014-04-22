@@ -64,20 +64,17 @@
 #pragma mark -
 #pragma mark 私有方法
 -(void) start {
-    if (locationManager) {
-        [locationManager stopUpdatingLocation];
-        [locationManager release],locationManager=nil;
-    }
+    [self stop];//先停止
+    
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
     locationManager.desiredAccuracy=kCLLocationAccuracyBest;
-    
     [locationManager startUpdatingLocation];
 }
-
 -(void) stop {
     if (locationManager) {
         [locationManager stopUpdatingLocation];
+        locationManager.delegate=nil;
         [locationManager release],locationManager=nil;
     }
 }

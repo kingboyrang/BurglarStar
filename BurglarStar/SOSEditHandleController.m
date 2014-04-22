@@ -87,7 +87,7 @@
     args.serviceNameSpace=DataSOSNameSpace;
     args.methodName=@"GetSOSInfo";
     args.soapParams=[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:self.Entity.SOSPKID,@"SOSPKID", nil], nil];
-    [self showLoadingAnimatedWithTitle:@"正在加载,请稍后..."];
+    [self showLoadingAnimatedWithTitle:@"正在加载资料,请稍后..."];
     ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
     [request setCompletionBlock:^{
         BOOL boo=NO;
@@ -95,6 +95,7 @@
             NSDictionary *dic=[request.ServiceResult json];
             NSArray *arr=[dic objectForKey:@"Result"];
             if (arr&&[arr count]>0) {
+                [self hideLoadingViewAnimated:nil];
                 boo=YES;
                 NSDictionary *item=[arr objectAtIndex:0];
                 [self updateFormUI:item];
