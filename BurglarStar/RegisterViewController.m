@@ -413,7 +413,7 @@
                                                      error:nil];
     TKTextFieldCell *cell1=self.cells[5];
     NSString *str=[cell1.textField.text Trim];
-    cell1.textField.text = [regular stringByReplacingMatchesInString:str options:NSRegularExpressionCaseInsensitive  range:NSMakeRange(0, [str length]) withTemplate:@""];
+    cell1.textField.text = [regular stringByReplacingMatchesInString:str options:2  range:NSMakeRange(0, [str length]) withTemplate:@""];
 }
 - (void)checkPhone:(NSString*)phone{
    // TKTextFieldCell *cell=self.cells[5];

@@ -52,6 +52,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    //self.navigationController.navigationBar.translucent =YES;
     self.title=@"防盗之星";
 
     BSMenu *menu=[[BSMenu alloc] initWithFrame:CGRectZero];

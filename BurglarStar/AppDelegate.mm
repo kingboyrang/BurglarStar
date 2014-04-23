@@ -14,8 +14,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-   
-    
     [self registerBaiduMap];//百度地图注册
     [self appInitSet];//初始化设置
     
@@ -26,12 +24,18 @@
     BasicNavigationController *nav=[[[BasicNavigationController alloc] initWithRootViewController:main] autorelease];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+#ifdef __IPHONE_7_0
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 7.0) {
+        [application setStatusBarStyle:UIStatusBarStyleLightContent];
+        self.window.clipsToBounds =YES;
+    }
+#endif
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     self.window.rootViewController=nav;
     [self.window makeKeyAndVisible];
     
-    [AppHelper startRunAnimation];
+    [AppHelper startRunAnimation];//动画
     
     return YES;
 }
@@ -77,6 +81,7 @@
                                                            shadow, NSShadowAttributeName,
                                                            [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:19.0], NSFontAttributeName, nil]];
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTintColor:[UIColor colorFromHexRGB:@"45b1ce"]];
+    
 }
 - (void)registerBaiduMap{
     //百度地图注册

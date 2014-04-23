@@ -45,9 +45,6 @@
             [self hideLoadingViewAnimated:nil];
             CGRect r=self.view.bounds;
             //r.size.height-=[self topHeight];
-             NSLog(@"h=%f",self.view.bounds.size.height);
-             NSLog(@"frame h=%f",self.view.frame.size.height);
-            NSLog(@"frame=%@",NSStringFromCGRect(r));
             UIWebView *webView=[[[UIWebView alloc] initWithFrame:r] autorelease];
             webView.tag=100;
             //webView.scalesPageToFit=YES;

@@ -11,6 +11,7 @@
 #import "AdModel.h"
 #import "ASIServiceHTTPRequest.h"
 #import "NSTimer+TPCategory.h"
+#import "UIImage+TPCategory.h"
 @implementation MyUIScrollView
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -148,7 +149,7 @@
         [sv_Ad setAlwaysBounceVertical:NO];
         [self addSubview:sv_Ad];
     }
-    [sv_Ad setContentSize:CGSizeMake(DeviceWidth*([_ads count]>0?[_ads count]:0), sv_Ad.frame.size.height)];
+    [sv_Ad setContentSize:CGSizeMake(sv_Ad.frame.size.width*([_ads count]>0?[_ads count]:0), sv_Ad.frame.size.height)];
     //删除元素
     for (UIView *v in sv_Ad.subviews) {
         [v removeFromSuperview];
@@ -185,7 +186,7 @@
     ***/
      if (![self.subviews containsObject:lbl_Info])
      {
-         lbl_Info = [[UILabel alloc] initWithFrame:CGRectMake(6, self.frame.size.height-24+3, DeviceWidth-100, 24.f)];
+         lbl_Info = [[UILabel alloc] initWithFrame:CGRectMake(6, self.frame.size.height-24+3, sv_Ad.frame.size.width-100, 24.f)];
          [lbl_Info setTag:ADTITLE_INDEX];
          lbl_Info.hidden=YES;
          [self addSubview:lbl_Info];
@@ -196,10 +197,15 @@
     for (AdModel *adModel in _ads)
     {
         
-        UIImageView *img_Ad = [[UIImageView alloc] initWithFrame:CGRectMake(DeviceWidth*y, 0, DeviceWidth, self.frame.size.height)];
+        UIImageView *img_Ad = [[UIImageView alloc] initWithFrame:CGRectMake(sv_Ad.frame.size.width*y, 0, sv_Ad.frame.size.width, self.frame.size.height)];
         //img_Ad.userInteractionEnabled=YES;
         [img_Ad setTag:y];
-        [img_Ad setImageWithURL:[NSURL URLWithString:adModel.thumb]];
+        //[img_Ad setImageWithURL:[NSURL URLWithString:adModel.thumb]];
+        [img_Ad setImageWithURL:[NSURL URLWithString:adModel.thumb] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+            if (image) {
+                [img_Ad setImage:[image imageByScalingToSize:sv_Ad.frame.size]];
+            }
+        }];
         //[img_Ad setImage:[UIImage imageWithContentsOfFile:adModel.thumb]];
         [img_Ad setUserInteractionEnabled:YES];
         [sv_Ad addSubview:img_Ad];

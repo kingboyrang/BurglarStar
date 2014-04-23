@@ -16,7 +16,6 @@
 #import "MainViewController.h"
 #import "BasicNavigationController.h"
 #import "PersonTrajectoryViewController.h"
-#import "CallTrajectoryViewController.h"
 #import "TrajectoryMessageController.h"
 #import "AlertHelper.h"
 #import "RecordView.h"

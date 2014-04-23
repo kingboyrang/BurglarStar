@@ -65,7 +65,6 @@
 #pragma mark 私有方法
 -(void) start {
     [self stop];//先停止
-    
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
     locationManager.desiredAccuracy=kCLLocationAccuracyBest;

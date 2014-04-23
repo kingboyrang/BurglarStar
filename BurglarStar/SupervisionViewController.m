@@ -16,7 +16,6 @@
 #import "TrajectoryViewController.h"
 #import "TrajectoryMessageController.h"
 #import "EditSupervisionViewController.h"
-#import "CallTrajectoryViewController.h"
 #import "PersonTrajectoryViewController.h"
 #import "ASIServiceHTTPRequest.h"
 #import "UIBarButtonItem+TPCategory.h"

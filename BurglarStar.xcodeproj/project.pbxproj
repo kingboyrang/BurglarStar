@@ -125,7 +125,6 @@
 		01C2F08A18F4DCC700B37603 /* MessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01C2F08118F4DCC700B37603 /* MessageView.xib */; };
 		01C2F08B18F4DCC700B37603 /* MessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C2F08318F4DCC700B37603 /* MessageView.m */; };
 		01C2F08C18F4DCC700B37603 /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C2F08518F4DCC700B37603 /* MessageCell.m */; };
-		01C2F08D18F4DCC700B37603 /* CallPhoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C2F08718F4DCC700B37603 /* CallPhoneView.m */; };
 		01C2F09418F4DCE100B37603 /* NLImageCropperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C2F09018F4DCE100B37603 /* NLImageCropperView.m */; };
 		01C2F09518F4DCE100B37603 /* NLCropViewLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C2F09218F4DCE100B37603 /* NLCropViewLayer.m */; };
 		01C2F09618F4DCE100B37603 /* corner.png in Resources */ = {isa = PBXBuildFile; fileRef = 01C2F09318F4DCE100B37603 /* corner.png */; };
@@ -141,8 +140,6 @@
 		01C2F0BF18F4DD0900B37603 /* TrajectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C2F0AE18F4DD0900B37603 /* TrajectoryViewController.m */; };
 		01C2F0C018F4DD0900B37603 /* TrajectoryMessageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C2F0B018F4DD0900B37603 /* TrajectoryMessageController.m */; };
 		01C2F0C118F4DD0900B37603 /* EditSupervisionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C2F0B218F4DD0900B37603 /* EditSupervisionViewController.m */; };
-		01C2F0C218F4DD0900B37603 /* CallTrajectoryViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 01C2F0B418F4DD0900B37603 /* CallTrajectoryViewController.mm */; };
-		01C2F0C318F4DD0900B37603 /* TelephoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C2F0B618F4DD0900B37603 /* TelephoneViewController.m */; };
 		01C2F0C418F4DD0900B37603 /* ReadMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C2F0B818F4DD0900B37603 /* ReadMessageViewController.m */; };
 		01C2F0C518F4DD0900B37603 /* ExceptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C2F0BA18F4DD0900B37603 /* ExceptionViewController.m */; };
 		01C2F0CD18F4DD7500B37603 /* IndexViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 01C2F0C818F4DD7500B37603 /* IndexViewController.mm */; };
@@ -486,8 +483,6 @@
 		01C2F08318F4DCC700B37603 /* MessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageView.m; sourceTree = "<group>"; };
 		01C2F08418F4DCC700B37603 /* MessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageCell.h; sourceTree = "<group>"; };
 		01C2F08518F4DCC700B37603 /* MessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageCell.m; sourceTree = "<group>"; };
-		01C2F08618F4DCC700B37603 /* CallPhoneView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallPhoneView.h; sourceTree = "<group>"; };
-		01C2F08718F4DCC700B37603 /* CallPhoneView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallPhoneView.m; sourceTree = "<group>"; };
 		01C2F08F18F4DCE100B37603 /* NLImageCropperView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NLImageCropperView.h; sourceTree = "<group>"; };
 		01C2F09018F4DCE100B37603 /* NLImageCropperView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NLImageCropperView.m; sourceTree = "<group>"; };
 		01C2F09118F4DCE100B37603 /* NLCropViewLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NLCropViewLayer.h; sourceTree = "<group>"; };
@@ -516,10 +511,6 @@
 		01C2F0B018F4DD0900B37603 /* TrajectoryMessageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrajectoryMessageController.m; sourceTree = "<group>"; };
 		01C2F0B118F4DD0900B37603 /* EditSupervisionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditSupervisionViewController.h; sourceTree = "<group>"; };
 		01C2F0B218F4DD0900B37603 /* EditSupervisionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditSupervisionViewController.m; sourceTree = "<group>"; };
-		01C2F0B318F4DD0900B37603 /* CallTrajectoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallTrajectoryViewController.h; sourceTree = "<group>"; };
-		01C2F0B418F4DD0900B37603 /* CallTrajectoryViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CallTrajectoryViewController.mm; sourceTree = "<group>"; };
-		01C2F0B518F4DD0900B37603 /* TelephoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TelephoneViewController.h; sourceTree = "<group>"; };
-		01C2F0B618F4DD0900B37603 /* TelephoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TelephoneViewController.m; sourceTree = "<group>"; };
 		01C2F0B718F4DD0900B37603 /* ReadMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadMessageViewController.h; sourceTree = "<group>"; };
 		01C2F0B818F4DD0900B37603 /* ReadMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReadMessageViewController.m; sourceTree = "<group>"; };
 		01C2F0B918F4DD0900B37603 /* ExceptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExceptionViewController.h; sourceTree = "<group>"; };
@@ -1299,10 +1290,6 @@
 				01C2F0B018F4DD0900B37603 /* TrajectoryMessageController.m */,
 				01C2F0B118F4DD0900B37603 /* EditSupervisionViewController.h */,
 				01C2F0B218F4DD0900B37603 /* EditSupervisionViewController.m */,
-				01C2F0B318F4DD0900B37603 /* CallTrajectoryViewController.h */,
-				01C2F0B418F4DD0900B37603 /* CallTrajectoryViewController.mm */,
-				01C2F0B518F4DD0900B37603 /* TelephoneViewController.h */,
-				01C2F0B618F4DD0900B37603 /* TelephoneViewController.m */,
 				01C2F0B718F4DD0900B37603 /* ReadMessageViewController.h */,
 				01C2F0B818F4DD0900B37603 /* ReadMessageViewController.m */,
 				01C2F0B918F4DD0900B37603 /* ExceptionViewController.h */,
@@ -1344,8 +1331,6 @@
 				01C2F08318F4DCC700B37603 /* MessageView.m */,
 				01C2F08418F4DCC700B37603 /* MessageCell.h */,
 				01C2F08518F4DCC700B37603 /* MessageCell.m */,
-				01C2F08618F4DCC700B37603 /* CallPhoneView.h */,
-				01C2F08718F4DCC700B37603 /* CallPhoneView.m */,
 			);
 			name = Trajectory;
 			sourceTree = "<group>";
@@ -1756,14 +1741,12 @@
 				01C2F01C18F3D79200B37603 /* DCRoundSwitchOutlineLayer.m in Sources */,
 				01C2F0CD18F4DD7500B37603 /* IndexViewController.mm in Sources */,
 				01C2EE8618F2905500B37603 /* RegisterViewController.m in Sources */,
-				01C2F0C318F4DD0900B37603 /* TelephoneViewController.m in Sources */,
 				01C2F12A18F4E89900B37603 /* UIButton+WebCache.m in Sources */,
 				01C2F17418F5219F00B37603 /* ModifyAreaViewController.m in Sources */,
 				01C2F03318F3F07F00B37603 /* EditPwdViewController.m in Sources */,
 				01C2EE7618F28FB400B37603 /* AreaCar.m in Sources */,
 				01C2EE7518F28FB400B37603 /* AreaCrawl.m in Sources */,
 				01C2EECA18F2937600B37603 /* TKSwitchCell.m in Sources */,
-				01C2F08D18F4DCC700B37603 /* CallPhoneView.m in Sources */,
 				01C2EEF418F29BBA00B37603 /* ASIDataDecompressor.m in Sources */,
 				01C2F0BE18F4DD0900B37603 /* EditSupervisionHead.m in Sources */,
 				01C2F14918F4F61900B37603 /* CVUIPopoverText.m in Sources */,
@@ -1771,7 +1754,6 @@
 				01C2F12218F4E89900B37603 /* NSData+GIF.m in Sources */,
 				01C2EE6118F28F8B00B37603 /* AppHelper.m in Sources */,
 				01C2F02018F3DC2E00B37603 /* TKSwitchKnobLayer.m in Sources */,
-				01C2F0C218F4DD0900B37603 /* CallTrajectoryViewController.mm in Sources */,
 				01C2F08B18F4DCC700B37603 /* MessageView.m in Sources */,
 				01C2F01A18F3D79200B37603 /* DCRoundSwitch.m in Sources */,
 				01C2EEB818F2922A00B37603 /* RegisterCheck.m in Sources */,
@@ -1962,7 +1944,7 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "AB9A30BA-DE83-443D-BB5A-269A800A6CF4";
+				PROVISIONING_PROFILE = "85D42203-EEE9-406F-9C2C-664D35FEAF38";
 				SDKROOT = iphoneos;
 				VALID_ARCHS = "armv7 armv7s";
 			};
@@ -1985,7 +1967,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: YUNNAN BEIDOU NAVIGATION TECHNOLOGY CO., LTD. (4A34U6BSLD)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Bai Fu (KJ93M4ECNB)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2001,7 +1983,7 @@
 					/usr/include/libxml2,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				PROVISIONING_PROFILE = "17B8EC04-B94C-470A-8868-73B7B02EE07E";
+				PROVISIONING_PROFILE = "85D42203-EEE9-406F-9C2C-664D35FEAF38";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv7 armv7s";

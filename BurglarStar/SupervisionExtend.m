@@ -474,7 +474,7 @@
                                                    options:NSRegularExpressionCaseInsensitive
                                                      error:nil];
     NSString *str=[field.text Trim];
-    field.text = [regular stringByReplacingMatchesInString:str options:NSRegularExpressionCaseInsensitive  range:NSMakeRange(0, [str length]) withTemplate:@""];
+    field.text = [regular stringByReplacingMatchesInString:str options:2  range:NSMakeRange(0, [str length]) withTemplate:@""];
 }
 - (CGRect)fieldToRect:(UITextField*)field{
     id v=[field superview];

@@ -15,5 +15,5 @@
 -(void)supervisionEditHeadWithEntity:(SupervisionPerson*)entity;//修改头像
 -(void)supervisionMessageWithEntity:(SupervisionPerson*)entity;//查看信息
 -(void)supervisionTrajectoryWithEntity:(SupervisionPerson*)entity;//查看轨迹
--(void)supervisionCallWithEntity:(SupervisionPerson*)entity;//拨打电话
+-(void)supervisionCallWithEntity:(SupervisionPerson*)entity;//当前定位
 @end
