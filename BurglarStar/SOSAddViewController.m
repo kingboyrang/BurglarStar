@@ -201,6 +201,12 @@
         [AlertHelper initWithTitle:@"提示" message:@"请输入意见反馈!"];
         return;
     }
+    if(strlen([cell3.textView.text UTF8String])<10)
+    {
+        [AlertHelper initWithTitle:@"提示" message:@"意见反馈不能少于10个字符！"];
+        [cell3.textView becomeFirstResponder];
+        return;
+    }
     if (!self.hasNetWork) {
         [self showErrorNetWorkNotice:nil];
         return;

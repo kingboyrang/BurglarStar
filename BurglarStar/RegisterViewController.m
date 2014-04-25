@@ -39,6 +39,7 @@
 - (void)checkPhone:(NSString*)phone;
 - (void)replacePhonestring;
 - (CGRect)fieldToRect:(UITextField*)field;
+- (void)replaceUIDstring;
 @end
 
 @implementation RegisterViewController
@@ -186,8 +187,6 @@
     if ([notification.name isEqualToString:UIKeyboardWillShowNotification]) {//显示键盘
         CGRect r=_tableView.frame;
         CGRect r1=_toolBar.frame;
-        
-        
         
         r1.origin.y=self.view.bounds.size.height-kbFrame.size.height-r1.size.height;
         r.size.height=r1.origin.y;
@@ -342,6 +341,7 @@
     UITextField *field=[notifice object];
     TKTextFieldCell *cell=self.cells[1];
     if (cell.textField==field) {
+        [self replaceUIDstring];
         //检测帐号
         NSString *acc=[field.text Trim];
         if([acc length]>0)
@@ -363,6 +363,16 @@
             _phoneImageView.hidden=YES;
         }
     }
+}
+- (void)replaceUIDstring{
+    NSRegularExpression *regular;
+    regular = [[NSRegularExpression alloc] initWithPattern:@"[^a-zA-Z0-9_\\.]+"
+                                                   options:NSRegularExpressionCaseInsensitive
+                                                     error:nil];
+    TKTextFieldCell *cell1=self.cells[1];
+    NSString *str=[cell1.textField.text Trim];
+    //NSRegularExpressionCaseInsensitive
+    cell1.textField.text = [regular stringByReplacingMatchesInString:str options:2  range:NSMakeRange(0, [str length]) withTemplate:@""];
 }
 //判断帐号是否存在
 - (void)updateShowInfo:(NSString*)user{

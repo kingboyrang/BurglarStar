@@ -9,7 +9,7 @@
 #import "BSMenu.h"
 #import "UIImage+TPCategory.h"
 
-#define MenuSource [NSDictionary dictionaryWithObjectsAndKeys:@"Menu_target.png",@"100",@"Menu_msg.png",@"101",@"Menu_sso.png",@"102",@"Menu_bus.png",@"103",@"Menu_user.png",@"104", nil]
+#define MenuSource [NSDictionary dictionaryWithObjectsAndKeys:@"Menu_target@2x.png",@"100",@"Menu_msg@2x.png",@"101",@"Menu_sso@2x.png",@"102",@"Menu_bus@2x.png",@"103",@"Menu_user@2x.png",@"104", nil]
 
 @interface BSMenu ()
 - (void)addBarItem:(CGRect)frame tag:(NSInteger)tag;
@@ -24,7 +24,9 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor=[UIColor clearColor];
-        UIImage *image=[UIImage imageNamed:@"Menu.png"];
+        
+        CGFloat h=frame.size.height-20;
+        UIImage *image=[[UIImage imageNamed:@"Menu@2x.png"] imageByScalingProportionallyToSize:CGSizeMake(h, h)];
         self.imageView=[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
         [self.imageView setImage:image];
         [self addSubview:self.imageView];
@@ -68,7 +70,8 @@
     [self addSubview:btn];
 }
 - (void)switchImageView:(UIButton*)btn{
-    UIImage *image=[UIImage imageNamed:@"Menu.png"];
+    CGSize size=self.imageView.frame.size;
+    UIImage *image=[[UIImage imageNamed:@"Menu@2x.png"] imageByScalingProportionallyToSize:size];
     [self.imageView setImage:image];
     if (self.delegate&&[self.delegate respondsToSelector:@selector(selectItemMenu:index:)]) {
         [self.delegate selectItemMenu:btn index:btn.tag];
@@ -76,9 +79,11 @@
 }
 - (void)buttonMenuClick:(id)sender
 {
+    CGSize size=self.imageView.frame.size;
     UIButton *btn=(UIButton*)sender;
     NSString *imgName=[MenuSource objectForKey:[NSString stringWithFormat:@"%d",btn.tag]];
-    [self.imageView setImage:[UIImage imageNamed:imgName]];
+    UIImage *img=[[UIImage imageNamed:imgName] imageByScalingProportionallyToSize:size];
+    [self.imageView setImage:img];
     [self performSelector:@selector(switchImageView:) withObject:btn afterDelay:0.2f];
     
 }

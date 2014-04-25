@@ -50,13 +50,14 @@
     NSLog(@"r=%@",NSStringFromCGRect(r));
      ***/
     
-   
-    [self.headImage setImageWithURL:[NSURL URLWithString:entity.Photo] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"bg02.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+    UIImage *placeImg=[UIImage createRoundedRectImage:[UIImage imageNamed:@"bg02.png"] size:CGSizeMake(70, 84) radius:8.0];
+    [self.headImage setImageWithURL:[NSURL URLWithString:entity.Photo] forState:UIControlStateNormal placeholderImage:placeImg completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
         if (image) {
+            UIImage *img=[UIImage createRoundedRectImage:image size:CGSizeMake(70, 84) radius:8.0];
             if (image.size.width>70||image.size.height>84) {
-                [self.headImage setImage:[image imageByScalingToSize:CGSizeMake(70, 84)] forState:UIControlStateNormal];
+                [self.headImage setImage:img forState:UIControlStateNormal];
             }else{
-               [self.headImage setImage:image forState:UIControlStateNormal];
+               [self.headImage setImage:img forState:UIControlStateNormal];
             }
         }
     }];

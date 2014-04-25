@@ -7,9 +7,9 @@
 //
 
 #import "BasicViewController.h"
-#import "ToolBarView.h"
+#import "ToolEditView.h"
 @interface SOSManagerViewController : BasicViewController
-@property (nonatomic,strong) ToolBarView *toolBarView;
+@property (nonatomic,strong) ToolEditView *toolBarView;
 @property (nonatomic,retain) NSMutableArray *list;
 @property (nonatomic,strong) NSMutableDictionary *removeList;
 @end

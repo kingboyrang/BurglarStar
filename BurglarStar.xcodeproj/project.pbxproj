@@ -190,6 +190,15 @@
 		01C2F17518F5219F00B37603 /* AreaRangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C2F17018F5219F00B37603 /* AreaRangeViewController.m */; };
 		01C2F17618F5219F00B37603 /* AreaRuleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C2F17218F5219F00B37603 /* AreaRuleViewController.m */; };
 		01C2F17818F528E200B37603 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C2F17718F528E200B37603 /* ImageIO.framework */; };
+		01C3D8EB190A373F00D03DC8 /* libBPush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C3D8EA190A373F00D03DC8 /* libBPush.a */; };
+		01C3D8F6190A375500D03DC8 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3D8EE190A375500D03DC8 /* Base64.m */; };
+		01C3D8F7190A375500D03DC8 /* GzipCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3D8F1190A375500D03DC8 /* GzipCompressor.m */; };
+		01C3D8F8190A375500D03DC8 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3D8F3190A375500D03DC8 /* JSONKit.m */; };
+		01C3D8F9190A375500D03DC8 /* OpenUDID.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3D8F5190A375500D03DC8 /* OpenUDID.m */; };
+		01C3D8FB190A378300D03DC8 /* BPushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 01C3D8FA190A378300D03DC8 /* BPushConfig.plist */; };
+		01C3D902190A48D700D03DC8 /* ToolEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3D901190A48D700D03DC8 /* ToolEditView.m */; };
+		01C3D905190A506300D03DC8 /* TKAreaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3D904190A506300D03DC8 /* TKAreaCell.m */; };
+		01C3D908190A559F00D03DC8 /* TKAreaTargetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01C3D907190A559F00D03DC8 /* TKAreaTargetCell.m */; };
 		01CD566E18F68820007731E1 /* BusLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD566D18F68820007731E1 /* BusLocationViewController.m */; };
 		01CD567318F68DC3007731E1 /* WeatherView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD567218F68DC3007731E1 /* WeatherView.m */; };
 		01CD567818F691EB007731E1 /* AdModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD567518F691EB007731E1 /* AdModel.m */; };
@@ -607,6 +616,24 @@
 		01C2F17118F5219F00B37603 /* AreaRuleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AreaRuleViewController.h; sourceTree = "<group>"; };
 		01C2F17218F5219F00B37603 /* AreaRuleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AreaRuleViewController.m; sourceTree = "<group>"; };
 		01C2F17718F528E200B37603 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		01C3D8E9190A373F00D03DC8 /* BPush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPush.h; sourceTree = "<group>"; };
+		01C3D8EA190A373F00D03DC8 /* libBPush.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBPush.a; sourceTree = "<group>"; };
+		01C3D8ED190A375500D03DC8 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
+		01C3D8EE190A375500D03DC8 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
+		01C3D8EF190A375500D03DC8 /* Base64Defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64Defines.h; sourceTree = "<group>"; };
+		01C3D8F0190A375500D03DC8 /* GzipCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GzipCompressor.h; sourceTree = "<group>"; };
+		01C3D8F1190A375500D03DC8 /* GzipCompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GzipCompressor.m; sourceTree = "<group>"; };
+		01C3D8F2190A375500D03DC8 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		01C3D8F3190A375500D03DC8 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		01C3D8F4190A375500D03DC8 /* OpenUDID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenUDID.h; sourceTree = "<group>"; };
+		01C3D8F5190A375500D03DC8 /* OpenUDID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenUDID.m; sourceTree = "<group>"; };
+		01C3D8FA190A378300D03DC8 /* BPushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BPushConfig.plist; sourceTree = "<group>"; };
+		01C3D900190A48D700D03DC8 /* ToolEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolEditView.h; sourceTree = "<group>"; };
+		01C3D901190A48D700D03DC8 /* ToolEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolEditView.m; sourceTree = "<group>"; };
+		01C3D903190A506300D03DC8 /* TKAreaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKAreaCell.h; sourceTree = "<group>"; };
+		01C3D904190A506300D03DC8 /* TKAreaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKAreaCell.m; sourceTree = "<group>"; };
+		01C3D906190A559F00D03DC8 /* TKAreaTargetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKAreaTargetCell.h; sourceTree = "<group>"; };
+		01C3D907190A559F00D03DC8 /* TKAreaTargetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKAreaTargetCell.m; sourceTree = "<group>"; };
 		01CD566C18F68820007731E1 /* BusLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusLocationViewController.h; sourceTree = "<group>"; };
 		01CD566D18F68820007731E1 /* BusLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusLocationViewController.m; sourceTree = "<group>"; };
 		01CD567118F68DC3007731E1 /* WeatherView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherView.h; sourceTree = "<group>"; };
@@ -655,6 +682,7 @@
 			files = (
 				01CD568618F6A75A007731E1 /* MapKit.framework in Frameworks */,
 				01C2F17818F528E200B37603 /* ImageIO.framework in Frameworks */,
+				01C3D8EB190A373F00D03DC8 /* libBPush.a in Frameworks */,
 				01C2F07918F4CEE900B37603 /* CoreLocation.framework in Frameworks */,
 				01C2F06518F3F61000B37603 /* CoreTelephony.framework in Frameworks */,
 				01C2F06318F3F60000B37603 /* OpenGLES.framework in Frameworks */,
@@ -1000,6 +1028,8 @@
 				01C2EE9B18F290A400B37603 /* RunAnimateView.m */,
 				01C2F02C18F3EF4A00B37603 /* ToolBarView.h */,
 				01C2F02D18F3EF4A00B37603 /* ToolBarView.m */,
+				01C3D900190A48D700D03DC8 /* ToolEditView.h */,
+				01C3D901190A48D700D03DC8 /* ToolEditView.m */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -1016,6 +1046,7 @@
 		01C2EEA618F2917600B37603 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				01C3D8E8190A373100D03DC8 /* BaiduPush */,
 				01C2F15118F51DDA00B37603 /* Refresh */,
 				01C2F10618F4E89900B37603 /* SDWebImage */,
 				01C2F03518F3F58600B37603 /* BaiDuMap */,
@@ -1523,8 +1554,38 @@
 				01C2F16418F5219500B37603 /* TKAreaRangeCell.m */,
 				01C2F16518F5219500B37603 /* TKAreaWeekCell.h */,
 				01C2F16618F5219500B37603 /* TKAreaWeekCell.m */,
+				01C3D903190A506300D03DC8 /* TKAreaCell.h */,
+				01C3D904190A506300D03DC8 /* TKAreaCell.m */,
+				01C3D906190A559F00D03DC8 /* TKAreaTargetCell.h */,
+				01C3D907190A559F00D03DC8 /* TKAreaTargetCell.m */,
 			);
 			name = UI;
+			sourceTree = "<group>";
+		};
+		01C3D8E8190A373100D03DC8 /* BaiduPush */ = {
+			isa = PBXGroup;
+			children = (
+				01C3D8EC190A375500D03DC8 /* opensource */,
+				01C3D8E9190A373F00D03DC8 /* BPush.h */,
+				01C3D8EA190A373F00D03DC8 /* libBPush.a */,
+			);
+			name = BaiduPush;
+			sourceTree = "<group>";
+		};
+		01C3D8EC190A375500D03DC8 /* opensource */ = {
+			isa = PBXGroup;
+			children = (
+				01C3D8ED190A375500D03DC8 /* Base64.h */,
+				01C3D8EE190A375500D03DC8 /* Base64.m */,
+				01C3D8EF190A375500D03DC8 /* Base64Defines.h */,
+				01C3D8F0190A375500D03DC8 /* GzipCompressor.h */,
+				01C3D8F1190A375500D03DC8 /* GzipCompressor.m */,
+				01C3D8F2190A375500D03DC8 /* JSONKit.h */,
+				01C3D8F3190A375500D03DC8 /* JSONKit.m */,
+				01C3D8F4190A375500D03DC8 /* OpenUDID.h */,
+				01C3D8F5190A375500D03DC8 /* OpenUDID.m */,
+			);
+			path = opensource;
 			sourceTree = "<group>";
 		};
 		01CD567A18F6A5BC007731E1 /* Location */ = {
@@ -1551,6 +1612,7 @@
 		01CD568C18F7991D007731E1 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				01C3D8FA190A378300D03DC8 /* BPushConfig.plist */,
 				01CD568D18F79973007731E1 /* CityCode.plist */,
 			);
 			name = Source;
@@ -1662,6 +1724,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				01C2F15918F51DE500B37603 /* blueArrow@2x.png in Resources */,
+				01C3D8FB190A378300D03DC8 /* BPushConfig.plist in Resources */,
 				01C2F05D18F3F5C100B37603 /* mapapi.bundle in Resources */,
 				01C2F09618F4DCE100B37603 /* corner.png in Resources */,
 				01C2F15A18F51DE500B37603 /* blueArrowDown.png in Resources */,
@@ -1694,6 +1757,7 @@
 			files = (
 				01C2F0C118F4DD0900B37603 /* EditSupervisionViewController.m in Sources */,
 				01C2F16918F5219500B37603 /* TKAreaRangeCell.m in Sources */,
+				01C3D905190A506300D03DC8 /* TKAreaCell.m in Sources */,
 				01C2EEB918F2922A00B37603 /* TKRegisterCheckCell.m in Sources */,
 				01C2EDA118F22E5100B37603 /* AppDelegate.mm in Sources */,
 				01C2EE8318F2905500B37603 /* LoginViewController.m in Sources */,
@@ -1708,7 +1772,10 @@
 				01C2F0E118F4DE3600B37603 /* PersonTrajectoryViewController.m in Sources */,
 				01C2F10318F4E48E00B37603 /* MoreViewController.m in Sources */,
 				01CD566E18F68820007731E1 /* BusLocationViewController.m in Sources */,
+				01C3D902190A48D700D03DC8 /* ToolEditView.m in Sources */,
 				01C2F02E18F3EF4A00B37603 /* ToolBarView.m in Sources */,
+				01C3D8F7190A375500D03DC8 /* GzipCompressor.m in Sources */,
+				01C3D8F8190A375500D03DC8 /* JSONKit.m in Sources */,
 				01C2F0A218F4DCFC00B37603 /* MonitorView.m in Sources */,
 				01C2EEF518F29BBA00B37603 /* ASIDownloadCache.m in Sources */,
 				01C2F0BD18F4DD0900B37603 /* SupervisionExtend.m in Sources */,
@@ -1716,6 +1783,7 @@
 				01C2F0CE18F4DD7500B37603 /* MeterViewController.m in Sources */,
 				01C2F0A418F4DCFC00B37603 /* ExceptionPaoView.m in Sources */,
 				01C2F17518F5219F00B37603 /* AreaRangeViewController.m in Sources */,
+				01C3D908190A559F00D03DC8 /* TKAreaTargetCell.m in Sources */,
 				01C2EEAA18F2919600B37603 /* Reachability.m in Sources */,
 				01C2F12B18F4E89900B37603 /* UIImage+GIF.m in Sources */,
 				01C2F17318F5219F00B37603 /* AreaViewController.m in Sources */,
@@ -1798,6 +1866,7 @@
 				01CD567318F68DC3007731E1 /* WeatherView.m in Sources */,
 				01C2F08818F4DCC700B37603 /* TrajectorySearch.m in Sources */,
 				01CD56D218FCD2C7007731E1 /* DownloadMapView.m in Sources */,
+				01C3D8F6190A375500D03DC8 /* Base64.m in Sources */,
 				01C2F16818F5219500B37603 /* AreaPaoView.m in Sources */,
 				01C2EE8E18F2909000B37603 /* BasicViewController.m in Sources */,
 				01CD567918F691EB007731E1 /* AdView.m in Sources */,
@@ -1819,6 +1888,7 @@
 				01C2F0C018F4DD0900B37603 /* TrajectoryMessageController.m in Sources */,
 				01CD56D918FCD2D3007731E1 /* OfflineHelper.m in Sources */,
 				01C2F13F18F4F60300B37603 /* CVUICalendar.m in Sources */,
+				01C3D8F9190A375500D03DC8 /* OpenUDID.m in Sources */,
 				01C2F0D618F4DDCF00B37603 /* BMKAnnotationView+TPCategory.m in Sources */,
 				0198F8FB18FE2A0700F2DABE /* TKTextViewCell.m in Sources */,
 				0198F8E618FE114C00F2DABE /* NoticeMessageViewController.m in Sources */,

@@ -10,10 +10,15 @@
 #import "MainViewController.h"
 #import "BasicNavigationController.h"
 #import "AppHelper.h"
+#import "BPush.h"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    //注册推播
+    [BPush setupChannel:launchOptions];
+    [BPush setDelegate:self];
+    
     [self registerBaiduMap];//百度地图注册
     [self appInitSet];//初始化设置
     
@@ -55,12 +60,16 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     //加载动画
-    [AppHelper startRunAnimation];
+    //[AppHelper startRunAnimation];
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    Account *acc=[Account unarchiverAccount];
+    if (acc.appId&&[acc.appId length]==0) {
+        [BPush bindChannel];
+    }
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
@@ -70,6 +79,7 @@
 }
 #pragma mark - custom Methods
 - (void)appInitSet{
+   
     //注册推播
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound)];
     //控件颜色设置
@@ -92,6 +102,34 @@
     }
     [_mapManager release];
 }
+#pragma mark - BPush Methods delegate
+- (void) onMethod:(NSString*)method response:(NSDictionary*)data {
+    NSDictionary* res = [[NSDictionary alloc] initWithDictionary:data];
+    if ([BPushRequestMethod_Bind isEqualToString:method]) {
+        NSString *appid = [res valueForKey:BPushRequestAppIdKey];
+        NSString *userid = [res valueForKey:BPushRequestUserIdKey];
+        NSString *channelid = [res valueForKey:BPushRequestChannelIdKey];
+        //NSString *requestid = [res valueForKey:BPushRequestRequestIdKey];
+        int returnCode = [[res valueForKey:BPushRequestErrorCodeKey] intValue];
+        if (returnCode == BPushErrorCode_Success) {
+            Account *acc=[Account unarchiverAccount];
+            acc.appId=appid;
+            acc.pushUserId=userid;
+            acc.channelId=channelid;
+            [acc save];
+        }
+    } else if ([BPushRequestMethod_Unbind isEqualToString:method]) {
+        int returnCode = [[res valueForKey:BPushRequestErrorCodeKey] intValue];
+        if (returnCode == BPushErrorCode_Success) {
+            Account *acc=[Account unarchiverAccount];
+            acc.appId=@"";
+            acc.pushUserId=@"";
+            acc.channelId=@"";
+            [acc save];
+        }
+    }
+    //self.viewController.textView.text = [[NSString alloc] initWithFormat: @"%@ return: \n%@", method, [data description]];
+}
 #pragma mark - BMKGeneralDelegate Methods
 - (void)onGetNetworkState:(int)iError
 {
@@ -109,24 +147,20 @@
                           substringWithRange:NSMakeRange(1, [[deviceToken description] length]-2)];
     deviceId = [deviceId stringByReplacingOccurrencesOfString:@" " withString:@""];
     deviceId = [deviceId stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    
     Account *acc=[Account unarchiverAccount];
     acc.appToken=deviceId;
     [acc save];
-    /***
+    
     [BPush registerDeviceToken: deviceToken];
     [BPush bindChannel];
-     ***/
     
 }
 #pragma mark - 接收推播信息
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-   
     [application setApplicationIconBadgeNumber:0];
-    /***
+    
     [BPush handleNotification:userInfo];
-    MainViewController *main=(MainViewController*)self.window.rootViewController;
-    [main setSelectedItemIndex:2];
-     ***/
+    //MainViewController *main=(MainViewController*)self.window.rootViewController;
+    //[main setSelectedItemIndex:2];
 }
 @end

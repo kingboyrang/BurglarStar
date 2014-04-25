@@ -12,4 +12,5 @@
 @property (nonatomic,assign) int selectedIndex;
 @property (nonatomic,assign) id controls;
 - (void)setSelectedItemIndex:(int)index;
+- (void)resetSelectedItem;
 @end

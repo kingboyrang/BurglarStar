@@ -185,16 +185,12 @@
         cell.backgroundColor=[UIColor clearColor];
         
     }
+    UIImage *placeImg=[UIImage createRoundedRectImage:[UIImage imageNamed:@"bg02.png"] size:CGSizeMake(70, 84) radius:8.0];
     SupervisionPerson *entity=self.list[indexPath.row];
-    [cell.imageView setImageWithURL:[NSURL URLWithString:entity.Photo] placeholderImage:[UIImage imageNamed:@"bg02.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+    [cell.imageView setImageWithURL:[NSURL URLWithString:entity.Photo] placeholderImage:placeImg completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
         if (image) {
-            if (image.size.width>70||image.size.height>84) {
-                [cell.imageView setImage:[image imageByScalingToSize:CGSizeMake(70, 84)]];
-            }else{
-                [cell.imageView setImage:image];
-            }
-            //NSIndexPath *reloadIndexPath=[_tableView indexPathForCell:cell];
-            //[_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:reloadIndexPath, nil] withRowAnimation:UITableViewRowAnimationNone];
+            UIImage *img=[UIImage createRoundedRectImage:image size:CGSizeMake(70, 84) radius:8.0];
+             [cell.imageView setImage:img];
         }
     }];
     cell.textLabel.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];

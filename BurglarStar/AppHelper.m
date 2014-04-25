@@ -12,11 +12,13 @@
 #import "UIImageView+WebCache.h"
 #import "UIImage+TPCategory.h"
 #import "AlertHelper.h"
+#import "AnimateLoadView.h"
 @interface AppHelper ()
 - (void)runAnimation;
 - (void)watiAnimationShow:(UIImage*)image;
 - (void)removeView;
 - (void)removeRunningAnimation;
+- (void)addRunningView;
 @end
 
 @implementation AppHelper
@@ -44,6 +46,7 @@
 }
 #pragma mark -启动动画处理
 - (void)runAnimation{
+    [self addRunningView];//添加启动画面
     
     ASIServiceArgs *args=[[[ASIServiceArgs alloc] init] autorelease];
     args.serviceURL=DataSOSWebservice;
@@ -51,11 +54,13 @@
     args.methodName=@"GetExcessive";
     ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
     [request setCompletionBlock:^{
+        BOOL boo=NO;
         if (request.ServiceResult.success) {
             NSDictionary *dic=[request.ServiceResult json];
             if (dic&&[dic count]>0) {
                 NSString *imgURL=[dic objectForKey:@"Result"];
                 if ([imgURL length]>0) {
+                    boo=YES;
                     //显示图片
                     SDWebImageManager *manager = [SDWebImageManager sharedManager];
                     [manager downloadWithURL:[NSURL URLWithString:imgURL] options:0
@@ -64,33 +69,36 @@
                                         {
                                             // 下载完成
                                             [self watiAnimationShow:image];
+                                        }else{
+                                            [self removeView];
                                         }
                                     }];
                     //图片下载完成
                 }
             }
         }
+        if (!boo) {
+            [self removeView];
+        }
     }];
     [request setFailedBlock:^{
-        
+        [self removeView];
     }];
     [request startAsynchronous];
 }
 - (void)watiAnimationShow:(UIImage*)image{
-    UIView *bgView=[[UIView alloc] initWithFrame:DeviceRect];
-    bgView.tag=970;
-    bgView.backgroundColor=[UIColor colorFromHexRGB:@"e5e2d0"];
-    
+    UIWindow *window=[[UIApplication sharedApplication] keyWindow];
+    UIView *bgView=(UIView*)[window viewWithTag:970];
+    if (bgView) {
+        for (UIView *v in bgView.subviews) {
+            [v removeFromSuperview];
+        }
+    }
     UIImage *img=[image imageByScalingToSize:bgView.bounds.size];
     UIImageView *imageView=[[UIImageView alloc] initWithFrame:bgView.bounds];
     [imageView setImage:img];
     [bgView addSubview:imageView];
     [imageView release];
-    
-    UIWindow *window=[[UIApplication sharedApplication] keyWindow];
-    [window addSubview:bgView];
-    [bgView release];
-    
     
     //4秒过后执行其它操作
     int64_t delayInSeconds = 4.0f;
@@ -119,14 +127,32 @@
             }
         }
     }];
-    /***
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-    [UIView setAnimationDuration:1.0];
-    [UIView setAnimationDelegate:self];
-    [UIView setAnimationDidStopSelector:@selector(removeView)];
-    imageView.alpha= 0.0;
-    [UIView commitAnimations];
-     ***/
+}
+- (void)addRunningView{
+    UIView *bgView=[[UIView alloc] initWithFrame:DeviceRect];
+    bgView.tag=970;
+    bgView.backgroundColor=[UIColor colorFromHexRGB:@"e5e2d0"];
+    
+    NSString *title=@"正在启动...";
+    CGSize size=[title textSize:[UIFont boldSystemFontOfSize:14] withWidth:DeviceWidth];
+    UIActivityIndicatorView *_activityIndicatorView=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    _activityIndicatorView.frame=CGRectMake((DeviceWidth-30-size.width-2)/2, (DeviceHeight-30)/2, 30, 30);
+    [_activityIndicatorView startAnimating];
+    [bgView addSubview:_activityIndicatorView];
+    
+    CGFloat leftX=_activityIndicatorView.frame.origin.x+_activityIndicatorView.frame.size.width+2;
+    UILabel *lab=[[UILabel alloc] initWithFrame:CGRectMake(leftX,(DeviceHeight-size.height)/2, size.width, size.height)];
+    lab.backgroundColor=[UIColor clearColor];
+    lab.textColor=[UIColor colorFromHexRGB:DeviceFontColorName];
+    lab.font=[UIFont boldSystemFontOfSize:14];
+    lab.text=title;
+    [bgView addSubview:lab];
+    [_activityIndicatorView release];
+    [lab release];
+    
+    
+    UIWindow *window=[[UIApplication sharedApplication] keyWindow];
+    [window addSubview:bgView];
+    [bgView release];
 }
 @end

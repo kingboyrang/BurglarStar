@@ -19,6 +19,9 @@
     [encoder encodeObject:self.Phone forKey:@"Phone"];
     [encoder encodeObject:self.WorkNo forKey:@"WorkNo"];
     [encoder encodeObject:self.appToken forKey:@"appToken"];
+    [encoder encodeObject:self.appId forKey:@"appId"];
+    [encoder encodeObject:self.channelId forKey:@"channelId"];
+    [encoder encodeObject:self.pushUserId forKey:@"pushUserId"];
     
     [encoder encodeBool:self.isFirstRun forKey:@"isFirstRun"];
     [encoder encodeBool:self.isLogin forKey:@"isLogin"];
@@ -41,6 +44,9 @@
         self.isRememberPwd=[aDecoder decodeBoolForKey:@"isRememberPwd"];
         self.zoomLevel=[aDecoder decodeFloatForKey:@"zoomLevel"];
         self.appToken=[aDecoder decodeObjectForKey:@"appToken"];
+        self.appId=[aDecoder decodeObjectForKey:@"appId"];
+        self.channelId=[aDecoder decodeObjectForKey:@"channelId"];
+        self.pushUserId=[aDecoder decodeObjectForKey:@"pushUserId"];
     }
     return self;
 }

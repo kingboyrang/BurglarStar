@@ -68,8 +68,10 @@
     [super viewDidLoad];
     self.title=@"车辆管理";
     
+    /***
     UIBarButtonItem *rightBtn=[UIBarButtonItem barButtonWithTitle:@"列表" target:self action:@selector(buttonListClick) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem=rightBtn;
+     ***/
     
 	CGRect r=self.view.bounds;
     r.size.height-=[self topHeight]+44;

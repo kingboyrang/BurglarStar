@@ -90,8 +90,6 @@
     [super viewDidLoad];
     self.title=@"监控中心";
     
-    
-    
     isFirstLoad=YES;
     isGps=YES;
     isPushController=NO;
@@ -195,6 +193,9 @@
 - (void)setSelectedTabIndex:(id)num{
     NSNumber *number=(NSNumber*)num;
     int index=[number intValue];
+    if (index==0) {//首页
+        [self.navigationController popViewControllerAnimated:YES];
+    }
     if (index==1) {//轨迹
         PersonTrajectoryViewController *viewController2=[[PersonTrajectoryViewController alloc] init];
         viewController2.Entity=self.selectedSupervision;
@@ -308,7 +309,7 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [_toolBarView setSelectedItemIndex:0];
+    //[_toolBarView setSelectedItemIndex:0];
     
     //更新记录总数
     if([self canShowTrajectory])

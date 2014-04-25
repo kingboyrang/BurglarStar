@@ -18,6 +18,7 @@
 #import "SOSManagerViewController.h"
 //#import "UserInfoViewController.h"
 #import "MoreViewController.h"
+#import "AlertHelper.h"
 @interface MainViewController ()
 - (void)buttonLoginClick:(id)sender;
 - (void)buttonRegisterClick:(id)sender;
@@ -54,18 +55,12 @@
     [super viewDidLoad];
     //self.navigationController.navigationBar.translucent =YES;
     self.title=@"防盗之星";
-
-    BSMenu *menu=[[BSMenu alloc] initWithFrame:CGRectZero];
-    menu.tag=801;
-    menu.delegate=self;
-    CGRect r=menu.frame;
-    r.origin.x=(self.view.bounds.size.width-r.size.width)/2;
-    r.origin.y=self.view.bounds.size.height-r.size.height-[self topHeight]-10;
-    menu.frame=r;
-    [self.view addSubview:menu];
-    [menu release];
     
-    CGFloat topY=r.origin.y-10-44;
+    CGFloat h=self.view.bounds.size.height/2;
+
+   
+    
+    CGFloat topY=h-[self topHeight]-44;
     
     _weatherPopView=[[WeatherPopView alloc] initWithFrame:CGRectMake(0, topY+44-74, self.view.bounds.size.width,74)];
     [self.view addSubview:_weatherPopView];
@@ -77,10 +72,22 @@
     
    
     
-    _scrollAdView=[[AdView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, topY)];
+    _scrollAdView=[[AdView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width,topY)];
     _scrollAdView.backgroundColor=[UIColor colorFromHexRGB:@"e5e2d0"];
     [self.view addSubview:_scrollAdView];
-    /***
+    
+    topY=_weatherView.frame.size.height+_weatherView.frame.origin.y;
+    BSMenu *menu=[[BSMenu alloc] initWithFrame:CGRectMake(0, topY,self.view.bounds.size.width, self.view.bounds.size.height-topY-[self topHeight])];
+    menu.tag=801;
+    menu.delegate=self;
+    CGRect r=menu.frame;
+    r.origin.x=(self.view.bounds.size.width-r.size.width)/2;
+    r.origin.y=topY+(self.view.bounds.size.height-topY-[self topHeight]-r.size.height)/2;
+    menu.frame=r;
+    [self.view addSubview:menu];
+    [menu release];
+    
+    /***274 230
     NSString *memo=@"深圳宝安区";
      CGSize size=[memo textSize:[UIFont systemFontOfSize:12] withWidth:320];
     NSLog(@"size=%@",NSStringFromCGSize(size));
@@ -167,6 +174,11 @@
 -(void)selectItemMenu:(id)sender index:(NSInteger)itemIndex{
     Account *acc=[Account unarchiverAccount];
     if (!acc.isLogin) {
+        [AlertHelper initWithTitle:@"提示" message:@"尚未登录,是否前往登录?" cancelTitle:@"取消" cancelAction:nil confirmTitle:@"确定" confirmAction:^{
+            LoginViewController *login=[[LoginViewController alloc] init];
+            [self.navigationController pushViewController:login animated:YES];
+            [login release];
+        }];
         return;
     }
     if (itemIndex==100) {//监控中心

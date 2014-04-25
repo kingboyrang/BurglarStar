@@ -21,6 +21,9 @@
 @property(nonatomic,assign) BOOL isRememberPwd;//是否记住密码
 @property(nonatomic,assign) float zoomLevel;//地图等级
 @property(nonatomic,copy) NSString *appToken;//推播token
+@property(nonatomic,copy) NSString *appId;
+@property(nonatomic,copy) NSString *channelId;
+@property(nonatomic,copy) NSString *pushUserId;
 //保存
 - (void)save;
 //注销

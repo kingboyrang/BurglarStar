@@ -73,9 +73,12 @@
     [super viewDidLoad];
     self.title=@"电子围栏";
     UIBarButtonItem *btn1=[UIBarButtonItem barButtonWithTitle:@"3/3" target:self action:nil forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem=btn1;
+    /***
     UIBarButtonItem *btn2=[UIBarButtonItem barButtonWithTitle:@"列表" target:self action:@selector(buttonListClick) forControlEvents:UIControlEventTouchUpInside];
     NSArray *actionButtonItems = [NSArray arrayWithObjects:btn2,btn1, nil];
     self.navigationItem.rightBarButtonItems = actionButtonItems;
+     ***/
     
     CGFloat topY=0;
     RangHeader *titleView=[[RangHeader alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 31)];

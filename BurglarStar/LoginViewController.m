@@ -29,7 +29,7 @@
     [super viewDidLoad];
     self.title=@"登录注册";
     
-    self.loginWay=[[LoginWay alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 48)];
+    self.loginWay=[[LoginWay alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 36)];
     self.loginWay.controlers=self;
     [self.view addSubview:self.loginWay];
     

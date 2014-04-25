@@ -10,15 +10,16 @@
 #import "Account.h"
 #import "AreaCrawl.h"
 #import "AppHelper.h"
-#import "ToolBarView.h"
+#import "ToolEditView.h"
 #import "ModifyAreaViewController.h"
 #import "AreaRangeViewController.h"
 #import "AlertHelper.h"
 #import "UIBarButtonItem+TPCategory.h"
 #import "ASIServiceHTTPRequest.h"
+#import "TKAreaCell.h"
 @interface AreaViewController ()<UITableViewDataSource,UITableViewDelegate>{
     UITableView *_tableView;
-    ToolBarView *_toolBar;
+    ToolEditView *_toolBar;
     BOOL isFirstLoad;
 }
 - (void)loadingArea;
@@ -71,9 +72,10 @@
     _tableView.backgroundColor=[UIColor clearColor];
     [self.view addSubview:_tableView];
     
-    _toolBar=[[ToolBarView alloc] initWithFrame:CGRectMake(0, _tableView.frame.size.height+_tableView.frame.origin.y+44, self.view.bounds.size.width, 44)];
-    [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
-    [_toolBar.button addTarget:self action:@selector(buttonSubmitRemoveClick:) forControlEvents:UIControlEventTouchUpInside];
+    _toolBar=[[ToolEditView alloc] initWithFrame:CGRectMake(0, _tableView.frame.size.height+_tableView.frame.origin.y+44, self.view.bounds.size.width, 44)];
+    [_toolBar.toolBar.submit addTarget:self action:@selector(deleteAreaWithButton:) forControlEvents:UIControlEventTouchUpInside];
+    [_toolBar.barView.button setTitle:@"删除(0)" forState:UIControlStateNormal];
+    [_toolBar.barView.button addTarget:self action:@selector(buttonSubmitRemoveClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_toolBar];
     
     
@@ -130,21 +132,6 @@
     }
     return nil;
 }
-//清空
-- (void)buttonCancelRemoveClick{
-    if (self.removeList&&self.removeList.count>0) {
-        NSArray *indexPaths=[[self.removeList allValues] retain];
-        for (NSString *item in indexPaths) {
-            NSIndexPath *indexPath=[NSIndexPath indexPathForRow:[item intValue] inSection:0];
-            [_tableView deselectRowAtIndexPath:indexPath animated:YES];
-            [self tableView:_tableView didDeselectRowAtIndexPath:indexPath];
-        }
-        [indexPaths release];
-    }else{
-        [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
-    }
-
-}
 - (void)deleteAreaWithButton:(UIButton*)btn{
     btn.enabled=NO;
     
@@ -174,7 +161,8 @@
                 [_tableView deleteRowsAtIndexPaths:[NSArray arrayWithArray:[self.removeList allValues]] withRowAnimation:UITableViewRowAnimationFade];
                 [_tableView endUpdates];
                 [self.removeList removeAllObjects];
-                [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
+                [_toolBar.barView.button setTitle:@"删除(0)" forState:UIControlStateNormal];
+                [_toolBar sendToolBarBack];
                 
                 [self hideLoadingSuccessWithTitle:@"删除成功!" completed:nil];
                 [_tableView reloadData];
@@ -195,10 +183,7 @@
 //删除
 - (void)buttonSubmitRemoveClick:(id)sender{
     if (self.removeList&&[self.removeList count]>0) {
-        [AlertHelper confirmWithTitle:@"删除" confirm:^{
-            UIButton *btn=(UIButton*)sender;
-            [self deleteAreaWithButton:btn];
-        } innnerView:self.view];
+        [_toolBar sendBarViewBack];
     }
 }
 //新增
@@ -209,10 +194,8 @@
     [modify release];
 }
 //编辑
-- (void)buttonEditClick:(id)sender{
-    UIButton *btn=(UIButton*)sender;
-    [_tableView setEditing:!_tableView.editing animated:YES];
-    if(_tableView.editing){
+- (void)buttonEditClick:(UIButton*)btn{
+    if ([btn.currentTitle isEqualToString:@"编辑"]) {
         [btn setTitle:@"取消" forState:UIControlStateNormal];
         CGRect r1=_tableView.frame;
         CGRect r=_toolBar.frame;
@@ -220,17 +203,30 @@
         
         r1.size.height-=r.size.height;
         
+        if (self.list&&[self.list count]>0) {
+            for (NSInteger i=0;i<self.list.count;i++) {
+                NSIndexPath *indexPath=[NSIndexPath indexPathForRow:i inSection:0];
+                TKAreaCell *cell=(TKAreaCell*)[_tableView cellForRowAtIndexPath:indexPath];
+                cell.showCheck=YES;
+                [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationNone];
+            }
+        }
         [UIView animateWithDuration:0.5f animations:^(){
             _toolBar.frame=r;
             _tableView.frame=r1;
+        } completion:^(BOOL finished) {
+            if (finished) {
+                [_tableView reloadData];
+            }
         }];
-    }
-	else {
+        
+    }else{
         if(self.removeList&&[self.removeList count]>0)
         {
             [self.removeList removeAllObjects];
         }
-        [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
+        [_toolBar.barView.button setTitle:@"删除(0)" forState:UIControlStateNormal];
+        [_toolBar sendToolBarBack];
         
         [btn setTitle:@"编辑" forState:UIControlStateNormal];
         CGRect r=_toolBar.frame;
@@ -240,17 +236,68 @@
         CGRect r1=_tableView.frame;
         //r1.size.height=self.view.bounds.size.height-44;
         r1.size.height+=r.size.height;
-        
+        if (self.list&&[self.list count]>0) {
+            for (NSInteger i=0;i<self.list.count;i++) {
+                NSIndexPath *indexPath=[NSIndexPath indexPathForRow:i inSection:0];
+                TKAreaCell *cell=(TKAreaCell*)[_tableView cellForRowAtIndexPath:indexPath];
+                cell.chkButton.selected=NO;
+                //[cell setShowCheckButton:YES];
+                cell.showCheck=NO;
+                [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationNone];
+            }
+        }
         [UIView animateWithDuration:0.5f animations:^(){
             _toolBar.frame=r;
             _tableView.frame=r1;
+        } completion:^(BOOL finished) {
+            if (finished) {
+                [_tableView reloadData];
+            }
         }];
-	}
+    }
 }
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+//选中处理
+- (void)buttonChkClick:(UIButton*)btn{
+    btn.selected=!btn.selected;
+    
+    id v=[btn superview];
+    while (![v isKindOfClass:[UITableViewCell class]]) {
+        v=[v superview];
+    }
+    UITableViewCell *cell=(UITableViewCell*)v;
+    NSIndexPath *indexPath=[_tableView indexPathForCell:cell];
+     AreaCrawl *entity=self.list[indexPath.row];
+    if (!self.removeList) {
+        self.removeList=[NSMutableDictionary dictionary];
+    }
+    if (btn.selected) {//选中
+        [self.removeList setValue:indexPath forKey:entity.SysID];
+        [_toolBar.barView.button setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
+        
+    }else{//不选中
+        [self.removeList removeObjectForKey:entity.SysID];
+        [_toolBar.barView.button setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
+    }
+}
+//页面跳转处理
+- (void)buttonSkipClick:(UIButton*)btn{
+    id v=[btn superview];
+    while (![v isKindOfClass:[UITableViewCell class]]) {
+        v=[v superview];
+    }
+    UITableViewCell *cell=(UITableViewCell*)v;
+    NSIndexPath *indexPath=[_tableView indexPathForCell:cell];
+    AreaCrawl *area=self.list[indexPath.row];
+    ModifyAreaViewController *edit=[[ModifyAreaViewController alloc] init];
+    edit.operateType=2;//修改
+    edit.AreaId=area.SysID;
+    [self.navigationController pushViewController:edit animated:YES];
+    [edit release];
 }
 #pragma mark UITableViewDataSource Methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -259,71 +306,21 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     static NSString *cellIdentifier=@"areaCell";
-    UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    TKAreaCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell==nil) {
-        cell=[[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
-       
-        //cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
-        cell.textLabel.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];
-        cell.textLabel.textColor=[UIColor blackColor];
-        
-        UIImage *image=[UIImage imageNamed:@"arrow_right_n.png"];
-        UIImageView *imageView=[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
-        [imageView setImage:image];
-        cell.accessoryView=imageView;
-        [imageView release];
-        
-       
+        cell=[[[TKAreaCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
+        cell.selectionStyle=UITableViewCellSelectionStyleNone;
        
     }
-    cell.textLabel.backgroundColor=[UIColor clearColor];
+    [cell.chkButton addTarget:self action:@selector(buttonChkClick:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.arrowButton addTarget:self action:@selector(buttonSkipClick:) forControlEvents:UIControlEventTouchUpInside];
+    //cell.chkButton.hidden=!cell.showCheck;
     UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
     backgrdView.backgroundColor = indexPath.row%2==0?[UIColor colorFromHexRGB:@"bebeb8"]:[UIColor colorFromHexRGB:@"efeedc"];
     cell.backgroundView = backgrdView;
-    
-    //cell.selectedBackgroundView = [[[UIView alloc] initWithFrame:cell.frame] autorelease];
-    //cell.selectedBackgroundView.backgroundColor = indexPath.row%2==0?[UIColor colorFromHexRGB:@"bebeb8"]:[UIColor colorFromHexRGB:@"efeedc"];
-    
     [backgrdView release];
-    
-    
     AreaCrawl *area=self.list[indexPath.row];
-    cell.textLabel.text=area.AreaName;
+    cell.labName.text=area.AreaName;
     return cell;
-}
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:0];
-    UIButton *btn=(UIButton*)barButton.customView;
-    if ([btn.currentTitle isEqualToString:@"编辑"]) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        AreaCrawl *area=self.list[indexPath.row];
-        ModifyAreaViewController *edit=[[ModifyAreaViewController alloc] init];
-        edit.operateType=2;//修改
-        edit.AreaId=area.SysID;
-        [self.navigationController pushViewController:edit animated:YES];
-        [edit release];
-    }else{
-        if (!self.removeList) {
-            self.removeList=[NSMutableDictionary dictionary];
-        }
-        AreaCrawl *entity=self.list[indexPath.row];
-        [self.removeList setValue:indexPath forKey:entity.SysID];
-        [_toolBar.button setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
-    }
-}
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:0];
-    UIButton *btn=(UIButton*)barButton.customView;
-    if ([btn.currentTitle isEqualToString:@"取消"]) {
-        AreaCrawl *entity=self.list[indexPath.row];
-        [self.removeList removeObjectForKey:entity.SysID];
-        [_toolBar.button setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
-    }
-}
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete|UITableViewCellEditingStyleInsert;
 }
 @end

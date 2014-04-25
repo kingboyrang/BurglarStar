@@ -42,16 +42,20 @@
         CGFloat leftX=i*normal.size.width;
         UIButton *button =[[UIButton alloc] initWithFrame:CGRectMake(leftX,0, normal.size.width, normal.size.height)];
         [button setBackgroundImage:normal forState:UIControlStateNormal];
-        [button setBackgroundImage:hight forState:UIControlStateSelected];
+        //[button setBackgroundImage:hight forState:UIControlStateSelected];
+        [button setBackgroundImage:hight forState:UIControlStateHighlighted];
         button.tag = 100+i;
         if (i==0) {
-            button.selected=YES;
+            //button.selected=YES;
         }
         [button addTarget:self action:@selector(selectedTab:) forControlEvents:UIControlEventTouchUpInside];
-        
+         button.showsTouchWhenHighlighted = YES;
         [self addSubview:button];
         [button release];
     }
+}
+- (void)resetSelectedItem{
+   
 }
 //tab 按钮的点击事件
 - (void)selectedTab:(UIButton *)button {
@@ -65,13 +69,14 @@
             return;
         }
     }
-    
+    /***
     button.selected=YES;
     if (_prevSelectIndex!=button.tag-100) {
         UIButton *btn=(UIButton*)[self viewWithTag:100+_prevSelectIndex];
         btn.selected=NO;
         _prevSelectIndex=button.tag-100;
     }
+    ***/
     self.selectedIndex = button.tag-100;
     
      SEL sel1=NSSelectorFromString(@"setSelectedTabIndex:");

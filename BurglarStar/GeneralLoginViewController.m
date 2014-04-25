@@ -55,7 +55,7 @@
        
     
     CGRect r=self.view.bounds;
-    r.size.height-=[self topHeight]+48+44;
+    r.size.height-=[self topHeight]+36+44;
     _tableView=[[UITableView alloc] initWithFrame:r style:UITableViewStylePlain];
     _tableView.delegate=self;
     _tableView.dataSource=self;

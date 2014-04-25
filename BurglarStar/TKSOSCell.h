@@ -13,4 +13,6 @@
 @property (nonatomic,strong) UILabel *labDate;
 @property (nonatomic,strong) UIButton *button;
 @property (nonatomic,strong) UIButton *arrowButton;
+@property (nonatomic,strong) UIButton *chkButton;
+@property (nonatomic,assign) BOOL showCheck;
 @end

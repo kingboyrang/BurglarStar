@@ -8,7 +8,7 @@
 
 #import "ManagerPhotoSelectViewController.h"
 #import "CaseCameraImage.h"
-#import "LoginButtons.h"
+#import "ToolBarView.h"
 #import "UIImage+TPCategory.h"
 #import "AlertHelper.h"
 #import "UIImageView+WebCache.h"
@@ -100,13 +100,13 @@
     [btn addTarget:self action:@selector(buttonCameraClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btn];
     
-    LoginButtons *buttons=[[LoginButtons alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-[self topHeight]-44, self.view.bounds.size.width, 44)];
-    buttons.cancel.frame=CGRectMake(0, 0, self.view.bounds.size.width/3, 44);
-    buttons.submit.frame=CGRectMake(self.view.bounds.size.width/3, 0, self.view.bounds.size.width/3, buttons.frame.size.height);
-    [buttons.cancel setTitle:@"上一步" forState:UIControlStateNormal];
-    [buttons.cancel addTarget:self action:@selector(buttonPrevClick) forControlEvents:UIControlEventTouchUpInside];
-    [buttons.submit setTitle:@"完成" forState:UIControlStateNormal];
-    [buttons.submit addTarget:self action:@selector(buttonSubmitClick) forControlEvents:UIControlEventTouchUpInside];
+    ToolBarView *buttons=[[ToolBarView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-[self topHeight]-44, self.view.bounds.size.width, 44)];
+    //buttons.cancel.frame=CGRectMake(0, 0, self.view.bounds.size.width/3, 44);
+    //buttons.submit.frame=CGRectMake(self.view.bounds.size.width/3, 0, self.view.bounds.size.width/3, buttons.frame.size.height);
+    //[buttons.cancel setTitle:@"上一步" forState:UIControlStateNormal];
+    //[buttons.cancel addTarget:self action:@selector(buttonPrevClick) forControlEvents:UIControlEventTouchUpInside];
+    [buttons.button setTitle:@"完成" forState:UIControlStateNormal];
+    [buttons.button addTarget:self action:@selector(buttonSubmitClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:buttons];
     [buttons release];
 }

@@ -23,6 +23,7 @@
 #import "UIBarButtonItem+TPCategory.h"
 #import "ASIServiceHTTPRequest.h"
 #import "UIButton+TPCategory.h"
+#import "TKAreaTargetCell.h"
 @interface AreaRuleViewController ()<UITableViewDataSource,UITableViewDelegate>{
     CVUISelect *_ruleSelect;
     UITableView *_tableView;
@@ -67,9 +68,12 @@
     self.title=@"电子围栏";
     
     UIBarButtonItem *btn1=[UIBarButtonItem barButtonWithTitle:@"2/3" target:self action:nil forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem=btn1;
+    /***
     UIBarButtonItem *btn2=[UIBarButtonItem barButtonWithTitle:@"列表" target:self action:@selector(buttonListClick) forControlEvents:UIControlEventTouchUpInside];
     NSArray *actionButtonItems = [NSArray arrayWithObjects:btn2,btn1, nil];
     self.navigationItem.rightBarButtonItems = actionButtonItems;
+     ***/
     
     self.ruleId=@"";
     self.operateType=1;
@@ -106,8 +110,10 @@
     LoginButtons *buttons=[[LoginButtons alloc] initWithFrame:CGRectMake(0,_tableView.frame.origin.y+_tableView.frame.size.height, self.view.bounds.size.width, 44)];
     UIButton *btnPrev=[UIButton buttonWithType:UIButtonTypeCustom];
     btnPrev.frame=CGRectMake(0,0,self.view.bounds.size.width/3,44);
-    //[AppUI createhighlightButtonWithTitle:@"上一步" frame:CGRectMake(0,0,self.view.bounds.size.width/3,44)];
-    [btnPrev setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btnPrev setTitle:@"上一步" forState:UIControlStateNormal];
+    [btnPrev setTitleColor:[UIColor colorFromHexRGB:@"1e313f"] forState:UIControlStateNormal];
+    btnPrev.titleLabel.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];
+    btnPrev.showsTouchWhenHighlighted = YES;  //指定按钮被按下时发光
     [btnPrev addTarget:self action:@selector(buttonPrevClick) forControlEvents:UIControlEventTouchUpInside];
     [buttons addSubview:btnPrev];
     
@@ -200,7 +206,7 @@
         NSArray *source=[dic objectForKey:@"Person"];
         self.sourceData=[NSMutableArray arrayWithArray:[AppHelper arrayWithSource:source className:@"SupervisionPerson"]];
         [_tableView reloadData];
-        [_tableView setEditing:YES animated:YES];//设置可以编辑
+        //[_tableView setEditing:YES animated:YES];//设置可以编辑
     }
 
 }
@@ -217,14 +223,22 @@
                 int row=[self getRowFindbyId:item.ID];
                 if (row>=0&&self.sourceData&&row<[self.sourceData count]) {
                     NSIndexPath *indexPath=[NSIndexPath indexPathForRow:row inSection:0];
-                    //设置checkbox选中
-                    [_tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+                    TKAreaTargetCell *cell=(TKAreaTargetCell*)[_tableView cellForRowAtIndexPath:indexPath];
+                    [cell setCheckedButton:YES];
+                    if (!self.shipUsers) {
+                        self.shipUsers=[NSMutableDictionary dictionary];
+                    }
+                    if (![self.shipUsers.allKeys containsObject:item.ID]) {
+                        [self.shipUsers setValue:[NSString stringWithFormat:@"%d",indexPath.row] forKey:item.ID];
+                    }
+                     //设置checkbox选中
                     //保存选中的值
-                    [self tableView:_tableView didSelectRowAtIndexPath:indexPath];
+                    //[self buttonChkClick:cell.chkButton];
                 }
             }
         }
     }
+    //[_tableView reloadData];
 }
 - (int)getRowFindbyId:(NSString*)carId{
     if (self.sourceData&&[self.sourceData count]>0) {
@@ -378,6 +392,29 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+//选中处理
+- (void)buttonChkClick:(UIButton*)btn{
+    btn.selected=!btn.selected;
+    
+    id v=[btn superview];
+    while (![v isKindOfClass:[UITableViewCell class]]) {
+        v=[v superview];
+    }
+    UITableViewCell *cell=(UITableViewCell*)v;
+    NSIndexPath *indexPath=[_tableView indexPathForCell:cell];
+     SupervisionPerson *entity=self.sourceData[indexPath.row];
+    if (!self.shipUsers) {
+        self.shipUsers=[NSMutableDictionary dictionary];
+    }
+    if (btn.selected) {
+        if (![self.shipUsers.allKeys containsObject:entity.ID]) {
+            [self.shipUsers setValue:[NSString stringWithFormat:@"%d",indexPath.row] forKey:entity.ID];
+        }
+        
+    }else{
+        [self.shipUsers removeObjectForKey:entity.ID];
+    }
+}
 #pragma mark UITableViewDataSource Methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return [self.sourceData count];
@@ -385,44 +422,26 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *cellIdentifier=@"carCell";
-    UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    TKAreaTargetCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell==nil) {
-        cell=[[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
+        cell=[[[TKAreaTargetCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
+        cell.selectionStyle=UITableViewCellSelectionStyleNone;
         cell.backgroundColor=[UIColor clearColor];
+        [cell.chkButton addTarget:self action:@selector(buttonChkClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     SupervisionPerson *entity=self.sourceData[indexPath.row];
-    [cell.imageView setImageWithURL:[NSURL URLWithString:entity.Photo] placeholderImage:[UIImage imageNamed:@"bg02.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+    UIImage *placeImg=[UIImage createRoundedRectImage:[UIImage imageNamed:@"bg02.png"] size:CGSizeMake(70, 84) radius:8.0];
+    [cell.busImageView setImageWithURL:[NSURL URLWithString:entity.Photo] placeholderImage:placeImg completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
         if (image) {
-            if (image.size.width>70||image.size.height>84) {
-                [cell.imageView setImage:[image imageByScalingToSize:CGSizeMake(70, 84)]];
-            }else{
-                [cell.imageView setImage:image];
-            }
+            UIImage *img=[UIImage createRoundedRectImage:image size:CGSizeMake(70, 84) radius:8.0];
+             [cell.busImageView setImage:img];
         }
     }];
-    cell.textLabel.font=[UIFont fontWithName:DeviceFontName size:DeviceFontSize];
-    cell.textLabel.text=entity.Name;
+    cell.labName.text=entity.Name;
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 84;
-}
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (!self.shipUsers) {
-        self.shipUsers=[NSMutableDictionary dictionary];
-    }
-    SupervisionPerson *entity=self.sourceData[indexPath.row];
-    [self.shipUsers setValue:[NSString stringWithFormat:@"%d",indexPath.row] forKey:entity.ID];
-   
-}
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    SupervisionPerson *entity=self.sourceData[indexPath.row];
-    [self.shipUsers removeObjectForKey:entity.ID];
-}
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete|UITableViewCellEditingStyleInsert;
+    return 94;
 }
 @end

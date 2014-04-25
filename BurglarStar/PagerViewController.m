@@ -30,7 +30,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    CGFloat h=48;
+    CGFloat h=36;
     //CGFloat topY=self.IOSSystemVersion>=7.0?h+44.0:h;
     CGFloat topY=h;
     

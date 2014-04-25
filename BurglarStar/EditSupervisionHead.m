@@ -57,8 +57,10 @@
     [super viewDidLoad];
     self.title=self.Entity.Name;
     
+    /***
     UIBarButtonItem *rightBtn=[UIBarButtonItem barButtonWithTitle:@"列表" target:self action:@selector(buttonListClick) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem=rightBtn;
+     ***/
     
     self.cameraImage=[[CaseCameraImage alloc] init];
     self.cameraImage.delegate=self;
