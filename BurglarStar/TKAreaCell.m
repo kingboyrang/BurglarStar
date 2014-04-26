@@ -38,9 +38,17 @@
 	self = [self initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
 	return self;
 }
-- (void)setShowCheckButton:(BOOL)show{
-     _chkButton.hidden=show;
-    self.showCheck=!show;
+- (void)changeMSelectedState{
+    _chkButton.selected=NO;
+    self.showCheck=NO;
+    _chkButton.hidden=YES;
+    [self setNeedsLayout];
+}
+- (void)mSelectedState:(BOOL)state{
+     self.showCheck=YES;
+     _chkButton.selected=state;
+      _chkButton.hidden=NO;
+    [self setNeedsLayout];
 }
 - (void) layoutSubviews {
     [super layoutSubviews];

@@ -27,6 +27,7 @@
 - (SOSMessage*)FindById:(NSString*)guid;
 - (void)deleteSoSWithButton:(UIButton*)btn;
 - (void)buttonLocationClick:(UIButton*)btn;
+- (BOOL)showCheckedFindById:(NSString*)areaId;
 @end
 
 @implementation SOSManagerViewController
@@ -134,7 +135,7 @@
             for (NSInteger i=0;i<self.list.count;i++) {
                 NSIndexPath *indexPath=[NSIndexPath indexPathForRow:i inSection:0];
                 TKSOSCell *cell=(TKSOSCell*)[_tableView cellForRowAtIndexPath:indexPath];
-                cell.showCheck=YES;
+                [cell mSelectedState:NO];
             }
         }
         [UIView animateWithDuration:0.5f animations:^(){
@@ -166,8 +167,7 @@
             for (NSInteger i=0;i<self.list.count;i++) {
                 NSIndexPath *indexPath=[NSIndexPath indexPathForRow:i inSection:0];
                 TKSOSCell *cell=(TKSOSCell*)[_tableView cellForRowAtIndexPath:indexPath];
-                cell.showCheck=NO;
-                cell.chkButton.selected=NO;
+                [cell changeMSelectedState];
             }
         }
         [UIView animateWithDuration:0.5f animations:^(){
@@ -346,6 +346,21 @@
     SOSMessage *entity=self.list[indexPath.row];
     cell.labName.text=entity.CarNo;
     cell.labDate.text=entity.CreateDate;
+    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:0];
+    UIButton *btn=(UIButton*)barButton.customView;
+    if ([btn.currentTitle isEqualToString:@"编辑"]) {//隐藏
+        [cell changeMSelectedState];
+    }else{//显示
+        [cell mSelectedState:[self showCheckedFindById:entity.SOSPKID]];
+    }
     return cell;
+}
+- (BOOL)showCheckedFindById:(NSString*)areaId{
+    if (self.removeList&&[self.removeList count]>0) {
+        if ([self.removeList.allKeys containsObject:areaId]) {
+            return YES;
+        }
+    }
+    return NO;
 }
 @end

@@ -13,5 +13,6 @@
 @property (nonatomic,strong) UIButton *arrowButton;
 @property (nonatomic,strong) UIButton *chkButton;
 @property (nonatomic,assign) BOOL showCheck;
-- (void)setShowCheckButton:(BOOL)show;
+- (void)changeMSelectedState;
+- (void)mSelectedState:(BOOL)state;
 @end

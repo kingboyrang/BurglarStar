@@ -37,6 +37,7 @@
 - (void)handlerShipResult:(ASIServiceResult*)result;
 - (int)getRowFindbyId:(NSString*)carId;
 - (void)addSelectRule:(float)topY;
+- (BOOL)showCheckedFindById:(NSString*)areaId;
 @end
 
 @implementation AreaRuleViewController
@@ -438,10 +439,19 @@
         }
     }];
     cell.labName.text=entity.Name;
+    cell.chkButton.selected=[self showCheckedFindById:entity.ID];
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 94;
+}
+- (BOOL)showCheckedFindById:(NSString*)areaId{
+    if (self.shipUsers&&[self.shipUsers count]>0) {
+        if ([self.shipUsers.allKeys containsObject:areaId]) {
+            return YES;
+        }
+    }
+    return NO;
 }
 @end

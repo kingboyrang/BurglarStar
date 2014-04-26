@@ -27,6 +27,7 @@
 - (void)buttonEditClick:(id)sender;
 - (AreaCrawl*)FindById:(NSString*)guid;
 - (void)deleteAreaWithButton:(UIButton*)btn;
+- (BOOL)showCheckedFindById:(NSString*)areaId;//判断是否存在选中的项
 @end
 
 @implementation AreaViewController
@@ -207,8 +208,7 @@
             for (NSInteger i=0;i<self.list.count;i++) {
                 NSIndexPath *indexPath=[NSIndexPath indexPathForRow:i inSection:0];
                 TKAreaCell *cell=(TKAreaCell*)[_tableView cellForRowAtIndexPath:indexPath];
-                cell.showCheck=YES;
-                [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationNone];
+                [cell mSelectedState:NO];
             }
         }
         [UIView animateWithDuration:0.5f animations:^(){
@@ -240,10 +240,7 @@
             for (NSInteger i=0;i<self.list.count;i++) {
                 NSIndexPath *indexPath=[NSIndexPath indexPathForRow:i inSection:0];
                 TKAreaCell *cell=(TKAreaCell*)[_tableView cellForRowAtIndexPath:indexPath];
-                cell.chkButton.selected=NO;
-                //[cell setShowCheckButton:YES];
-                cell.showCheck=NO;
-                [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationNone];
+                [cell changeMSelectedState];
             }
         }
         [UIView animateWithDuration:0.5f animations:^(){
@@ -310,17 +307,30 @@
     if (cell==nil) {
         cell=[[[TKAreaCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
         cell.selectionStyle=UITableViewCellSelectionStyleNone;
-       
+        [cell.chkButton addTarget:self action:@selector(buttonChkClick:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.arrowButton addTarget:self action:@selector(buttonSkipClick:) forControlEvents:UIControlEventTouchUpInside];
     }
-    [cell.chkButton addTarget:self action:@selector(buttonChkClick:) forControlEvents:UIControlEventTouchUpInside];
-    [cell.arrowButton addTarget:self action:@selector(buttonSkipClick:) forControlEvents:UIControlEventTouchUpInside];
-    //cell.chkButton.hidden=!cell.showCheck;
     UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
     backgrdView.backgroundColor = indexPath.row%2==0?[UIColor colorFromHexRGB:@"bebeb8"]:[UIColor colorFromHexRGB:@"efeedc"];
     cell.backgroundView = backgrdView;
     [backgrdView release];
     AreaCrawl *area=self.list[indexPath.row];
     cell.labName.text=area.AreaName;
+    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:0];
+    UIButton *btn=(UIButton*)barButton.customView;
+    if ([btn.currentTitle isEqualToString:@"编辑"]) {//隐藏
+        [cell changeMSelectedState];
+    }else{//显示
+        [cell mSelectedState:[self showCheckedFindById:area.SysID]];
+    }
     return cell;
+}
+- (BOOL)showCheckedFindById:(NSString*)areaId{
+    if (self.removeList&&[self.removeList count]>0) {
+        if ([self.removeList.allKeys containsObject:areaId]) {
+            return YES;
+        }
+    }
+    return NO;
 }
 @end

@@ -2074,6 +2074,7 @@
 					"$(PROJECT_DIR)/BurglarStar",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "85D42203-EEE9-406F-9C2C-664D35FEAF38";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2092,6 +2093,7 @@
 					"$(PROJECT_DIR)/BurglarStar",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "85D42203-EEE9-406F-9C2C-664D35FEAF38";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
