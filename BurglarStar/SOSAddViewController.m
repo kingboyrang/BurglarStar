@@ -149,12 +149,21 @@
         
         NSNumber *curve = [info objectForKey:UIKeyboardAnimationCurveUserInfoKey];
         NSNumber *duration = [info objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+       
         // 添加移动动画，使视图跟随键盘移动
         [UIView animateWithDuration:duration.doubleValue animations:^{
             [UIView setAnimationBeginsFromCurrentState:YES];
             [UIView setAnimationCurve:[curve intValue]];
             _tableView.frame=r;
             _buttons.frame=r1;
+        } completion:^(BOOL finished) {
+            if (finished) {
+                TKTextViewCell *cell=self.cells[2];
+                if (cell.textView.becomeFirstResponder) {
+                    NSIndexPath *indxPath= [_tableView indexPathForCell:cell];
+                    [_tableView scrollToRowAtIndexPath:indxPath atScrollPosition:UITableViewScrollPositionBottom  animated:YES];
+                }
+            }
         }];
         
     }

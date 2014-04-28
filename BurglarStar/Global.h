@@ -27,6 +27,11 @@
 #define DataWebserviceURL @"http://ibdcloud.com:8083/User_APP.asmx"
 #define DataNameSpace @"http://tempuri.org/"
 
+//帮助
+#define BurglarStarHelpURL @"http://www.iBDCloud.com/TheftStar/Wap/Help.aspx"
+//意见反馈
+#define BurglarStarFeedBackURL @"http://www.iBDCloud.com/TheftStar/Wap/FeedbackList.aspx"
+
 #define DataWebservice1 @"http://www.ibdcloud.com:8083/Pit_APP.asmx"
 #define DataNameSpace1 @"http://tempuri.org/"
 //sos报警接口

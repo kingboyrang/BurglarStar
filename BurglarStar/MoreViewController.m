@@ -71,7 +71,6 @@
         [AlertHelper initWithTitle:@"提示" message:@"确认注销?" cancelTitle:@"取消" cancelAction:nil confirmTitle:@"确认" confirmAction:^{
             [Account closed];
             LoginViewController *login=[[[LoginViewController alloc] init] autorelease];
-            //login.navigationItem.leftBarButtonItem=[login barBackButtonItem];
             NSMutableArray *arr=[NSMutableArray arrayWithArray:self.navigationController.viewControllers];
             [arr replaceObjectAtIndex:1 withObject:login];
             self.navigationController.viewControllers=arr;
@@ -81,7 +80,7 @@
     if (index==5) {//意见反馈
         BasicWebViewController *basiceWeb=[[BasicWebViewController alloc] init];
         basiceWeb.title=@"意见反馈";
-        basiceWeb.webURL=@"http://www.sina.com.cn";
+        basiceWeb.webURL=BurglarStarFeedBackURL;
         [self.navigationController pushViewController:basiceWeb animated:YES];
         [basiceWeb release];
     }
@@ -95,7 +94,7 @@
     if (index==7) {//帮助
         BasicWebViewController *basiceWeb=[[BasicWebViewController alloc] init];
         basiceWeb.title=@"帮助";
-        basiceWeb.webURL=@"http://www.sohu.com";
+        basiceWeb.webURL=BurglarStarHelpURL;
         [self.navigationController pushViewController:basiceWeb animated:YES];
         [basiceWeb release];
     }
