@@ -10,4 +10,8 @@
 #import "MonitorView.h"
 @interface TKMonitorCell : UITableViewCell
 @property(nonatomic,strong) MonitorView *monitorView;
+//@property (nonatomic,strong) UIButton *chkButton;
+@property (nonatomic,assign) BOOL showCheck;
+- (void)changeMSelectedState;
+- (void)mSelectedState:(BOOL)state;
 @end

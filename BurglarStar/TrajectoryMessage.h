@@ -22,4 +22,6 @@
 @property(nonatomic,copy) NSString *ExceptionID;//--异常类型
 
 @property (nonatomic,readonly) NSString *formatDateText;//转轴
+
+-(CGFloat)getRowHeight:(CGFloat)width showChecked:(BOOL)show;
 @end

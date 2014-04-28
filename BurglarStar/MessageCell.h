@@ -10,4 +10,6 @@
 #import "MessageView.h"
 @interface MessageCell : UITableViewCell
 @property(nonatomic,strong) MessageView *messageView;
+- (void)changeMSelectedState;
+- (void)mSelectedState:(BOOL)state;
 @end

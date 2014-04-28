@@ -7,7 +7,7 @@
 //
 
 #import "ReadMessageViewController.h"
-#import "ToolBarView.h"
+#import "ToolEditView.h"
 #import "MessageCell.h"
 #import "TrajectoryMessage.h"
 #import "AppHelper.h"
@@ -16,12 +16,13 @@
 #import "UIBarButtonItem+TPCategory.h"
 #import "ASIServiceHTTPRequest.h"
 @interface ReadMessageViewController (){
-   ToolBarView *_toolBar;
+   ToolEditView *_toolBar;
 }
 - (BOOL)existsFindyById:(NSString*)msgId;
 - (void)loadData;
 - (NSString*)findByMessageId:(NSString*)msgId;
 - (void)deleteMessagesWithButton:(UIButton*)btn;
+- (void)buttonSkipClick:(UIButton*)btn;
 @end
 
 @implementation ReadMessageViewController
@@ -74,9 +75,10 @@
     [self.view addSubview:_tableView];
     
     CGFloat topY=_tableView.frame.size.height+_tableView.frame.origin.y+44;
-    _toolBar=[[ToolBarView alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 44)];
-    [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
-    [_toolBar.button addTarget:self action:@selector(buttonRemoveClick:) forControlEvents:UIControlEventTouchUpInside];
+    _toolBar=[[ToolEditView alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 44)];
+    [_toolBar.barView.button setTitle:@"删除(0)" forState:UIControlStateNormal];
+    [_toolBar.barView.button addTarget:self action:@selector(buttonRemoveClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_toolBar.toolBar.submit addTarget:self action:@selector(deleteMessagesWithButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_toolBar];
     
     curPage=0;
@@ -85,39 +87,45 @@
 //编辑
 - (void)buttonEditClick:(id)sender{
     UIButton *btn=(UIButton*)sender;
-    [_tableView setEditing:!_tableView.editing animated:YES];
-    if(_tableView.editing){//编辑
+    CGRect r1=_tableView.frame;
+    CGRect r=_toolBar.frame;
+    BOOL boo=NO;
+    if([btn.currentTitle isEqualToString:@"编辑"]){//编辑
+        boo=YES;
         [btn setTitle:@"取消" forState:UIControlStateNormal];
-        CGRect r1=_tableView.frame;
-        CGRect r=_toolBar.frame;
         r.origin.y=r1.size.height+r1.origin.y-r.size.height;
-        
         r1.size.height-=r.size.height;
-
-        [UIView animateWithDuration:0.5f animations:^(){
-            _toolBar.frame=r;
-            _tableView.frame=r1;
-        }];
     }
 	else {//取消
         if (self.removeList&&[self.removeList count]>0) {
             [self.removeList removeAllObjects];
         }
-        [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];
+        [_toolBar.barView.button setTitle:@"删除(0)" forState:UIControlStateNormal];
+        [_toolBar sendToolBarBack];
         [btn setTitle:@"编辑" forState:UIControlStateNormal];
-        CGRect r=_toolBar.frame;
-        //r.origin.y=self.view.bounds.size.height+44;
         r.origin.y+=r.size.height;
-        
-        CGRect r1=_tableView.frame;
-        //r1.size.height=self.view.bounds.size.height-44;
         r1.size.height+=r.size.height;
-        
-        [UIView animateWithDuration:0.5f animations:^(){
-            _toolBar.frame=r;
-            _tableView.frame=r1;
-        }];
 	}
+    if (self.cells&&[self.cells count]>0) {
+        for (NSInteger i=0;i<self.cells.count;i++) {
+            NSIndexPath *indexPath=[NSIndexPath indexPathForRow:i inSection:0];
+            MessageCell *cell=(MessageCell*)[_tableView cellForRowAtIndexPath:indexPath];
+            if (boo) {
+                [cell mSelectedState:NO];
+            }else{
+                [cell changeMSelectedState];
+            }
+            
+        }
+    }
+    [UIView animateWithDuration:0.5f animations:^(){
+        _toolBar.frame=r;
+        _tableView.frame=r1;
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [_tableView reloadData];
+        }
+    }];
 }
 - (NSString*)findByMessageId:(NSString*)msgId{
     if (self.cells&&[self.cells count]>0) {
@@ -170,8 +178,9 @@
                 [_tableView endUpdates];
                 //更新操作
                 [self.removeList removeAllObjects];
-                [_toolBar.button setTitle:@"删除(0)" forState:UIControlStateNormal];//更新操作
+                [_toolBar.barView.button setTitle:@"删除(0)" forState:UIControlStateNormal];//更新操作
                 [self hideLoadingSuccessWithTitle:@"删除成功!" completed:nil];
+                [_toolBar sendToolBarBack];
                 
                 [_tableView reloadData];//重新加载
             }
@@ -191,10 +200,13 @@
 //删除
 - (void)buttonRemoveClick:(id)sender{
     if (self.removeList&&[self.removeList count]>0) {
+        [_toolBar sendBarViewBack];
+        /***
         UIButton *btn=(UIButton*)sender;
         [AlertHelper confirmWithTitle:@"删除" confirm:^{
             [self deleteMessagesWithButton:btn];
         } innnerView:self.view];
+         ***/
     }
 }
 - (void)didReceiveMemoryWarning
@@ -303,6 +315,50 @@
    
     
 }
+//页面跳转
+- (void)buttonSkipClick:(UIButton*)btn{
+    id v=[btn superview];
+    while (![v isKindOfClass:[UITableViewCell class]]) {
+        v=[v superview];
+    }
+    UITableViewCell *cell=(UITableViewCell*)v;
+    NSIndexPath *indexPath=[_tableView indexPathForCell:cell];
+    ExceptionViewController *control=[[ExceptionViewController alloc] init];
+    control.Entity=self.cells[indexPath.row];
+    [self.navigationController pushViewController:control animated:YES];
+    [control release];
+}
+//选中处理
+- (void)buttonChkClick:(UIButton*)btn{
+    btn.selected=!btn.selected;
+    
+    id v=[btn superview];
+    while (![v isKindOfClass:[UITableViewCell class]]) {
+        v=[v superview];
+    }
+    UITableViewCell *cell=(UITableViewCell*)v;
+    NSIndexPath *indexPath=[_tableView indexPathForCell:cell];
+    SupervisionPerson *entity=self.cells[indexPath.row];
+    if (!self.removeList) {
+        self.removeList=[NSMutableDictionary dictionary];
+    }
+    if (btn.selected) {//选中
+        [self.removeList setValue:indexPath forKey:entity.ID];
+        [_toolBar.barView.button setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
+        
+    }else{//不选中
+        [self.removeList removeObjectForKey:entity.ID];
+        [_toolBar.barView.button setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
+    }
+}
+- (BOOL)showCheckedFindById:(NSString*)areaId{
+    if (self.removeList&&[self.removeList count]>0) {
+        if ([self.removeList.allKeys containsObject:areaId]) {
+            return YES;
+        }
+    }
+    return NO;
+}
 #pragma mark UITableViewDataSource Methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.cells.count;
@@ -312,54 +368,27 @@
     MessageCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell==nil) {
         cell=[[[MessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
-        //cell.monitorView.controler=self;
+        cell.selectionStyle=UITableViewCellSelectionStyleNone;
+        [cell.messageView.buttonArrow addTarget:self action:@selector(buttonSkipClick:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.messageView.chkButton addTarget:self action:@selector(buttonChkClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     TrajectoryMessage *entity=self.cells[indexPath.row];
     [cell.messageView setDataSource:entity indexPathRow:indexPath.row];
+    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:0];
+    UIButton *btn=(UIButton*)barButton.customView;
+    if ([btn.currentTitle isEqualToString:@"编辑"]) {//隐藏
+        [cell changeMSelectedState];
+    }else{//显示
+        [cell mSelectedState:[self showCheckedFindById:entity.ID]];
+    }
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     TrajectoryMessage *entity=self.cells[indexPath.row];
-    if (entity.Address&&[entity.Address length]>0) {
-        CGSize size=[entity.Address textSize:[UIFont systemFontOfSize:12] withWidth:253];
-        if (size.height>15) {
-            return 65+size.height-15;
-        }
-    }
-    return 65;
-}
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:0];
     UIButton *btn=(UIButton*)barButton.customView;
-    if ([btn.currentTitle isEqualToString:@"编辑"]) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        ExceptionViewController *control=[[ExceptionViewController alloc] init];
-        control.Entity=self.cells[indexPath.row];
-        [self.navigationController pushViewController:control animated:YES];
-        [control release];
-    }else{
-        if (!self.removeList) {
-            self.removeList=[NSMutableDictionary dictionary];
-        }
-        TrajectoryMessage *entity=self.cells[indexPath.row];
-        [self.removeList setValue:indexPath forKey:entity.ID];
-        [_toolBar.button setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
-    }
-}
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:0];
-    UIButton *btn=(UIButton*)barButton.customView;
-    if ([btn.currentTitle isEqualToString:@"取消"]) {
-        TrajectoryMessage *entity=self.cells[indexPath.row];
-        [self.removeList removeObjectForKey:entity.ID];
-        [_toolBar.button setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
-    }
-}
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete|UITableViewCellEditingStyleInsert;
+    BOOL boo=[btn.currentTitle isEqualToString:@"编辑"]?NO:YES;
+    return [entity getRowHeight:self.view.bounds.size.width showChecked:boo];
 }
 #pragma mark - PullingRefreshTableViewDelegate
 //下拉加载

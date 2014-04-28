@@ -16,6 +16,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        _chkButton.hidden=YES;
     }
     return self;
 }
@@ -54,20 +55,38 @@
     [self.headImage setImageWithURL:[NSURL URLWithString:entity.Photo] forState:UIControlStateNormal placeholderImage:placeImg completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
         if (image) {
             UIImage *img=[UIImage createRoundedRectImage:image size:CGSizeMake(70, 84) radius:8.0];
-            if (image.size.width>70||image.size.height>84) {
-                [self.headImage setImage:img forState:UIControlStateNormal];
-            }else{
-               [self.headImage setImage:img forState:UIControlStateNormal];
-            }
+            [self.headImage setImage:img forState:UIControlStateNormal];
         }
     }];
     //Photo
 }
-
+- (void)layoutSubviews{
+    [super layoutSubviews];
+    CGFloat leftX=3;
+    CGRect r=_chkButton.frame;
+    if (!_chkButton.hidden) {//显示
+        r.origin.x=leftX;
+        _chkButton.frame=r;
+        leftX+=26;
+    }else{//隐藏
+        r.origin.x=-30;
+        _chkButton.hidden=YES;
+        _chkButton.frame=r;
+    }
+    leftX+=2;
+    r=_headImage.frame;
+    r.origin.x=leftX;
+    _headImage.frame=r;
+    r=_labName.frame;
+    r.origin.x=_headImage.frame.origin.x+_headImage.frame.size.width+3;
+    _labName.frame=r;
+    
+}
 - (void)dealloc {
     [_headImage release];
     [_labName release];
     [_arrowButton release];
+    [_chkButton release];
     [super dealloc];
 }
 - (IBAction)buttonEditHead:(id)sender {

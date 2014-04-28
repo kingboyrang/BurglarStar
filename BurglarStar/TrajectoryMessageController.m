@@ -19,6 +19,8 @@
 #import "ASIServiceHTTPRequest.h"
 @interface TrajectoryMessageController (){
     LoginButtons *_toolBar;
+    LoginButtons *_confirmBar;
+    int operType;//1:表示删除 2:表示已读
 }
 - (void)loadData;
 - (void)buttonEditClick:(id)sender;
@@ -26,12 +28,16 @@
 - (void)buttonReadClick:(id)sender;
 - (BOOL)existsFindyById:(NSString*)msgId;
 - (NSString*)findByMessageId:(NSString*)msgId;
+- (BOOL)showCheckedFindById:(NSString*)areaId;
+- (void)flagReadButton:(UIButton*)btn;
+- (void)flagDeleteButton:(UIButton*)btn;
 @end
 
 @implementation TrajectoryMessageController
 - (void)dealloc{
     [super dealloc];
     [_toolBar release];
+    [_confirmBar release];
     [_tableView release];
 }
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -45,8 +51,6 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
    
-    
-    
     if (curPage==0) {
         if (self.Entity&&self.Entity.ID&&[self.Entity.ID length]>0) {
             [_tableView launchRefreshing];
@@ -83,15 +87,34 @@
     [self.view addSubview:_tableView];
     
     CGFloat topY=r.size.height+r.origin.y+44;
+     _confirmBar=[[LoginButtons alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 44)];
+    [_confirmBar.cancel addTarget:self action:@selector(buttonCancleClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_confirmBar.submit addTarget:self action:@selector(buttonSubmitClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_confirmBar];
+    
     _toolBar=[[LoginButtons alloc] initWithFrame:CGRectMake(0, topY, self.view.bounds.size.width, 44)];
     [_toolBar.cancel setTitle:@"删除(0)" forState:UIControlStateNormal];
     [_toolBar.submit setTitle:@"标记已读(0)" forState:UIControlStateNormal];
     [_toolBar.cancel addTarget:self action:@selector(buttonRemoveClick:) forControlEvents:UIControlEventTouchUpInside];
     [_toolBar.submit addTarget:self action:@selector(buttonReadClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_toolBar];
-    
+   
+    operType=-1;
     curPage=0;
     pageSize=10;
+}
+//取消
+- (void)buttonCancleClick:(UIButton*)btn{
+    [self.view sendSubviewToBack:_confirmBar];
+}
+//确认
+- (void)buttonSubmitClick:(UIButton*)btn{
+    if (operType==1) {
+        [self flagDeleteButton:btn];
+    }
+    if (operType==2) {
+        [self flagReadButton:btn];
+    }
 }
 //进入已读取信息列表
 - (void)buttonHistoryClick{
@@ -134,130 +157,138 @@
     }
     return @"";
 }
+//标记已读信息
+- (void)flagReadButton:(UIButton*)btn{
+    btn.enabled=NO;
+    NSMutableArray *delSource=[NSMutableArray array];
+    for (NSIndexPath *item in [self.removeList allValues]) {
+        [delSource addObject:self.cells[item.row]];
+    }
+    ASIServiceArgs *args=[[[ASIServiceArgs alloc] init] autorelease];
+    args.serviceURL=DataWebservice1;
+    args.serviceNameSpace=DataNameSpace1;
+    args.methodName=@"BatchHandleAlarmData";
+    args.soapParams=[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:[self.readList.allKeys componentsJoinedByString:@","],@"id", nil], nil];
+    [self showLoadingAnimatedWithTitle:@"正在标记已读操作,请稍后..."];
+    ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
+    [request setCompletionBlock:^{
+        btn.enabled=YES;
+        BOOL boo=NO;
+        if (request.ServiceResult.success) {
+            NSDictionary *dic=(NSDictionary*)[request.ServiceResult json];
+            if (dic!=nil&&[[dic objectForKey:@"Result"] isEqualToString:@"true"]) {
+                boo=YES;
+            }
+        }
+        if (boo) {
+            [self.cells removeObjectsInArray:delSource];
+            [_tableView beginUpdates];
+            [_tableView deleteRowsAtIndexPaths:[self.readList allValues] withRowAnimation:UITableViewRowAnimationFade];
+            [_tableView endUpdates];
+            
+            [self.readList removeAllObjects];
+            [self.removeList removeAllObjects];
+            [_toolBar.submit setTitle:@"标记已读(0)" forState:UIControlStateNormal];//更新操作
+            [_toolBar.cancel setTitle:@"删除(0)" forState:UIControlStateNormal];//更新操作
+            [self hideLoadingSuccessWithTitle:@"标记已读操作成功!" completed:nil];
+            [self.view sendSubviewToBack:_confirmBar];
+            [_tableView reloadData];//重新加载
+            operType=-1;
+        }else{
+            [self hideLoadingFailedWithTitle:@"标记已读操作失败!" completed:nil];
+        }
+        
+    }];
+    [request setFailedBlock:^{
+        btn.enabled=YES;
+        [self hideLoadingFailedWithTitle:@"标记已读操作失败!" completed:nil];
+    }];
+    [request startAsynchronous];
+}
+//删除未读信息
+- (void)flagDeleteButton:(UIButton*)btn{
+    btn.enabled=NO;
+    NSMutableArray *delSource=[NSMutableArray array];
+    for (NSIndexPath *item in [self.removeList allValues]) {
+        [delSource addObject:self.cells[item.row]];
+    }
+    
+    NSMutableArray *ids=[NSMutableArray array];
+    for (NSString *msgid in self.removeList.allKeys) {
+        [ids addObject:[NSString stringWithFormat:@"%@,%@",msgid,[self findByMessageId:msgid]]];
+    }
+    
+    NSMutableArray *params=[NSMutableArray array];
+    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:[ids componentsJoinedByString:@"$"],@"idAndTime", nil]];
+    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"1",@"type", nil]];
+    //[params addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"",@"time", nil]];
+    
+    ASIServiceArgs *args=[[[ASIServiceArgs alloc] init] autorelease];
+    args.serviceURL=DataWebservice1;
+    args.serviceNameSpace=DataNameSpace1;
+    args.methodName=@"DelPersonMsg";
+    args.soapParams=params;
+    [self showLoadingAnimatedWithTitle:@"正在删除,请稍后..."];
+    ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
+    [request setCompletionBlock:^{
+         btn.enabled=YES;
+        BOOL boo=NO;
+        if (request.ServiceResult.success) {
+            NSDictionary *dic=[request.ServiceResult json];
+            if (dic!=nil&&[[dic objectForKey:@"Result"] isEqualToString:@"true"]) {
+                boo=YES;
+                [self.cells removeObjectsInArray:delSource];
+                [_tableView beginUpdates];
+                [_tableView deleteRowsAtIndexPaths:[self.removeList allValues] withRowAnimation:UITableViewRowAnimationFade];
+                [_tableView endUpdates];
+                //更新操作
+                [self.readList removeAllObjects];
+                [self.removeList removeAllObjects];
+                [_toolBar.submit setTitle:@"标记已读(0)" forState:UIControlStateNormal];//更新操作
+                [_toolBar.cancel setTitle:@"删除(0)" forState:UIControlStateNormal];//更新操作
+                [self hideLoadingSuccessWithTitle:@"删除成功!" completed:nil];
+                [self.view sendSubviewToBack:_confirmBar];
+                [_tableView reloadData];//重新加载
+                operType=-1;
+            }
+        }
+        if (!boo) {
+            [self hideLoadingFailedWithTitle:@"删除失败!" completed:nil];
+        }
+    }];
+    [request setFailedBlock:^{
+         btn.enabled=YES;
+        [self hideLoadingFailedWithTitle:@"删除失败!" completed:nil];
+    }];
+    [request startAsynchronous];
+}
 //删除
 - (void)buttonRemoveClick:(id)sender{
+    operType=-1;
     if (self.removeList&&[self.removeList count]>0) {
-        [AlertHelper confirmWithTitle:@"删除" confirm:^{
-            NSMutableArray *delSource=[NSMutableArray array];
-            for (NSIndexPath *item in [self.removeList allValues]) {
-                [delSource addObject:self.cells[item.row]];
-            }
-            
-            NSMutableArray *ids=[NSMutableArray array];
-            for (NSString *msgid in self.removeList.allKeys) {
-                [ids addObject:[NSString stringWithFormat:@"%@,%@",msgid,[self findByMessageId:msgid]]];
-            }
-            
-            NSMutableArray *params=[NSMutableArray array];
-            [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:[ids componentsJoinedByString:@"$"],@"idAndTime", nil]];
-            [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"1",@"type", nil]];
-            //[params addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"",@"time", nil]];
-            
-            ASIServiceArgs *args=[[[ASIServiceArgs alloc] init] autorelease];
-            args.serviceURL=DataWebservice1;
-            args.serviceNameSpace=DataNameSpace1;
-            args.methodName=@"DelPersonMsg";
-            args.soapParams=params;
-            [self showLoadingAnimatedWithTitle:@"正在删除,请稍后..."];
-            ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
-            [request setCompletionBlock:^{
-                BOOL boo=NO;
-                if (request.ServiceResult.success) {
-                    NSDictionary *dic=[request.ServiceResult json];
-                    if (dic!=nil&&[[dic objectForKey:@"Result"] isEqualToString:@"true"]) {
-                        boo=YES;
-                        [self.cells removeObjectsInArray:delSource];
-                        [_tableView beginUpdates];
-                        [_tableView deleteRowsAtIndexPaths:[self.removeList allValues] withRowAnimation:UITableViewRowAnimationFade];
-                        [_tableView endUpdates];
-                        //更新操作
-                        [self.readList removeAllObjects];
-                        [self.removeList removeAllObjects];
-                        [_toolBar.submit setTitle:@"标记已读(0)" forState:UIControlStateNormal];//更新操作
-                        [_toolBar.cancel setTitle:@"删除(0)" forState:UIControlStateNormal];//更新操作
-                        [self hideLoadingSuccessWithTitle:@"删除成功!" completed:nil];
-                        
-                        [_tableView reloadData];//重新加载
-                    }
-                }
-                if (!boo) {
-                    [self hideLoadingFailedWithTitle:@"删除失败!" completed:nil];
-                }
-            }];
-            [request setFailedBlock:^{
-                 [self hideLoadingFailedWithTitle:@"删除失败!" completed:nil];
-            }];
-            [request startAsynchronous];
-        } innnerView:self.view];
+        operType=1;
+        [self.view bringSubviewToFront:_confirmBar];
     }
 }
 //标记已读
 - (void)buttonReadClick:(id)sender{
+     operType=-1;
     if (self.readList&&[self.readList count]>0) {
-        [AlertHelper confirmWithTitle:@"标记已读" confirm:^{
-            NSMutableArray *delSource=[NSMutableArray array];
-            for (NSIndexPath *item in [self.removeList allValues]) {
-                [delSource addObject:self.cells[item.row]];
-            }
-            UIButton *btn=(UIButton*)sender;
-            btn.enabled=NO;
-            ASIServiceArgs *args=[[[ASIServiceArgs alloc] init] autorelease];
-            args.serviceURL=DataWebservice1;
-            args.serviceNameSpace=DataNameSpace1;
-            args.methodName=@"BatchHandleAlarmData";
-            args.soapParams=[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:[self.readList.allKeys componentsJoinedByString:@","],@"id", nil], nil];
-            [self showLoadingAnimatedWithTitle:@"正在标记已读操作,请稍后..."];
-             ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
-            [request setCompletionBlock:^{
-                btn.enabled=YES;
-                BOOL boo=NO;
-                if (request.ServiceResult.success) {
-                    NSDictionary *dic=(NSDictionary*)[request.ServiceResult json];
-                    if (dic!=nil&&[[dic objectForKey:@"Result"] isEqualToString:@"true"]) {
-                        boo=YES;
-                    }
-                }
-                if (boo) {
-                    [self.cells removeObjectsInArray:delSource];
-                    [_tableView beginUpdates];
-                    [_tableView deleteRowsAtIndexPaths:[self.readList allValues] withRowAnimation:UITableViewRowAnimationFade];
-                    [_tableView endUpdates];
-                    
-                    [self.readList removeAllObjects];
-                    [self.removeList removeAllObjects];
-                    [_toolBar.submit setTitle:@"标记已读(0)" forState:UIControlStateNormal];//更新操作
-                    [_toolBar.cancel setTitle:@"删除(0)" forState:UIControlStateNormal];//更新操作
-                    [self hideLoadingSuccessWithTitle:@"标记已读操作成功!" completed:nil];
-                    [_tableView reloadData];//重新加载
-                }else{
-                    [self hideLoadingFailedWithTitle:@"标记已读操作失败!" completed:nil];
-                }
-
-            }];
-            [request setFailedBlock:^{
-                btn.enabled=YES;
-                [self hideLoadingFailedWithTitle:@"标记已读操作失败!" completed:nil];
-            }];
-            [request startAsynchronous];
-        } innnerView:self.view];
+         operType=2;
+        [self.view bringSubviewToFront:_confirmBar];
     }
 }
 //编辑
 - (void)buttonEditClick:(id)sender{
+    CGRect r1=_tableView.frame;
+    CGRect r=_toolBar.frame;
     UIButton *btn=(UIButton*)sender;
-    [_tableView setEditing:!_tableView.editing animated:YES];
-    if(_tableView.editing){//编辑
+    BOOL boo=NO;
+    if([btn.currentTitle isEqualToString:@"编辑"]){//编辑
+        boo=YES;
         [btn setTitle:@"取消" forState:UIControlStateNormal];
-         CGRect r1=_tableView.frame;
-        CGRect r=_toolBar.frame;
-         r.origin.y=r1.size.height+r1.origin.y-r.size.height;
-        
+        r.origin.y=r1.size.height+r1.origin.y-r.size.height;
         r1.size.height-=r.size.height;
-
-        [UIView animateWithDuration:0.5f animations:^(){
-            _toolBar.frame=r;
-            _tableView.frame=r1;
-        }];
     }
 	else {//取消
         if (self.readList&&[self.readList count]>0) {
@@ -268,22 +299,32 @@
         }
         [_toolBar.submit setTitle:@"标记已读(0)" forState:UIControlStateNormal];
         [_toolBar.cancel setTitle:@"删除(0)" forState:UIControlStateNormal];
-        
         [btn setTitle:@"编辑" forState:UIControlStateNormal];
-        CGRect r=_toolBar.frame;
-        //r.origin.y=self.view.bounds.size.height+44;
+        [self.view sendSubviewToBack:_confirmBar];
         r.origin.y+=r.size.height;
-        
-        CGRect r1=_tableView.frame;
-        //r1.size.height=self.view.bounds.size.height-44;
         r1.size.height+=r.size.height;
-        
-        
-        [UIView animateWithDuration:0.5f animations:^(){
-            _toolBar.frame=r;
-            _tableView.frame=r1;
-        }];
-	}
+    }
+    if (self.cells&&[self.cells count]>0) {
+        for (NSInteger i=0;i<self.cells.count;i++) {
+            NSIndexPath *indexPath=[NSIndexPath indexPathForRow:i inSection:0];
+            MessageCell *cell=(MessageCell*)[_tableView cellForRowAtIndexPath:indexPath];
+            if (boo) {
+                [cell mSelectedState:NO];
+            }else{
+                [cell changeMSelectedState];
+            }
+        }
+    }
+    [UIView animateWithDuration:0.5f animations:^(){
+        _confirmBar.frame=r;
+        _toolBar.frame=r;
+        _tableView.frame=r1;
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [_tableView reloadData];
+        }
+    }];
+
 }
 //加载数据
 - (void)loadData{
@@ -377,6 +418,70 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (BOOL)showCheckedFindById:(NSString*)areaId{
+    if (self.removeList&&[self.removeList count]>0) {
+        if ([self.removeList.allKeys containsObject:areaId]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+//页面跳转
+- (void)buttonSkipClick:(UIButton*)btn{
+    id v=[btn superview];
+    while (![v isKindOfClass:[UITableViewCell class]]) {
+        v=[v superview];
+    }
+    UITableViewCell *cell=(UITableViewCell*)v;
+    NSIndexPath *indexPath=[_tableView indexPathForCell:cell];
+    TrajectoryMessage *entity=self.cells[indexPath.row];
+    ExceptionViewController *control=[[ExceptionViewController alloc] init];
+    control.flagRead=YES;
+    control.Entity=entity;
+    [self.navigationController pushViewController:control animated:YES];
+    [control release];
+    //删除行
+    if (self.removeList&&[self.removeList count]>0&&[self.removeList.allKeys containsObject:entity.ID]) {
+        [self.removeList removeObjectForKey:entity.ID];
+    }
+    if (self.readList&&[self.readList count]>0&&[self.readList.allKeys containsObject:entity.ID]) {
+        [self.readList removeObjectForKey:entity.ID];
+    }
+    [self.cells removeObjectAtIndex:indexPath.row];
+    [_tableView beginUpdates];
+    [_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationNone];
+    [_tableView endUpdates];
+    [_tableView reloadData];//重新加载
+}
+//选中处理
+- (void)buttonChkClick:(UIButton*)btn{
+    btn.selected=!btn.selected;
+    
+    id v=[btn superview];
+    while (![v isKindOfClass:[UITableViewCell class]]) {
+        v=[v superview];
+    }
+    UITableViewCell *cell=(UITableViewCell*)v;
+    NSIndexPath *indexPath=[_tableView indexPathForCell:cell];
+    if (!self.removeList) {
+        self.removeList=[NSMutableDictionary dictionary];
+    }
+    if (!self.readList) {
+        self.readList=[NSMutableDictionary dictionary];
+    }
+    TrajectoryMessage *entity=self.cells[indexPath.row];
+    if (btn.selected) {//选中
+        [self.removeList setValue:indexPath forKey:entity.ID];
+        [self.readList setValue:indexPath forKey:entity.ID];
+        [_toolBar.cancel setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
+        [_toolBar.submit setTitle:[NSString stringWithFormat:@"标记已读(%d)",self.readList.count] forState:UIControlStateNormal];
+    }else{//不选中
+        [self.removeList removeObjectForKey:entity.ID];
+        [self.readList removeObjectForKey:entity.ID];
+        [_toolBar.cancel setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
+        [_toolBar.submit setTitle:[NSString stringWithFormat:@"标记已读(%d)",self.readList.count] forState:UIControlStateNormal];
+    }
+}
 #pragma mark UITableViewDataSource Methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.cells.count;
@@ -386,80 +491,28 @@
     MessageCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell==nil) {
         cell=[[[MessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
-        //cell.monitorView.controler=self;
+        cell.selectionStyle=UITableViewCellSelectionStyleNone;
+        [cell.messageView.buttonArrow addTarget:self action:@selector(buttonSkipClick:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.messageView.chkButton addTarget:self action:@selector(buttonChkClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     cell.backgroundColor=[UIColor clearColor];
     TrajectoryMessage *entity=self.cells[indexPath.row];
     [cell.messageView setDataSource:entity indexPathRow:indexPath.row];
+    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:0];
+    UIButton *btn=(UIButton*)barButton.customView;
+    if ([btn.currentTitle isEqualToString:@"编辑"]) {//隐藏
+        [cell changeMSelectedState];
+    }else{//显示
+        [cell mSelectedState:[self showCheckedFindById:entity.ID]];
+    }
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     TrajectoryMessage *entity=self.cells[indexPath.row];
-    
-    if (entity.Address&&[entity.Address length]>0) {
-        CGSize size=[entity.Address textSize:[UIFont systemFontOfSize:12] withWidth:253];
-        if (size.height>15) {
-            return 65+size.height-15;
-        }
-    }
-    return 65;
-}
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
     UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:0];
     UIButton *btn=(UIButton*)barButton.customView;
-    if ([btn.currentTitle isEqualToString:@"编辑"]) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-          TrajectoryMessage *entity=self.cells[indexPath.row];
-        ExceptionViewController *control=[[ExceptionViewController alloc] init];
-        control.flagRead=YES;
-        control.Entity=entity;
-        [self.navigationController pushViewController:control animated:YES];
-        [control release];
-        
-        //删除行
-        if (self.removeList&&[self.removeList count]>0&&[self.removeList.allKeys containsObject:entity.ID]) {
-            [self.removeList removeObjectForKey:entity.ID];
-        }
-        if (self.readList&&[self.readList count]>0&&[self.readList.allKeys containsObject:entity.ID]) {
-           [self.readList removeObjectForKey:entity.ID];
-        }
-        [self.cells removeObjectAtIndex:indexPath.row];
-        [_tableView beginUpdates];
-        [_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath, nil] withRowAnimation:UITableViewRowAnimationNone];
-        [_tableView endUpdates];
-        [_tableView reloadData];//重新加载
-        
-    }else{
-        if (!self.removeList) {
-            self.removeList=[NSMutableDictionary dictionary];
-        }
-        if (!self.readList) {
-            self.readList=[NSMutableDictionary dictionary];
-        }
-        TrajectoryMessage *entity=self.cells[indexPath.row];
-        [self.removeList setValue:indexPath forKey:entity.ID];
-        [self.readList setValue:indexPath forKey:entity.ID];
-        [_toolBar.cancel setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
-        [_toolBar.submit setTitle:[NSString stringWithFormat:@"标记已读(%d)",self.readList.count] forState:UIControlStateNormal];
-    }
-}
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    UIBarButtonItem *barButton=[self.navigationItem.rightBarButtonItems objectAtIndex:0];
-    UIButton *btn=(UIButton*)barButton.customView;
-    if ([btn.currentTitle isEqualToString:@"取消"]) {
-        TrajectoryMessage *entity=self.cells[indexPath.row];
-        [self.removeList removeObjectForKey:entity.ID];
-        [self.readList removeObjectForKey:entity.ID];
-        [_toolBar.cancel setTitle:[NSString stringWithFormat:@"删除(%d)",self.removeList.count] forState:UIControlStateNormal];
-        [_toolBar.submit setTitle:[NSString stringWithFormat:@"标记已读(%d)",self.readList.count] forState:UIControlStateNormal];
-    }
-}
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleDelete|UITableViewCellEditingStyleInsert;
+    BOOL boo=[btn.currentTitle isEqualToString:@"编辑"]?NO:YES;
+    return [entity getRowHeight:self.view.bounds.size.width showChecked:boo];
 }
 #pragma mark - PullingRefreshTableViewDelegate
 //下拉加载

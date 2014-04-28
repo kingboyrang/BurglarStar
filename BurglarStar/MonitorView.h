@@ -12,6 +12,7 @@
 @property (retain, nonatomic) IBOutlet UIButton *headImage;
 @property (retain, nonatomic) IBOutlet UILabel *labName;
 @property (retain, nonatomic) IBOutlet UIButton *arrowButton;
+@property (retain, nonatomic) IBOutlet UIButton *chkButton;
 
 @property (strong,nonatomic) SupervisionPerson *Entity;
 @property (nonatomic,assign) id controler;

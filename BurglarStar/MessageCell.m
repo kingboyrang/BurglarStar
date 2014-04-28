@@ -26,5 +26,14 @@
 - (id) initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier {
 	return [self initWithStyle:UITableViewCellStyleDefault  reuseIdentifier:reuseIdentifier];
 }
-
+- (void)changeMSelectedState{
+    _messageView.chkButton.selected=NO;
+    _messageView.chkButton.hidden=YES;
+    [_messageView setNeedsLayout];
+}
+- (void)mSelectedState:(BOOL)state{
+    _messageView.chkButton.selected=state;
+    _messageView.chkButton.hidden=NO;
+    [_messageView setNeedsLayout];
+}
 @end

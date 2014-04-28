@@ -123,29 +123,15 @@
 }
 //编辑
 - (void)buttonSOSEdit:(UIButton*)btn{
+    CGRect r1=_tableView.frame;
+    CGRect r=_toolBarView.frame;
+    BOOL boo=NO;
     if ([btn.currentTitle isEqualToString:@"编辑"]) {
+        boo=YES;
         [btn setTitle:@"取消" forState:UIControlStateNormal];
-        CGRect r1=_tableView.frame;
-        CGRect r=_toolBarView.frame;
         r.origin.y=r1.size.height+r1.origin.y-r.size.height;
-        
         r1.size.height-=r.size.height;
         
-        if (self.list&&[self.list count]>0) {
-            for (NSInteger i=0;i<self.list.count;i++) {
-                NSIndexPath *indexPath=[NSIndexPath indexPathForRow:i inSection:0];
-                TKSOSCell *cell=(TKSOSCell*)[_tableView cellForRowAtIndexPath:indexPath];
-                [cell mSelectedState:NO];
-            }
-        }
-        [UIView animateWithDuration:0.5f animations:^(){
-            _toolBarView.frame=r;
-            _tableView.frame=r1;
-        } completion:^(BOOL finished) {
-            if (finished) {
-                [_tableView reloadData];
-            }
-        }];
     }else{
         if(self.removeList&&[self.removeList count]>0)
         {
@@ -153,32 +139,30 @@
         }
         [_toolBarView.barView.button setTitle:@"删除(0)" forState:UIControlStateNormal];
         [_toolBarView bringSubviewToFront:_toolBarView.barView];
-        
         [btn setTitle:@"编辑" forState:UIControlStateNormal];
-        CGRect r=_toolBarView.frame;
-        //r.origin.y=self.view.bounds.size.height+44;
         r.origin.y+=r.size.height;
-        
-        CGRect r1=_tableView.frame;
-        //r1.size.height=self.view.bounds.size.height-44;
         r1.size.height+=r.size.height;
-        
-        if (self.list&&[self.list count]>0) {
-            for (NSInteger i=0;i<self.list.count;i++) {
-                NSIndexPath *indexPath=[NSIndexPath indexPathForRow:i inSection:0];
-                TKSOSCell *cell=(TKSOSCell*)[_tableView cellForRowAtIndexPath:indexPath];
-                [cell changeMSelectedState];
-            }
-        }
-        [UIView animateWithDuration:0.5f animations:^(){
-            _toolBarView.frame=r;
-            _tableView.frame=r1;
-        } completion:^(BOOL finished) {
-            if (finished) {
-                [_tableView reloadData];
-            }
-        }];
     }
+    if (self.list&&[self.list count]>0) {
+        for (NSInteger i=0;i<self.list.count;i++) {
+            NSIndexPath *indexPath=[NSIndexPath indexPathForRow:i inSection:0];
+            TKSOSCell *cell=(TKSOSCell*)[_tableView cellForRowAtIndexPath:indexPath];
+            if (boo) {
+                [cell mSelectedState:NO];
+            }else{
+               [cell changeMSelectedState];
+            }
+            
+        }
+    }
+    [UIView animateWithDuration:0.5f animations:^(){
+        _toolBarView.frame=r;
+        _tableView.frame=r1;
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [_tableView reloadData];
+        }
+    }];
 }
 //删除
 - (void)buttonSubmitRemoveClick:(UIButton*)btn{
@@ -321,7 +305,6 @@
     return self.list.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
     static NSString *cellIdentifier=@"SosCell";
     TKSOSCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell==nil) {
@@ -331,7 +314,6 @@
         [cell.arrowButton addTarget:self action:@selector(buttonSkipClick:) forControlEvents:UIControlEventTouchUpInside];
         cell.selectionStyle=UITableViewCellSelectionStyleNone;
     }
-    
     if (indexPath.row%2==0) {
         [cell.arrowButton setImage:[UIImage imageNamed:@"arrow_right_n.png"] forState:UIControlStateNormal];
         cell.contentView.backgroundColor=[UIColor colorFromHexRGB:@"efeedc"];

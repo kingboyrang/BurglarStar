@@ -14,10 +14,10 @@
 @property (retain, nonatomic) IBOutlet UILabel *labTime;
 @property (retain, nonatomic) IBOutlet UILabel *labAddress;
 @property (retain, nonatomic) IBOutlet UIButton *buttonArrow;
+@property (retain, nonatomic) IBOutlet UIButton *chkButton;
+@property (retain, nonatomic) IBOutlet UIButton *btnLocation;
 
 @property (nonatomic,strong) TrajectoryMessage *Entity;
-- (IBAction)buttonLocationClick:(id)sender;
-- (IBAction)buttonSkipClick:(id)sender;
 
 - (void)setDataSource:(TrajectoryMessage*)entity indexPathRow:(NSInteger)row;
 //标记已读

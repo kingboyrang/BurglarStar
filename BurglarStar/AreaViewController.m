@@ -196,30 +196,14 @@
 }
 //编辑
 - (void)buttonEditClick:(UIButton*)btn{
+    CGRect r1=_tableView.frame;
+    CGRect r=_toolBar.frame;
+    BOOL boo=NO;
     if ([btn.currentTitle isEqualToString:@"编辑"]) {
+        boo=YES;
         [btn setTitle:@"取消" forState:UIControlStateNormal];
-        CGRect r1=_tableView.frame;
-        CGRect r=_toolBar.frame;
         r.origin.y=r1.size.height+r1.origin.y-r.size.height;
-        
         r1.size.height-=r.size.height;
-        
-        if (self.list&&[self.list count]>0) {
-            for (NSInteger i=0;i<self.list.count;i++) {
-                NSIndexPath *indexPath=[NSIndexPath indexPathForRow:i inSection:0];
-                TKAreaCell *cell=(TKAreaCell*)[_tableView cellForRowAtIndexPath:indexPath];
-                [cell mSelectedState:NO];
-            }
-        }
-        [UIView animateWithDuration:0.5f animations:^(){
-            _toolBar.frame=r;
-            _tableView.frame=r1;
-        } completion:^(BOOL finished) {
-            if (finished) {
-                [_tableView reloadData];
-            }
-        }];
-        
     }else{
         if(self.removeList&&[self.removeList count]>0)
         {
@@ -229,29 +213,29 @@
         [_toolBar sendToolBarBack];
         
         [btn setTitle:@"编辑" forState:UIControlStateNormal];
-        CGRect r=_toolBar.frame;
-        //r.origin.y=self.view.bounds.size.height+44;
         r.origin.y+=r.size.height;
-        
-        CGRect r1=_tableView.frame;
-        //r1.size.height=self.view.bounds.size.height-44;
         r1.size.height+=r.size.height;
-        if (self.list&&[self.list count]>0) {
-            for (NSInteger i=0;i<self.list.count;i++) {
-                NSIndexPath *indexPath=[NSIndexPath indexPathForRow:i inSection:0];
-                TKAreaCell *cell=(TKAreaCell*)[_tableView cellForRowAtIndexPath:indexPath];
+    }
+    if (self.list&&[self.list count]>0) {
+        for (NSInteger i=0;i<self.list.count;i++) {
+            NSIndexPath *indexPath=[NSIndexPath indexPathForRow:i inSection:0];
+            TKAreaCell *cell=(TKAreaCell*)[_tableView cellForRowAtIndexPath:indexPath];
+            if (boo) {
+                [cell mSelectedState:NO];
+            }else{
                 [cell changeMSelectedState];
             }
+            
         }
-        [UIView animateWithDuration:0.5f animations:^(){
-            _toolBar.frame=r;
-            _tableView.frame=r1;
-        } completion:^(BOOL finished) {
-            if (finished) {
-                [_tableView reloadData];
-            }
-        }];
     }
+    [UIView animateWithDuration:0.5f animations:^(){
+        _toolBar.frame=r;
+        _tableView.frame=r1;
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [_tableView reloadData];
+        }
+    }];
 }
 - (void)didReceiveMemoryWarning
 {

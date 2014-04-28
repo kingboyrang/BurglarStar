@@ -21,6 +21,7 @@
     BOOL isFirstLoad;
 }
 - (void)loadingHistory;
+- (void)buttonSkipClick:(UIButton*)btn;
 @end
 
 @implementation PersonTrajectoryViewController
@@ -218,6 +219,21 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+//页面跳转处理
+- (void)buttonSkipClick:(UIButton*)btn{
+    id v=[btn superview];
+    while (![v isKindOfClass:[UITableViewCell class]]) {
+        v=[v superview];
+    }
+    UITableViewCell *cell=(UITableViewCell*)v;
+    NSIndexPath *indexPath=[_tableView indexPathForCell:cell];
+    TrajectoryHistory *entity=self.cells[indexPath.row];
+    SingleMapShowViewController *map=[[SingleMapShowViewController alloc] init];
+    map.Entity=entity;
+    map.PersonName=self.Entity.Name;
+    [self.navigationController pushViewController:map animated:YES];
+    [map release];
+}
 #pragma mark UITableViewDataSource Methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.cells.count;
@@ -231,8 +247,8 @@
         cell.label.font=[UIFont fontWithName:DeviceFontName size:14];
         cell.label.textColor=[UIColor colorFromHexRGB:@"252930"];
         cell.address.textColor=[UIColor colorFromHexRGB:@"252930"];
-        
-       
+        cell.selectionStyle=UITableViewCellSelectionStyleNone;
+        [cell.arrowButton addTarget:self action:@selector(buttonSkipClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     TrajectoryHistory *entity=self.cells[indexPath.row];
     cell.label.text=entity.formatDateStr;
@@ -292,6 +308,7 @@
     
     return bgView;
 }
+/***
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
      [tableView deselectRowAtIndexPath:indexPath animated:YES];
     TrajectoryHistory *entity=self.cells[indexPath.row];
@@ -301,4 +318,5 @@
     [self.navigationController pushViewController:map animated:YES];
     [map release];
 }
+ ***/
 @end
