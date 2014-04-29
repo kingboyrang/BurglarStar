@@ -78,22 +78,26 @@
         }];
     }
     if (index==5) {//意见反馈
+        Account *acc=[Account unarchiverAccount];
         BasicWebViewController *basiceWeb=[[BasicWebViewController alloc] init];
         basiceWeb.title=@"意见反馈";
-        basiceWeb.webURL=BurglarStarFeedBackURL;
+        basiceWeb.webType=5;
+        basiceWeb.webURL=[NSString stringWithFormat:BurglarStarFeedBackURL,acc.UserId];
         [self.navigationController pushViewController:basiceWeb animated:YES];
         [basiceWeb release];
     }
     if (index==6) {//关于我们
         BasicWebViewController *basiceWeb=[[BasicWebViewController alloc] init];
         basiceWeb.title=@"关于我们";
-        basiceWeb.webURL=@"http://www.apple.cn";
+        basiceWeb.webType=6;
+        basiceWeb.webURL=BurglarAboutUsURL;
         [self.navigationController pushViewController:basiceWeb animated:YES];
         [basiceWeb release];
     }
     if (index==7) {//帮助
         BasicWebViewController *basiceWeb=[[BasicWebViewController alloc] init];
         basiceWeb.title=@"帮助";
+        basiceWeb.webType=7;
         basiceWeb.webURL=BurglarStarHelpURL;
         [self.navigationController pushViewController:basiceWeb animated:YES];
         [basiceWeb release];

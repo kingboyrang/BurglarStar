@@ -28,9 +28,13 @@
 #define DataNameSpace @"http://tempuri.org/"
 
 //帮助
-#define BurglarStarHelpURL @"http://www.iBDCloud.com/TheftStar/Wap/Help.aspx"
+#define BurglarStarHelpURL @"http://www.ibdcloud.com/TheftStar/Wap/Help.aspx"
+//关于我们
+#define BurglarAboutUsURL @"http://www.ibdcloud.com/TheftStar/Wap/AboutUS.aspx"
 //意见反馈
-#define BurglarStarFeedBackURL @"http://www.iBDCloud.com/TheftStar/Wap/FeedbackList.aspx"
+#define BurglarStarFeedBackURL @"http://www.ibdcloud.com/TheftStar/Wap/FeedbackList.aspx?UserID=%@"
+//意见反馈添加
+#define BurglarStarAddFeedBackURL @"http://www.ibdcloud.com/TheftStar/Wap/FeedbackAdd.aspx?UserID=%@"
 
 #define DataWebservice1 @"http://www.ibdcloud.com:8083/Pit_APP.asmx"
 #define DataNameSpace1 @"http://tempuri.org/"

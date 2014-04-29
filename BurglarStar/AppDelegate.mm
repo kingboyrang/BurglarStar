@@ -11,6 +11,7 @@
 #import "BasicNavigationController.h"
 #import "AppHelper.h"
 #import "BPush.h"
+#import "AlertHelper.h"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -43,6 +44,11 @@
     [AppHelper startRunAnimation];//动画
     
     return YES;
+    
+    //防盗之星的百度推播key
+    //Dx2Vu402GcmazulkbvhYrmcd
+    //我的百度推播key
+    //TI31INXww3V60P6GYn5B1VyZ
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -150,6 +156,8 @@
     Account *acc=[Account unarchiverAccount];
     acc.appToken=deviceId;
     [acc save];
+    
+    //[AlertHelper initWithTitle:@"推送注册码" message:deviceId];
     
     [BPush registerDeviceToken: deviceToken];
     [BPush bindChannel];
