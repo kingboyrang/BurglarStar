@@ -55,7 +55,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title=[NSString stringWithFormat:@"%@ %@",self.Entity.PName,self.Entity.PCTime];
+    self.title=self.Entity.PName;
 	CGRect r=self.view.bounds;
     r.size.height-=[self topHeight];
     _mapView= [[BMKMapView alloc]initWithFrame:r];

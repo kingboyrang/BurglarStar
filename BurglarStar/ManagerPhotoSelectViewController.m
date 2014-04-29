@@ -161,7 +161,7 @@
     CGFloat oldHeight = imgSize.height;
     CGSize saveSize =imgSize;
     
-    CGSize defaultSize =CGSizeMake(self.view.bounds.size.width, SosHeadImageHeight); //默認大小
+    CGSize defaultSize =CGSizeMake(self.view.bounds.size.width-50, SosHeadImageHeight-30); //默認大小
     CGFloat wPre = oldWidth / defaultSize.width;
     CGFloat hPre = oldHeight / defaultSize.height;
     if (oldWidth > defaultSize.width || oldHeight > defaultSize.height) {

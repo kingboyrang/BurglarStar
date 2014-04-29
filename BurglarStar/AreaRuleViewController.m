@@ -151,7 +151,7 @@
     _ruleSelect.popoverText.popoverTextField.borderStyle=UITextBorderStyleRoundedRect;
     _ruleSelect.popoverText.popoverTextField.placeholder=@"请选择规则";
     
-    UIImage *img=[UIImage imageNamed:@"DownAccessory.png"];
+    UIImage *img=[UIImage imageNamed:@"DownAccessory@2x.png"];
     UIImageView *imageView=[[[UIImageView alloc] initWithImage:img] autorelease];
     _ruleSelect.popoverText.popoverTextField.enabled=NO;
     _ruleSelect.popoverText.popoverTextField.rightView=imageView;

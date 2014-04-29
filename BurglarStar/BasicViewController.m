@@ -43,6 +43,23 @@
 - (BOOL)backPrevViewController{
     return YES;
 }
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if (self.navigationController) {
+        NSString *imgName=self.navigationController.viewControllers.count==1?@"navbg.png":@"navbg_line.png";
+#ifdef __IPHONE_7_0
+        if ([[UIDevice currentDevice].systemVersion floatValue] >= 7.0) {
+            imgName=self.navigationController.viewControllers.count==1?@"navbg_ios7.png":@"navbg_line_ios7.png";
+        }
+#endif
+        UIImage *img=[UIImage imageNamed:imgName];
+        //iOS5 only
+        if([self.navigationController.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)])
+        {
+            [self.navigationController.navigationBar setBackgroundImage:img forBarMetrics:UIBarMetricsDefault];
+        }
+    }
+}
 - (void)viewDidLoad
 {
     

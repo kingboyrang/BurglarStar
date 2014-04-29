@@ -216,6 +216,11 @@
         [cell1.textField becomeFirstResponder];
         return;
     }
+    if(strlen([cell1.textField.text UTF8String])<6){
+        [AlertHelper initWithTitle:@"提示" message:@"帐号至少为6位!"];
+        [cell1.textField becomeFirstResponder];
+        return;
+    }
     if(isExistsNumber)
     {
         [AlertHelper initWithTitle:@"提示" message:@"帐号已被注册,请重新输入!"];
@@ -344,7 +349,7 @@
         [self replaceUIDstring];
         //检测帐号
         NSString *acc=[field.text Trim];
-        if([acc length]>0)
+        if([acc length]>=6)
         {
             [self updateShowInfo:acc];
         }else{

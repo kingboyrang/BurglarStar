@@ -90,8 +90,8 @@
     LocationGPS *gps=[[LocationGPS alloc] init];
     [gps startLocation:^(SVPlacemark *place) {
         NSString *cityNumber=[WeatherHelper getWeatherCityCode:place];
+        //NSLog(@"cityNumber=%@",cityNumber);
         if (cityNumber!=nil) {
-            NSLog(@"aa=weather");
              _labCurCity.text=[NSString stringWithFormat:@"%@   晴",place.locality];
             if (self.delegate&&[self.delegate respondsToSelector:@selector(locationGPSCityNumber:)]) {
                 [self.delegate locationGPSCityNumber:cityNumber];

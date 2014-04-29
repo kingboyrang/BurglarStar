@@ -18,6 +18,7 @@
 }
 - (void)loadingMonitors:(NSString*)name message:(NSString*)msg;
 - (void)done:(id)sender;
+- (void)addMonitorSearch;
 @end
 
 @implementation MonitorPersonViewController
@@ -36,15 +37,45 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title=@"车辆信息";
+    [self addMonitorSearch];
+   
+    CGRect r=self.view.bounds;
+    r.origin.y=45;
+    r.size.height-=[self topHeight]+r.origin.y;
     
-    CGFloat leftX=self.view.bounds.size.width/2-30;
-    UISearchBar *searchBar=[[UISearchBar alloc] initWithFrame:CGRectMake(leftX, 0, self.view.bounds.size.width-leftX-3, 44)];
+    _tableView=[[UITableView alloc] initWithFrame:r style:UITableViewStylePlain];
+    _tableView.delegate=self;
+    _tableView.dataSource=self;
+    _tableView.backgroundColor=[UIColor clearColor];
+    _tableView.separatorColor=[UIColor colorFromHexRGB:@"b8b8b8"];
+    [self.view addSubview:_tableView];
+    //点击空白处，聊藏键盘
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(done:)];
+    tapGestureRecognizer.numberOfTapsRequired =1;
+    tapGestureRecognizer.cancelsTouchesInView =NO;
+    [_tableView addGestureRecognizer:tapGestureRecognizer];  //只需要点击非文字输入区域就会响应hideKeyBoard
+    [tapGestureRecognizer release];
+    
+    [self loadingMonitors:@"" message:@"加载"];
+}
+- (void)addMonitorSearch{
+    UIImage *imgV=[UIImage imageNamed:@"top_bg02.png"];
+    imgV=[imgV stretchableImageWithLeftCapWidth:10 topCapHeight:0];
+    UIView *bgView=[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 45)];
+    UIImageView *imgView=[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, bgView.frame.size.height)];
+    [imgView setImage:imgV];
+    [bgView addSubview:imgView];
+    [imgView release];
+    
+    CGFloat leftX=self.view.bounds.size.width-30;
+    UISearchBar *searchBar=[[UISearchBar alloc] initWithFrame:CGRectMake((self.view.bounds.size.width-leftX)/2, 0.5, leftX, 44)];
     searchBar.tag=300;
     searchBar.delegate = self;
     searchBar.placeholder =@"请输入名称";
     searchBar.backgroundColor=[UIColor clearColor];
 #ifdef __IPHONE_7_0
-    if ([[UIDevice currentDevice].systemVersion floatValue] >= 7.0) {
+    if (IOSVersion>= 7.0) {
         searchBar.barTintColor=[UIColor clearColor];
         UIView *searchV = [[searchBar subviews] lastObject];
         for (id v in searchV.subviews) {
@@ -54,6 +85,14 @@
                 field.clearButtonMode=UITextFieldViewModeNever;
                 break;
             }
+        }
+        float  iosversion7_1 = 7.1 ;
+        if (IOSVersion >= iosversion7_1)
+        {
+            //iOS7.1
+            [[[[searchBar.subviews objectAtIndex:0] subviews] objectAtIndex:0] removeFromSuperview];
+            [searchBar setBackgroundColor:[UIColor clearColor]];
+            
         }
     }
 #endif
@@ -76,35 +115,16 @@
             break;
         }
     }
-    
-    //为UISearchBar添加背景图片
-    self.navigationItem.titleView=searchBar;
+    [bgView addSubview:searchBar];
     [searchBar release];
-    
-    
-    CGRect r=self.view.bounds;
-    r.size.height-=[self topHeight];
-    
-    _tableView=[[UITableView alloc] initWithFrame:r style:UITableViewStylePlain];
-    _tableView.delegate=self;
-    _tableView.dataSource=self;
-    _tableView.backgroundColor=[UIColor clearColor];
-    _tableView.separatorColor=[UIColor colorFromHexRGB:@"b8b8b8"];
-    [self.view addSubview:_tableView];
-    //点击空白处，聊藏键盘
-    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(done:)];
-    tapGestureRecognizer.numberOfTapsRequired =1;
-    tapGestureRecognizer.cancelsTouchesInView =NO;
-    [_tableView addGestureRecognizer:tapGestureRecognizer];  //只需要点击非文字输入区域就会响应hideKeyBoard
-    [tapGestureRecognizer release];
-    
-    [self loadingMonitors:@"" message:@"加载"];
+    [self.view addSubview:bgView];
+    [bgView release];
 }
 -(void)done:(id)sender
 {
-    UISearchBar *searchBar=(UISearchBar*)self.navigationItem.titleView;
+    UISearchBar *searchBar=(UISearchBar*)[self.view viewWithTag:300];
     [searchBar resignFirstResponder];
-    [self loadingMonitors:searchBar.text message:@"查询"];//查询
+    [self loadingMonitors:[searchBar.text Trim] message:@"查询"];//查询
 }
 - (void)loadingMonitors:(NSString*)name message:(NSString*)msg{
     if (![self hasNetWork]) {
@@ -122,6 +142,7 @@
     args.serviceNameSpace=DataNameSpace1;
     args.methodName=@"GetMonitorPersonInfo";
     args.soapParams=params;
+    //NSLog(@"soap=%@",args.bodyMessage);
     [self showLoadingAnimatedWithTitle:[NSString stringWithFormat:@"正在%@,请稍后...",msg]];
     
     ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];

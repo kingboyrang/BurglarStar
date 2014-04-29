@@ -63,7 +63,8 @@
 {
     [super viewDidLoad];
     
-    self.title=[NSString stringWithFormat:@"%@--足迹",self.Entity.Name];
+    //self.title=[NSString stringWithFormat:@"%@--足迹",self.Entity.Name];
+    self.title=self.Entity.Name;
     
     UIBarButtonItem *btn1=[UIBarButtonItem barButtonWithTitle:@"列表" target:self action:@selector(buttonListClick) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *btn2=[UIBarButtonItem barButtonArrowItemTarget:self action:@selector(buttonSwitchClick:) forControlEvents:UIControlEventTouchUpInside];

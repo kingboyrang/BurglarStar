@@ -54,7 +54,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title=[NSString stringWithFormat:@"%@ %@",self.PersonName,self.Entity.pctime];
+    //self.title=[NSString stringWithFormat:@"%@ %@",self.PersonName,self.Entity.pctime];
+    self.title=self.PersonName;
     
     CGRect r=self.view.bounds;
     r.size.height-=[self topHeight];

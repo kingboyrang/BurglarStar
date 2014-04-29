@@ -53,7 +53,8 @@
     [super viewDidLoad];
     isFirstLoad=YES;
     if (self.Entity&&self.Entity.Name&&[self.Entity.Name length]>0) {
-        self.title=[NSString stringWithFormat:@"%@--足迹",self.Entity.Name];
+        //self.title=[NSString stringWithFormat:@"%@--足迹",self.Entity.Name];
+        self.title=self.Entity.Name;
     }
     
     UIBarButtonItem *btn1=[UIBarButtonItem barButtonWithTitle:@"地图" target:self action:@selector(buttonMapLinesClick) forControlEvents:UIControlEventTouchUpInside];

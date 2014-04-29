@@ -68,7 +68,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title=[NSString stringWithFormat:@"%@--信息",self.Entity.Name];
+    self.title=@"最新信息";
+    //self.title=[NSString stringWithFormat:@"%@-最新信息",self.Entity.Name];
     UIBarButtonItem *btn1=[UIBarButtonItem barButtonWithTitle:@"历史"  target:self action:@selector(buttonHistoryClick) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *btn2=[UIBarButtonItem barButtonWithTitle:@"编辑"  target:self action:@selector(buttonEditClick:) forControlEvents:UIControlEventTouchUpInside];
     NSArray *actionButtonItems = [NSArray arrayWithObjects:btn2,btn1, nil];

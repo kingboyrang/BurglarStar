@@ -58,10 +58,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title=[NSString stringWithFormat:@"%@--信息",self.Entity.Name];
+    //self.title=[NSString stringWithFormat:@"%@-历史信息",self.Entity.Name];
+    self.title=@"历史信息";
     
+     UIBarButtonItem *btn1=[UIBarButtonItem barButtonWithTitle:@"NEW"  target:self action:@selector(buttonNewlick) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightBtn=[UIBarButtonItem barButtonWithTitle:@"编辑" target:self action:@selector(buttonEditClick:) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.rightBarButtonItem=rightBtn;
+    NSArray *actionButtonItems = [NSArray arrayWithObjects:rightBtn,btn1, nil];
+    self.navigationItem.rightBarButtonItems = actionButtonItems;
+    //self.navigationItem.rightBarButtonItem=rightBtn;
     
     CGRect r=self.view.bounds;
     r.size.height-=[self topHeight];
@@ -83,6 +87,10 @@
     
     curPage=0;
     pageSize=10;
+}
+//返回最新信息
+- (void)buttonNewlick{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 //编辑
 - (void)buttonEditClick:(id)sender{

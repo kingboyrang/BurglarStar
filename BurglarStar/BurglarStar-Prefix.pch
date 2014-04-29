@@ -14,7 +14,7 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import "UIColor+TPCategory.h"
-    #import "UINavigationBar+TPCategory.h"
+    //#import "UINavigationBar+TPCategory.h"
     #import "NSString+TPCategory.h"
     #import "Global.h"
     #import "BasicViewController.h"

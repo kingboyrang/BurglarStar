@@ -176,14 +176,17 @@ static NSString *defaultWebServiceNameSpace=DataNameSpace;
     return @"";
 }
 -(NSString*)paramsFormatString:(NSArray*)params{
-    NSMutableString *xml=[NSMutableString stringWithFormat:@""];
-    for (NSDictionary *item in params) {
-        NSString *key=[[item allKeys] objectAtIndex:0];
-        [xml appendFormat:@"<%@>",key];
-        [xml appendString:[item objectForKey:key]];
-        [xml appendFormat:@"</%@>",key];
+    if (params&&[params count]>0) {
+        NSMutableString *xml=[NSMutableString stringWithFormat:@""];
+        for (NSDictionary *item in params) {
+            NSString *key=[[item allKeys] objectAtIndex:0];
+            [xml appendFormat:@"<%@>",key];
+            [xml appendString:[item objectForKey:key]];
+            [xml appendFormat:@"</%@>",key];
+        }
+        return xml;
     }
-    return xml;
+    return @"";
 }
 -(NSString*)soapAction:(NSString*)namespace methodName:(NSString*)methodName{
     if (namespace&&[namespace length]>0) {
