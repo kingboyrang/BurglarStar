@@ -52,7 +52,7 @@
         
         NSString *memo=@"100°";
         CGSize size=[memo textSize:[UIFont boldSystemFontOfSize:30] withWidth:frame.size.width];
-        _labCurTemp=[[UILabel alloc] initWithFrame:CGRectMake(leftX-10-size.width,(frame.size.height-size.height)/2,size.width,size.height)];
+        _labCurTemp=[[UILabel alloc] initWithFrame:CGRectMake(leftX-5-size.width,(frame.size.height-size.height)/2,size.width,size.height)];
         _labCurTemp.backgroundColor=[UIColor clearColor];
         _labCurTemp.textColor=[UIColor colorFromHexRGB:@"1e303e"];
         _labCurTemp.font=[UIFont boldSystemFontOfSize:30];
@@ -63,18 +63,18 @@
         
         NSDate *date=[NSDate date];
         NSString *time=[date stringWithFormat:@"yyyy/MM/dd"];
-        size=[time textSize:[UIFont boldSystemFontOfSize:16] withWidth:frame.size.width];
+        size=[time textSize:[UIFont boldSystemFontOfSize:14] withWidth:frame.size.width];
         _labCurDate=[[UILabel alloc] initWithFrame:CGRectMake((frame.size.width-size.width)/2, (frame.size.height-(size.height*2+2))/2, size.width, size.height)];
         _labCurDate.backgroundColor=[UIColor clearColor];
         _labCurDate.textColor=[UIColor colorFromHexRGB:@"1e303e"];
-        _labCurDate.font=[UIFont boldSystemFontOfSize:16];
+        _labCurDate.font=[UIFont boldSystemFontOfSize:14];
         _labCurDate.text=time;
         [self addSubview:_labCurDate];
         
         _labCurCity=[[UILabel alloc] initWithFrame:CGRectMake(0,_labCurDate.frame.origin.y+_labCurDate.frame.size.height+2,frame.size.width, size.height)];
         _labCurCity.backgroundColor=[UIColor clearColor];
         _labCurCity.textColor=[UIColor colorFromHexRGB:@"1e303e"];
-        _labCurCity.font=[UIFont boldSystemFontOfSize:16];
+        _labCurCity.font=[UIFont boldSystemFontOfSize:14];
         _labCurCity.textAlignment=NSTextAlignmentCenter;
         _labCurCity.text=@"昆明   晴";
         [self addSubview:_labCurCity];

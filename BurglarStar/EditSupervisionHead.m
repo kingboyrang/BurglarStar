@@ -15,6 +15,7 @@
 #import "SupervisionViewController.h"
 #import "UIBarButtonItem+TPCategory.h"
 #import "ASIServiceHTTPRequest.h"
+
 @interface EditSupervisionHead (){
 }
 @property (nonatomic, strong) CaseCameraImage *cameraImage;
@@ -23,6 +24,7 @@
 //- (void)buttonCancelClick;
 - (void)buttonSubmitClick;
 - (void)uploadImageWithId:(NSString*)personId completed:(void(^)(NSString *fileName))completed;
+- (CGSize)autoImageSize:(CGSize)imgSize;
 @end
 
 @implementation EditSupervisionHead
@@ -78,7 +80,7 @@
     [self.view sendSubviewToBack:_preview];
     
     //topY=310;
-    topY=275;
+    topY+=placeImg.size.height+10+5;
     UIImage *imgPhotos=[UIImage imageNamed:@"head_photos.png"];
     UIButton *_button=[UIButton buttonWithType:UIButtonTypeCustom];
     _button.frame=CGRectMake((self.view.bounds.size.width-imgPhotos.size.width)/2, topY, imgPhotos.size.width, imgPhotos.size.height);
@@ -159,9 +161,9 @@
     }
     
     //UIImage *realImage=[image scaleToSize:CGSizeMake(300, 300)];
-    UIImage *realImage=[image scaleToSize:CGSizeMake(270, 270)];
+    UIImage *realImage=[image scaleToSize:[self autoImageSize:image.size]];
     
-    CGRect r=CGRectMake((self.view.bounds.size.width-realImage.size.width)/2,(310-realImage.size.height)/2, realImage.size.width, realImage.size.height);
+    CGRect r=CGRectMake((self.view.bounds.size.width-realImage.size.width)/2,(270-realImage.size.height)/2, realImage.size.width, realImage.size.height);
     _imageCropper = [[NLImageCropperView alloc] initWithFrame:r];
     [self.view addSubview:_imageCropper];
     [_imageCropper setImage:realImage];
@@ -260,6 +262,33 @@
 //照相
 - (void)buttonCameraClick{
     [self.cameraImage showCameraInController:self];
+}
+- (CGSize)autoImageSize:(CGSize)imgSize
+{
+    CGFloat oldWidth = imgSize.width;
+    CGFloat oldHeight = imgSize.height;
+    CGSize saveSize =imgSize;
+    
+    CGSize defaultSize =CGSizeMake(self.view.bounds.size.width, 250); //默認大小
+    CGFloat wPre = oldWidth / defaultSize.width;
+    CGFloat hPre = oldHeight / defaultSize.height;
+    if (oldWidth > defaultSize.width || oldHeight > defaultSize.height) {
+        if (wPre > hPre) {
+            saveSize.width = defaultSize.width;
+            saveSize.height = oldHeight / wPre;
+        }
+        else {
+            saveSize.width = oldWidth / hPre;
+            saveSize.height = defaultSize.height;
+        }
+    }
+    if (saveSize.width>defaultSize.width) {
+        saveSize.width=defaultSize.width;
+    }
+    if (saveSize.height>defaultSize.height) {
+        saveSize.height=defaultSize.height;
+    }
+    return saveSize;
 }
 - (void)didReceiveMemoryWarning
 {

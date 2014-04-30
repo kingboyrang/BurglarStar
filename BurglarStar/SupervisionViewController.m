@@ -188,11 +188,9 @@
     btn.enabled=NO;
     [self showLoadingAnimatedWithTitle:@"正在删除,请稍后..."];
     NSMutableArray *delSource=[NSMutableArray array];
-    NSMutableArray *indexPaths=[NSMutableArray array];
     for (NSString *item in self.removeList.allKeys) {
-        NSString *row=[self.removeList objectForKey:item];
-        [indexPaths addObject:[NSIndexPath indexPathForRow:[row intValue] inSection:0]];
-        [delSource addObject:self.cells[[row intValue]]];
+        NSIndexPath *row=[self.removeList objectForKey:item];
+        [delSource addObject:self.cells[[row row]]];
     }
     NSString *ids=[NSString stringWithFormat:@"'%@'",[self.removeList.allKeys componentsJoinedByString:@"','"]];
     ASIServiceArgs *args=[[[ASIServiceArgs alloc] init] autorelease];
@@ -212,7 +210,7 @@
                 boo=YES;
                 [self.cells removeObjectsInArray:delSource];
                 [_tableView beginUpdates];
-                [_tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
+                [_tableView deleteRowsAtIndexPaths:self.removeList.allValues withRowAnimation:UITableViewRowAnimationFade];
                 [_tableView endUpdates];
                 [self.removeList removeAllObjects];
                 [_toolBar.barView.button setTitle:@"删除(0)" forState:UIControlStateNormal];

@@ -22,7 +22,7 @@
 - (void)buttonCameraClick;
 - (void)buttonPrevClick;
 - (void)buttonSubmitClick;
-- (CGSize)autoImageSize:(CGSize)imgSize;
+- (CGSize)autoImageSize:(CGSize)imgSize maxSize:(CGSize)defaultSize;
 - (void)reLoadPrevImage:(UIImage*)img;
 @end
 
@@ -147,7 +147,7 @@
         [_imageCropper release],_imageCropper=nil;
     }
     
-    UIImage *realImage=[image scaleToSize:[self autoImageSize:image.size]];
+    UIImage *realImage=[image scaleToSize:[self autoImageSize:image.size maxSize:CGSizeMake(self.view.bounds.size.width-20, SosHeadImageHeight-20)]];
     
     CGRect r=CGRectMake((self.view.bounds.size.width-realImage.size.width)/2,(SosHeadImageHeight-realImage.size.height)/2, realImage.size.width, realImage.size.height);
     _imageCropper = [[NLImageCropperView alloc] initWithFrame:r];
@@ -155,13 +155,13 @@
     [_imageCropper setImage:realImage];
     [_imageCropper setCropRegionRect:CGRectMake((realImage.size.width-170)*_imageCropper.scaleReal/2, (realImage.size.width-178)*_imageCropper.scaleReal/2, 170*_imageCropper.scaleReal, 178*_imageCropper.scaleReal)];
 }
-- (CGSize)autoImageSize:(CGSize)imgSize
+- (CGSize)autoImageSize:(CGSize)imgSize maxSize:(CGSize)defaultSize
 {
     CGFloat oldWidth = imgSize.width;
     CGFloat oldHeight = imgSize.height;
     CGSize saveSize =imgSize;
     
-    CGSize defaultSize =CGSizeMake(self.view.bounds.size.width-50, SosHeadImageHeight-30); //默認大小
+    //CGSize defaultSize =CGSizeMake(self.view.bounds.size.width-50, SosHeadImageHeight-30); //默認大小
     CGFloat wPre = oldWidth / defaultSize.width;
     CGFloat hPre = oldHeight / defaultSize.height;
     if (oldWidth > defaultSize.width || oldHeight > defaultSize.height) {
@@ -183,7 +183,7 @@
     return saveSize;
 }
 - (void)reLoadPrevImage:(UIImage*)img{
-    CGSize size=[self autoImageSize:img.size];
+    CGSize size=[self autoImageSize:img.size maxSize:CGSizeMake(self.view.bounds.size.width-60, SosHeadImageHeight-30)];
     CGRect r=CGRectMake((self.view.bounds.size.width-size.width)/2,(SosHeadImageHeight-size.height)/2, size.width, size.height);
     _preview.frame=r;
     [_preview setImage:img];
