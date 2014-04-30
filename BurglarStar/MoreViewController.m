@@ -82,7 +82,7 @@
         BasicWebViewController *basiceWeb=[[BasicWebViewController alloc] init];
         basiceWeb.title=@"意见反馈";
         basiceWeb.webType=5;
-        basiceWeb.webURL=[NSString stringWithFormat:BurglarStarFeedBackURL,acc.UserId];
+        basiceWeb.webURL=[NSString stringWithFormat:BurglarStarFeedBackURL,acc.WorkNo];
         [self.navigationController pushViewController:basiceWeb animated:YES];
         [basiceWeb release];
     }

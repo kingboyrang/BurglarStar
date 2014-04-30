@@ -60,7 +60,7 @@
     BasicWebViewController *basic=[[BasicWebViewController alloc] init];
     basic.webType=8;
     basic.title=@"新增意见反馈";
-    basic.webURL=[NSString stringWithFormat:BurglarStarAddFeedBackURL,acc.UserId];
+    basic.webURL=[NSString stringWithFormat:BurglarStarAddFeedBackURL,acc.WorkNo];
     [self.navigationController pushViewController:basic animated:YES];
     [basic release];
 }

@@ -89,7 +89,6 @@
     args.serviceNameSpace=DataNameSpace1;
     args.methodName=@"GetSingleDetail";
     args.soapParams=[NSArray arrayWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:self.Entity.ID,@"id", nil], nil];
-    
     ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
     [request setCompletionBlock:^{
         if (request.ServiceResult.success) {
@@ -105,6 +104,8 @@
                 self.Entity.oil=[item objectForKey:@"oil"];
                 self.Entity.temper=[item objectForKey:@"temper"];
                 self.Entity.extend=[item objectForKey:@"extend"];
+                self.Entity.Latitude=[item objectForKey:@"Latitude"];
+                self.Entity.Longitude=[item objectForKey:@"Longitude"];
                 //NSLog(@"pctime=%@",self.Entity.PCTime);
                 //[self reloadTableSource:self.Entity];
                 self.title=self.Entity.Name;
