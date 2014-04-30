@@ -7,9 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		013019051910D44000257325 /* PushView.m in Sources */ = {isa = PBXBuildFile; fileRef = 013019041910D44000257325 /* PushView.m */; };
+		013019081910D45F00257325 /* TKPushDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 013019071910D45F00257325 /* TKPushDetailCell.m */; };
+		0130190B1910D59500257325 /* Push.m in Sources */ = {isa = PBXBuildFile; fileRef = 0130190A1910D59500257325 /* Push.m */; };
+		0130190E1910D5BC00257325 /* PushDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 0130190D1910D5BC00257325 /* PushDetail.m */; };
+		013019111910D63B00257325 /* scrollSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 013019101910D63B00257325 /* scrollSwitch.m */; };
+		013019141910D66500257325 /* PushViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 013019131910D66500257325 /* PushViewController.m */; };
 		013F7EB41900B00500B924FA /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 013F7EB31900B00500B924FA /* iTunesArtwork */; };
 		0143A2541904AD7E00EB7B6E /* BasicWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0143A2531904AD7E00EB7B6E /* BasicWebViewController.m */; };
-		0198F8E618FE114C00F2DABE /* NoticeMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F8E518FE114C00F2DABE /* NoticeMessageViewController.m */; };
 		0198F8E918FE11A000F2DABE /* SOSMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F8E818FE11A000F2DABE /* SOSMessage.m */; };
 		0198F8ED18FE164E00F2DABE /* SOSManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F8EC18FE164E00F2DABE /* SOSManagerViewController.m */; };
 		0198F8F118FE18C100F2DABE /* TKSOSCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198F8F018FE18C100F2DABE /* TKSOSCell.m */; };
@@ -232,11 +237,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		013019031910D44000257325 /* PushView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushView.h; sourceTree = "<group>"; };
+		013019041910D44000257325 /* PushView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushView.m; sourceTree = "<group>"; };
+		013019061910D45F00257325 /* TKPushDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPushDetailCell.h; sourceTree = "<group>"; };
+		013019071910D45F00257325 /* TKPushDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPushDetailCell.m; sourceTree = "<group>"; };
+		013019091910D59500257325 /* Push.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Push.h; sourceTree = "<group>"; };
+		0130190A1910D59500257325 /* Push.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Push.m; sourceTree = "<group>"; };
+		0130190C1910D5BC00257325 /* PushDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushDetail.h; sourceTree = "<group>"; };
+		0130190D1910D5BC00257325 /* PushDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushDetail.m; sourceTree = "<group>"; };
+		0130190F1910D63B00257325 /* scrollSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scrollSwitch.h; sourceTree = "<group>"; };
+		013019101910D63B00257325 /* scrollSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = scrollSwitch.m; sourceTree = "<group>"; };
+		013019121910D66500257325 /* PushViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushViewController.h; sourceTree = "<group>"; };
+		013019131910D66500257325 /* PushViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushViewController.m; sourceTree = "<group>"; };
 		013F7EB31900B00500B924FA /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		0143A2521904AD7E00EB7B6E /* BasicWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicWebViewController.h; sourceTree = "<group>"; };
 		0143A2531904AD7E00EB7B6E /* BasicWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicWebViewController.m; sourceTree = "<group>"; };
-		0198F8E418FE114C00F2DABE /* NoticeMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeMessageViewController.h; sourceTree = "<group>"; };
-		0198F8E518FE114C00F2DABE /* NoticeMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeMessageViewController.m; sourceTree = "<group>"; };
 		0198F8E718FE11A000F2DABE /* SOSMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOSMessage.h; sourceTree = "<group>"; };
 		0198F8E818FE11A000F2DABE /* SOSMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOSMessage.m; sourceTree = "<group>"; };
 		0198F8EB18FE164E00F2DABE /* SOSManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOSManagerViewController.h; sourceTree = "<group>"; };
@@ -713,11 +728,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		013019021910D3A200257325 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				0130190F1910D63B00257325 /* scrollSwitch.h */,
+				013019101910D63B00257325 /* scrollSwitch.m */,
+				0130190C1910D5BC00257325 /* PushDetail.h */,
+				0130190D1910D5BC00257325 /* PushDetail.m */,
+				013019061910D45F00257325 /* TKPushDetailCell.h */,
+				013019071910D45F00257325 /* TKPushDetailCell.m */,
+				013019031910D44000257325 /* PushView.h */,
+				013019041910D44000257325 /* PushView.m */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
 		0198F8E318FE111A00F2DABE /* NoticeMessage */ = {
 			isa = PBXGroup;
 			children = (
-				0198F8E418FE114C00F2DABE /* NoticeMessageViewController.h */,
-				0198F8E518FE114C00F2DABE /* NoticeMessageViewController.m */,
+				013019121910D66500257325 /* PushViewController.h */,
+				013019131910D66500257325 /* PushViewController.m */,
+				013019021910D3A200257325 /* UI */,
 			);
 			name = NoticeMessage;
 			sourceTree = "<group>";
@@ -955,6 +986,8 @@
 		01C2EE6218F28FA900B37603 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				013019091910D59500257325 /* Push.h */,
+				0130190A1910D59500257325 /* Push.m */,
 				01C2EE6318F28FB400B37603 /* Account.h */,
 				01C2EE6418F28FB400B37603 /* Account.m */,
 				01C2EE6518F28FB400B37603 /* SupervisionPerson.h */,
@@ -1770,6 +1803,7 @@
 				01C2EE8718F2905500B37603 /* RegisterSuccessViewController.m in Sources */,
 				01C2F16A18F5219500B37603 /* TKAreaWeekCell.m in Sources */,
 				01C2F0E118F4DE3600B37603 /* PersonTrajectoryViewController.m in Sources */,
+				013019051910D44000257325 /* PushView.m in Sources */,
 				01C2F10318F4E48E00B37603 /* MoreViewController.m in Sources */,
 				01CD566E18F68820007731E1 /* BusLocationViewController.m in Sources */,
 				01C3D902190A48D700D03DC8 /* ToolEditView.m in Sources */,
@@ -1860,6 +1894,7 @@
 				01C2F0E918F4DF4B00B37603 /* PinView.m in Sources */,
 				01C2EF0B18F29C5E00B37603 /* ASIServiceArgs.m in Sources */,
 				0143A2541904AD7E00EB7B6E /* BasicWebViewController.m in Sources */,
+				0130190E1910D5BC00257325 /* PushDetail.m in Sources */,
 				01C2F0E618F4DEDD00B37603 /* ToolBarMenu.m in Sources */,
 				0198F8ED18FE164E00F2DABE /* SOSManagerViewController.m in Sources */,
 				01C2EF0D18F29C5E00B37603 /* ASIServiceHTTPRequest.m in Sources */,
@@ -1876,6 +1911,8 @@
 				01C2EECC18F2937600B37603 /* TKLabelCell.m in Sources */,
 				01C2EE8418F2905500B37603 /* GeneralLoginViewController.m in Sources */,
 				01C2F12918F4E89900B37603 /* SDWebImagePrefetcher.m in Sources */,
+				0130190B1910D59500257325 /* Push.m in Sources */,
+				013019141910D66500257325 /* PushViewController.m in Sources */,
 				01CD568118F6A5D6007731E1 /* SVPlacemark.m in Sources */,
 				0198F8F418FE272100F2DABE /* SOSAddViewController.m in Sources */,
 				01C2F0E318F4DE3600B37603 /* SingleMapShowViewController.mm in Sources */,
@@ -1888,10 +1925,10 @@
 				01C2F0C018F4DD0900B37603 /* TrajectoryMessageController.m in Sources */,
 				01CD56D918FCD2D3007731E1 /* OfflineHelper.m in Sources */,
 				01C2F13F18F4F60300B37603 /* CVUICalendar.m in Sources */,
+				013019111910D63B00257325 /* scrollSwitch.m in Sources */,
 				01C3D8F9190A375500D03DC8 /* OpenUDID.m in Sources */,
 				01C2F0D618F4DDCF00B37603 /* BMKAnnotationView+TPCategory.m in Sources */,
 				0198F8FB18FE2A0700F2DABE /* TKTextViewCell.m in Sources */,
-				0198F8E618FE114C00F2DABE /* NoticeMessageViewController.m in Sources */,
 				0198F90118FE2E5200F2DABE /* TKHeadPhotoCell.m in Sources */,
 				01C2EF1918F29DA900B37603 /* XmlNode.m in Sources */,
 				01C2F12518F4E89900B37603 /* SDWebImageDecoder.m in Sources */,
@@ -1901,6 +1938,7 @@
 				01C2EE1218F24FD600B37603 /* UIButton+TPCategory.m in Sources */,
 				01C2EEA018F290A400B37603 /* RunScrollView.m in Sources */,
 				01CD568018F6A5D6007731E1 /* SVGeocoder.m in Sources */,
+				013019081910D45F00257325 /* TKPushDetailCell.m in Sources */,
 				01C2EEF818F29BBA00B37603 /* ASIInputStream.m in Sources */,
 				01C2EE8A18F2906200B37603 /* PagerViewController.m in Sources */,
 				01C2F01B18F3D79200B37603 /* DCRoundSwitchKnobLayer.m in Sources */,

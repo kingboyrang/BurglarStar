@@ -11,4 +11,5 @@
 @interface AppHelper : NSObject
 + (NSArray*)arrayWithSource:(NSArray*)source className:(NSString*)name;
 + (void)startRunAnimation;
++ (void)registerApns;//注册推播
 @end

@@ -13,6 +13,7 @@
 #import "UIImage+TPCategory.h"
 #import "AlertHelper.h"
 #import "AnimateLoadView.h"
+#import "Account.h"
 @interface AppHelper ()
 - (void)runAnimation;
 - (void)watiAnimationShow:(UIImage*)image;
@@ -22,6 +23,36 @@
 @end
 
 @implementation AppHelper
+//注册推播
++ (void)registerApns{
+    Account *acc=[Account unarchiverAccount];
+    if (acc.isLogin) {//表示已登陆
+        if ([acc.UserId length]>0&&acc.pushUserId&&[acc.pushUserId length]>0&&acc.channelId&&[acc.channelId length]>0) {
+            
+            NSString *pwd=acc.Password&&[acc.Password length]>0?acc.Password:@"";
+            NSMutableArray *params=[NSMutableArray array];
+            [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.UserId,@"uid", nil]];
+            [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:pwd,@"pwd", nil]];
+            [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.pushUserId,@"userId", nil]];
+            [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.channelId,@"channelId", nil]];
+            ASIServiceArgs *args=[[[ASIServiceArgs alloc] init] autorelease];
+            args.serviceURL=DataPushWebserviceURL;
+            args.serviceNameSpace=DataPushNameSpace;
+            args.methodName=@"Register";
+            args.soapParams=params;
+            
+            ASIHTTPRequest *request=[args request];
+            [request setCompletionBlock:^{
+                
+            }];
+            [request setFailedBlock:^{
+                
+            }];
+            [request startAsynchronous];
+            
+        }
+    }
+}
 + (NSArray*)arrayWithSource:(NSArray*)source className:(NSString*)name{
     if (source&&[source count]>0) {
         NSMutableArray *result=[NSMutableArray arrayWithCapacity:source.count];

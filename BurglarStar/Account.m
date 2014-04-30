@@ -8,6 +8,7 @@
 
 #import "Account.h"
 #import "FileHelper.h"
+#import "AppHelper.h"
 @implementation Account
 - (void)encodeWithCoder:(NSCoder *)encoder{
     [encoder encodeObject:self.Way forKey:@"Way"];
@@ -89,6 +90,8 @@
         }
     }
     [acc save];
+    //注删推播
+    [AppHelper registerApns];
 }
 + (void)loginDynamicWithUserId:(NSString*)userId password:(NSString*)pwd rememberPassword:(BOOL)remember withData:(NSDictionary*)dic{
     Account *acc=[Account unarchiverAccount];
@@ -109,6 +112,9 @@
         }
     }
     [acc save];
+    
+    //注删推播
+    [AppHelper registerApns];
 }
 + (void)editPwd:(NSString*)pwd encrypt:(NSString*)encrypt{
     Account *acc=[Account unarchiverAccount];

@@ -15,13 +15,14 @@
 @end
 
 @implementation AnimateLoadView
-@synthesize activityIndicatorView=_activityIndicatorView;
-@synthesize labelTitle=_labelTitle;
+//@synthesize activityIndicatorView=_activityIndicatorView;
+//@synthesize labelTitle=_labelTitle;
 -(void)dealloc{
+    [self.labelTitle removeObserver:self forKeyPath:@"text"];
     [super dealloc];
-    [_activityIndicatorView release],_activityIndicatorView=nil;
-    [_labelTitle removeObserver:self forKeyPath:@"text"];
-    [_labelTitle release],_labelTitle=nil;
+    //[_activityIndicatorView release],_activityIndicatorView=nil;
+    
+    //[_labelTitle release],_labelTitle=nil;
 }
 - (id)initWithFrame:(CGRect)frame
 {

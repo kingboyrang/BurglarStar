@@ -171,6 +171,7 @@
             [self setChoosetTarget];
             [self setRecetiveSupersion:entity];
         }
+        
     }
 }
 - (BOOL)canShowTrajectory{

@@ -123,6 +123,8 @@
             acc.pushUserId=userid;
             acc.channelId=channelid;
             [acc save];
+            //向服务器注册推播
+            [AppHelper registerApns];
         }
     } else if ([BPushRequestMethod_Unbind isEqualToString:method]) {
         int returnCode = [[res valueForKey:BPushRequestErrorCodeKey] intValue];

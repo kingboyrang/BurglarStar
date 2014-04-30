@@ -16,10 +16,9 @@
 #import "SupervisionViewController.h"
 #import "UserInfoViewController.h"
 #import "SOSManagerViewController.h"
-//#import "UserInfoViewController.h"
 #import "MoreViewController.h"
 #import "AlertHelper.h"
-#import "NoticeMessageViewController.h"
+#import "PushViewController.h"
 @interface MainViewController ()
 - (void)buttonLoginClick:(id)sender;
 - (void)buttonRegisterClick:(id)sender;
@@ -174,7 +173,7 @@
 #pragma mark - BSMenuDelegate Methods
 -(void)selectItemMenu:(id)sender index:(NSInteger)itemIndex{
     Account *acc=[Account unarchiverAccount];
-    if (!acc.isLogin) {
+    if (!acc.isLogin&&itemIndex!=101) {
         [AlertHelper initWithTitle:@"提示" message:@"尚未登录,是否前往登录?" cancelTitle:@"取消" cancelAction:nil confirmTitle:@"确定" confirmAction:^{
             LoginViewController *login=[[LoginViewController alloc] init];
             [self.navigationController pushViewController:login animated:YES];
@@ -189,7 +188,7 @@
     }
     else if(itemIndex==101)//信息提醒
     {
-        NoticeMessageViewController *noticeMsg=[[NoticeMessageViewController alloc] init];
+        PushViewController *noticeMsg=[[PushViewController alloc] init];
         [self.navigationController pushViewController:noticeMsg animated:YES];
         [noticeMsg release];
     }

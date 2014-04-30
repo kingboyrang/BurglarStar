@@ -224,7 +224,8 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    id v=self.navigationController.viewControllers[0];
+    NSInteger index=self.navigationController.viewControllers.count-1-1;
+    id v=self.navigationController.viewControllers[index];
     if ([v isKindOfClass:[IndexViewController class]]) {
         IndexViewController *controls=(IndexViewController*)v;
         [controls setSelectedSupervisionCenter:self.list[indexPath.row]];
