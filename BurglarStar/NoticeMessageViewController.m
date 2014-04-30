@@ -26,6 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title=@"信息提醒";
     // Do any additional setup after loading the view.
 }
 

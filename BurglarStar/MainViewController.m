@@ -19,6 +19,7 @@
 //#import "UserInfoViewController.h"
 #import "MoreViewController.h"
 #import "AlertHelper.h"
+#import "NoticeMessageViewController.h"
 @interface MainViewController ()
 - (void)buttonLoginClick:(id)sender;
 - (void)buttonRegisterClick:(id)sender;
@@ -188,7 +189,9 @@
     }
     else if(itemIndex==101)//信息提醒
     {
-        
+        NoticeMessageViewController *noticeMsg=[[NoticeMessageViewController alloc] init];
+        [self.navigationController pushViewController:noticeMsg animated:YES];
+        [noticeMsg release];
     }
     else if(itemIndex==102)//sos
     {
