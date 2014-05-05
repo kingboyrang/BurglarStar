@@ -173,7 +173,7 @@
 #pragma mark - BSMenuDelegate Methods
 -(void)selectItemMenu:(id)sender index:(NSInteger)itemIndex{
     Account *acc=[Account unarchiverAccount];
-    if (!acc.isLogin&&itemIndex!=101) {
+    if (!acc.isLogin) {
         [AlertHelper initWithTitle:@"提示" message:@"尚未登录,是否前往登录?" cancelTitle:@"取消" cancelAction:nil confirmTitle:@"确定" confirmAction:^{
             LoginViewController *login=[[LoginViewController alloc] init];
             [self.navigationController pushViewController:login animated:YES];

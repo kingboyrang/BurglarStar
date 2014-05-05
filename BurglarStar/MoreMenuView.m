@@ -56,7 +56,7 @@
 }
 - (void)drawRect:(CGRect)rect
 {
-    UIColor *lineColor=[UIColor colorFromHexRGB:@"b8b8b8"];
+    UIColor *lineColor=[UIColor colorFromHexRGB:@"b6b6b6"];
     CGContextRef ctx =UIGraphicsGetCurrentContext();
     CGContextSetStrokeColorWithColor(ctx, lineColor.CGColor);
     CGContextSetLineWidth(ctx,0.55);

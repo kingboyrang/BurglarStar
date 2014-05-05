@@ -30,6 +30,7 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    /***
     CGPoint point=_scrollView.contentOffset;
     if (point.x==0) {
         PushView *view=(PushView*)[_scrollView viewWithTag:100];
@@ -42,13 +43,15 @@
         PushView *view1=(PushView*)[_scrollView viewWithTag:100];
         [view1 initParams];
     }
+     ***/
+    PushView *view1=(PushView*)[self.view viewWithTag:100];
+    [view1 reloadingSourceData];
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.title=@"信息提醒";
-    
-    self.view.backgroundColor=[UIColor whiteColor];
+    /***
     scrollSwitch *switchItem=[[scrollSwitch alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 40)];
     switchItem.tag=700;
     switchItem.controler=self;
@@ -66,21 +69,23 @@
     [_scrollView setContentSize:CGSizeMake(r.size.width*2,r.size.height)];
     [self.view addSubview:_scrollView];
     
-     /***
+    
     PushDetail *detail=[[PushDetail alloc] initWithFrame:CGRectMake(0, 0, DeviceWidth, 77)];
     detail.labDate.text=@"2012.10.08";
     detail.labMessage.text=@"test all 15:33";
     [_scrollView addSubview:detail];
     [detail release];
    ***/
-    
+    CGRect r=self.view.bounds;
+    r.size.height-=[self topHeight];
     PushView *view1=[[[PushView alloc] initWithFrame:CGRectMake(0, 0, r.size.width, r.size.height)] autorelease];
     view1.infoType=1;
     view1.delegate=self;
     view1.tag=100;
-    [_scrollView addSubview:view1];
+    [self.view addSubview:view1];
     
     
+    /***
     PushView *view2=[[[PushView alloc] initWithFrame:CGRectMake(r.size.width, 0, r.size.width, r.size.height)] autorelease];
     view2.tag=101;
     view2.delegate=self;
@@ -94,14 +99,15 @@
        [switchItem scrollerToRight];
     }
     [switchItem release];
+     ***/
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveNoticeInfo) name:@"myInfo" object:nil];
 }
 -(void)receiveNoticeInfo{
-    scrollSwitch *item=(scrollSwitch*)[self.view viewWithTag:700];
-    [item scrollerToLeft];
+    //scrollSwitch *item=(scrollSwitch*)[self.view viewWithTag:700];
+    //[item scrollerToLeft];
     
-    PushView *view=(PushView*)[_scrollView viewWithTag:100];
+    PushView *view=(PushView*)[self.view viewWithTag:100];
     [view reloadingSourceData];
 }
 #pragma mark -PushViewDelegate Methods
@@ -113,6 +119,7 @@
         successView.labelTitle.text=title;
     } completed:nil];
 }
+/***
 #pragma mark -
 #pragma mark UIScrollViewDelegate
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -142,6 +149,7 @@
     [view reloadingSourceData];
     [self.scrollView setContentOffset:CGPointMake(DeviceWidth, 0)];//页面滑动
 }
+ ***/
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
