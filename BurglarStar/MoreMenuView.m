@@ -61,32 +61,17 @@
     CGContextSetStrokeColorWithColor(ctx, lineColor.CGColor);
     CGContextSetLineWidth(ctx,0.55);
     CGFloat topY=rect.size.width/3;
-    /***
-     CGContextMoveToPoint(ctx, 0.0, topY);
-     CGContextAddLineToPoint(ctx, rect.size.width, topY);
-     ***/
-    //画横线
-    CGPoint strokeSegments[] =
-    {
-        CGPointMake(0.0, topY),
-        CGPointMake(rect.size.width, topY),
-        CGPointMake(0.0, topY*2),
-        CGPointMake(rect.size.width, topY*2),
-        CGPointMake(0.0, topY*3),
-        CGPointMake(rect.size.width, topY*3),
-    };
-    CGContextStrokeLineSegments(ctx, strokeSegments, sizeof(strokeSegments)/sizeof(strokeSegments[0]));
-    //画竖线
-    CGFloat leftX=rect.size.width/3;
-    
-    CGPoint verticalSegments[] =
-    {
-        CGPointMake(leftX, 0),
-        CGPointMake(leftX, topY*3),
-        CGPointMake(leftX*2,0),
-        CGPointMake(leftX*2,topY*3),
-    };
-    CGContextStrokeLineSegments(ctx, verticalSegments, sizeof(verticalSegments)/sizeof(verticalSegments[0]));
+    CGContextBeginPath(ctx);
+    int total=3;
+     for (int i=0; i<total; i++) {
+        //画横线
+        CGContextMoveToPoint(ctx, 0, topY*(i+1));
+        CGContextAddLineToPoint(ctx, topY*total, topY*(i+1));
+        //画竖线
+        CGContextMoveToPoint(ctx, topY*(i+1), 0);
+        CGContextAddLineToPoint(ctx, topY*(i+1), topY*total);
+     }
+    CGContextClosePath(ctx);
     CGContextStrokePath(ctx);
 }
 
