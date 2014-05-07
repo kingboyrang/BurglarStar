@@ -19,6 +19,7 @@
 -(void)loadData;
 -(void)showInfoWithTitle:(NSString*)title;
 -(void)showUpdateInfoWithTitle:(NSString*)title;
+- (void)loadingPushMessage:(NSArray*)source;
 @end
 
 @implementation PushView
@@ -86,16 +87,18 @@
         [self showInfoWithTitle:@"当前未登陆,无法加载我的信息!"];
         return;
     }
+    /***
     if (maxPage!=0&&currentPage>=maxPage) {
         currentPage=maxPage;
         [_tableView tableViewDidFinishedLoadingWithMessage:@"沒有了哦..."];
         _tableView.reachedTheEnd  = YES;
         return;
     }
+     ***/
     currentPage++;
     NSString *uid=@"";
-    if (self.infoType==1&&acc.UserId&&[acc.UserId length]>0) {
-        uid=acc.UserId;
+    if (self.infoType==1&&acc.WorkNo&&[acc.WorkNo length]>0) {
+        uid=acc.WorkNo;
     }
     if([uid length]==0&&self.infoType==1){
         currentPage--;
@@ -105,15 +108,16 @@
         return;
     }
     NSMutableArray *params=[NSMutableArray array];
-    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:uid,@"uid", nil]];
-    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",currentPage],@"start", nil]];
-    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",pageSize],@"size", nil]];
+    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:uid,@"UserID", nil]];
+    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",currentPage],@"curPage", nil]];
+    [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",pageSize],@"pageSize", nil]];
     
     ASIServiceArgs *args=[[[ASIServiceArgs alloc] init] autorelease];
-    args.serviceURL=DataPushWebserviceURL;
-    args.serviceNameSpace=DataPushNameSpace;
-    args.methodName=@"GetPushs";
+    args.serviceURL=DataSOSWebservice;
+    args.serviceNameSpace=DataSOSNameSpace;
+    args.methodName=@"GetPushList";
     args.soapParams=params;
+    
     ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
     [request setCompletionBlock:^{
         [_tableView tableViewDidFinishedLoading];
@@ -121,54 +125,21 @@
         if (self.refreshing) {
             self.refreshing = NO;
         }
-        if ([request.ServiceResult.xmlString length]==0) {
+        BOOL boo=NO;
+        if (request.ServiceResult.success) {
+            [request.ServiceResult.xmlParse setDataSource:request.ServiceResult.filterXml];
+            XmlNode *node=[request.ServiceResult.xmlParse soapXmlSelectSingleNode:request.ServiceResult.xpath];
+            NSArray *arr=[Push jsonSerializationPushs:node.InnerText];
+            if (arr&&[arr count]>0) {
+                boo=YES;
+                [self showUpdateInfoWithTitle:[NSString stringWithFormat:@"更新%d笔信息!",arr.count]];
+                [self loadingPushMessage:arr];
+            }
+        }
+        if (!boo) {
             currentPage--;
             [self showInfoWithTitle:@"没有信息哦!"];
             return;
-        }
-        NSString *xml=[request.ServiceResult.xmlString stringByReplacingOccurrencesOfString:request.ServiceResult.xmlnsAttr withString:@""];
-        [request.ServiceResult.xmlParse setDataSource:xml];
-        XmlNode *node=[request.ServiceResult.xmlParse soapXmlSelectSingleNode:@"//GetPushsResult"];
-        if ([node.Value length]==0) {
-            [self showInfoWithTitle:@"没有信息哦!"];
-            return;
-        }
-        NSArray *arr=[node.Value componentsSeparatedByString:@"<;>"];
-        int totalCount=[[arr objectAtIndex:0] intValue];
-        maxPage=totalCount%pageSize==0?totalCount/pageSize:totalCount/pageSize+1;
-        
-        xml=[[arr objectAtIndex:1] stringByReplacingOccurrencesOfString:@"xmlns=\"Push[]\"" withString:@""];
-        [request.ServiceResult.xmlParse setDataSource:xml];
-        NSArray *source=[request.ServiceResult.xmlParse selectNodes:@"//Push" className:@"Push"];
-        [self showUpdateInfoWithTitle:[NSString stringWithFormat:@"更新%d笔信息!",source.count]];
-        
-        
-        if (currentPage==1) {
-            NSMutableArray *sourceCells=[NSMutableArray array];
-            for (int i=0; i<source.count; i++) {
-                TKPushDetailCell *cell=[[TKPushDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-                [sourceCells addObject:cell];
-                [cell release];
-            }
-            self.cells=sourceCells;
-            self.list=[NSMutableArray arrayWithArray:source];
-            
-            [_tableView reloadData];
-        }else{
-            NSMutableArray *insertIndexPaths = [NSMutableArray arrayWithCapacity:pageSize];
-            for (int i=0; i<[source count]; i++) {
-                [self.list addObject:[source objectAtIndex:i]];
-                NSIndexPath *newPath=[NSIndexPath indexPathForRow:(currentPage-1)*pageSize+i inSection:0];
-                [insertIndexPaths addObject:newPath];
-                
-                TKPushDetailCell *cell=[[TKPushDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-                [self.cells addObject:cell];
-                [cell release];
-            }
-            //重新呼叫UITableView的方法, 來生成行.
-            [_tableView beginUpdates];
-            [_tableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationFade];
-            [_tableView endUpdates];
         }
     }];
     [request setFailedBlock:^{
@@ -179,34 +150,72 @@
     }];
     [request startAsynchronous];
 }
+- (void)loadingPushMessage:(NSArray*)source{
+    if (currentPage==1) {
+        NSMutableArray *sourceCells=[NSMutableArray array];
+        for (int i=0; i<source.count; i++) {
+            TKPushDetailCell *cell=[[TKPushDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            [sourceCells addObject:cell];
+            [cell release];
+        }
+        self.cells=sourceCells;
+        self.list=[NSMutableArray arrayWithArray:source];
+        [_tableView reloadData];
+    }else{
+        NSMutableArray *insertIndexPaths = [NSMutableArray arrayWithCapacity:pageSize];
+        for (int i=0; i<[source count]; i++) {
+            [self.list addObject:[source objectAtIndex:i]];
+            NSIndexPath *newPath=[NSIndexPath indexPathForRow:(currentPage-1)*pageSize+i inSection:0];
+            [insertIndexPaths addObject:newPath];
+            
+            TKPushDetailCell *cell=[[TKPushDetailCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            [self.cells addObject:cell];
+            [cell release];
+        }
+        //重新呼叫UITableView的方法, 來生成行.
+        [_tableView beginUpdates];
+        [_tableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+        [_tableView endUpdates];
+    }
+}
 #pragma mark -
 #pragma mark UITableViewDataSource Methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return [self.list count];
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     TKPushDetailCell *cell=self.cells[indexPath.row];
     cell.selectionStyle=UITableViewCellSeparatorStyleNone;
     Push *entity=self.list[indexPath.row];
-    cell.detailView.labDate.text=[entity.PubDate Trim];
-    cell.detailView.labMessage.text=[entity.Subject Trim];
+    cell.detailView.labDate.text=[entity.formatDateText Trim];
+    cell.detailView.labMessage.text=[entity.Message Trim];
+    cell.detailView.labDate.textColor=[UIColor colorFromHexRGB:@"252930"];
+    cell.detailView.labMessage.textColor=[UIColor colorFromHexRGB:@"252930"];
+    if (indexPath.row%2==0) {
+        cell.detailView.backgroundColor=[UIColor colorFromHexRGB:@"bebeb8"];
+    }else{
+        cell.detailView.backgroundColor=[UIColor colorFromHexRGB:@"efeedc"];
+    }
     return cell;
     
 }
 #pragma mark - Table view delegate
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Push *entity=self.list[indexPath.row];
-    CGSize size=[entity.Subject textSize:[UIFont boldSystemFontOfSize:14] withWidth:202];
+    CGSize size=[entity.Message textSize:[UIFont boldSystemFontOfSize:14] withWidth:202];
     if (size.height>43){
         return 5+10+size.height+10+3+6;
     }
     return 77;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     Push *entity=self.list[indexPath.row];
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"详情"
-                                                                message:[entity.Subject Trim]
+                                                                message:[entity.Message Trim]
                                                               delegate:nil
                                                       cancelButtonTitle:@"确定"
                                                       otherButtonTitles:nil];

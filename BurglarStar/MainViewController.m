@@ -19,6 +19,7 @@
 #import "MoreViewController.h"
 #import "AlertHelper.h"
 #import "PushViewController.h"
+#import "ASIServiceHTTPRequest.h"
 @interface MainViewController ()
 - (void)buttonLoginClick:(id)sender;
 - (void)buttonRegisterClick:(id)sender;
@@ -86,6 +87,8 @@
     menu.frame=r;
     [self.view addSubview:menu];
     [menu release];
+    
+    
     
     /***274 230
     NSString *memo=@"深圳宝安区";

@@ -225,10 +225,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger index=self.navigationController.viewControllers.count-1-1;
-    id v=self.navigationController.viewControllers[index];
-    if ([v isKindOfClass:[IndexViewController class]]) {
-        IndexViewController *controls=(IndexViewController*)v;
-        [controls setSelectedSupervisionCenter:self.list[indexPath.row]];
+    if (index>=0) {
+        id v=self.navigationController.viewControllers[index];
+        if ([v isKindOfClass:[IndexViewController class]]) {
+            IndexViewController *controls=(IndexViewController*)v;
+            [controls setSelectedSupervisionCenter:self.list[indexPath.row]];
+        }
     }
     [self.navigationController popViewControllerAnimated:YES];
 }

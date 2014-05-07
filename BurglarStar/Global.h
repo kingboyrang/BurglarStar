@@ -27,10 +27,6 @@
 #define DataWebserviceURL @"http://ibdcloud.com:8083/User_APP.asmx"
 #define DataNameSpace @"http://tempuri.org/"
 
-//push
-#define DataPushWebserviceURL @"http://ibdcloud.com:8889/WebServices/Push.asmx"
-#define DataPushNameSpace @"http://tempuri.org/"
-
 //帮助
 #define BurglarStarHelpURL @"http://www.ibdcloud.com/TheftStar/Wap/Help.aspx"
 //关于我们

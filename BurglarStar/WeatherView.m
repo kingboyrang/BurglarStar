@@ -92,7 +92,9 @@
         NSString *cityNumber=[WeatherHelper getWeatherCityCode:place];
         //NSLog(@"cityNumber=%@",cityNumber);
         if (cityNumber!=nil) {
-             _labCurCity.text=[NSString stringWithFormat:@"%@   晴",place.locality];
+            if ([_labCurCity.text isEqualToString:@"昆明   晴"]) {
+                _labCurCity.text=[NSString stringWithFormat:@"%@   晴",place.locality];
+            }
             if (self.delegate&&[self.delegate respondsToSelector:@selector(locationGPSCityNumber:)]) {
                 [self.delegate locationGPSCityNumber:cityNumber];
             }

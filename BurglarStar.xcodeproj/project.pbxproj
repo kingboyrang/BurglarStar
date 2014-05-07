@@ -8,9 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		013019051910D44000257325 /* PushView.m in Sources */ = {isa = PBXBuildFile; fileRef = 013019041910D44000257325 /* PushView.m */; };
-		013019081910D45F00257325 /* TKPushDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 013019071910D45F00257325 /* TKPushDetailCell.m */; };
 		0130190B1910D59500257325 /* Push.m in Sources */ = {isa = PBXBuildFile; fileRef = 0130190A1910D59500257325 /* Push.m */; };
-		0130190E1910D5BC00257325 /* PushDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 0130190D1910D5BC00257325 /* PushDetail.m */; };
 		013019111910D63B00257325 /* scrollSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 013019101910D63B00257325 /* scrollSwitch.m */; };
 		013019141910D66500257325 /* PushViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 013019131910D66500257325 /* PushViewController.m */; };
 		013F7EB41900B00500B924FA /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 013F7EB31900B00500B924FA /* iTunesArtwork */; };
@@ -224,6 +222,8 @@
 		01CD56D318FCD2C7007731E1 /* ViewerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD56CE18FCD2C7007731E1 /* ViewerMapView.m */; };
 		01CD56D818FCD2D3007731E1 /* OnlineMapViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 01CD56D518FCD2D3007731E1 /* OnlineMapViewController.mm */; };
 		01CD56D918FCD2D3007731E1 /* OfflineHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CD56D718FCD2D3007731E1 /* OfflineHelper.m */; };
+		01CDC194191A181F0002AE47 /* PushDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CDC193191A181F0002AE47 /* PushDetail.m */; };
+		01CDC197191A18270002AE47 /* TKPushDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01CDC196191A18270002AE47 /* TKPushDetailCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -239,12 +239,8 @@
 /* Begin PBXFileReference section */
 		013019031910D44000257325 /* PushView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushView.h; sourceTree = "<group>"; };
 		013019041910D44000257325 /* PushView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushView.m; sourceTree = "<group>"; };
-		013019061910D45F00257325 /* TKPushDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPushDetailCell.h; sourceTree = "<group>"; };
-		013019071910D45F00257325 /* TKPushDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPushDetailCell.m; sourceTree = "<group>"; };
 		013019091910D59500257325 /* Push.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Push.h; sourceTree = "<group>"; };
 		0130190A1910D59500257325 /* Push.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Push.m; sourceTree = "<group>"; };
-		0130190C1910D5BC00257325 /* PushDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushDetail.h; sourceTree = "<group>"; };
-		0130190D1910D5BC00257325 /* PushDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushDetail.m; sourceTree = "<group>"; };
 		0130190F1910D63B00257325 /* scrollSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scrollSwitch.h; sourceTree = "<group>"; };
 		013019101910D63B00257325 /* scrollSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = scrollSwitch.m; sourceTree = "<group>"; };
 		013019121910D66500257325 /* PushViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushViewController.h; sourceTree = "<group>"; };
@@ -688,6 +684,10 @@
 		01CD56D518FCD2D3007731E1 /* OnlineMapViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OnlineMapViewController.mm; sourceTree = "<group>"; };
 		01CD56D618FCD2D3007731E1 /* OfflineHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineHelper.h; sourceTree = "<group>"; };
 		01CD56D718FCD2D3007731E1 /* OfflineHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineHelper.m; sourceTree = "<group>"; };
+		01CDC192191A181F0002AE47 /* PushDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushDetail.h; sourceTree = "<group>"; };
+		01CDC193191A181F0002AE47 /* PushDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushDetail.m; sourceTree = "<group>"; };
+		01CDC195191A18270002AE47 /* TKPushDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPushDetailCell.h; sourceTree = "<group>"; };
+		01CDC196191A18270002AE47 /* TKPushDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPushDetailCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -731,12 +731,12 @@
 		013019021910D3A200257325 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				01CDC195191A18270002AE47 /* TKPushDetailCell.h */,
+				01CDC196191A18270002AE47 /* TKPushDetailCell.m */,
+				01CDC192191A181F0002AE47 /* PushDetail.h */,
+				01CDC193191A181F0002AE47 /* PushDetail.m */,
 				0130190F1910D63B00257325 /* scrollSwitch.h */,
 				013019101910D63B00257325 /* scrollSwitch.m */,
-				0130190C1910D5BC00257325 /* PushDetail.h */,
-				0130190D1910D5BC00257325 /* PushDetail.m */,
-				013019061910D45F00257325 /* TKPushDetailCell.h */,
-				013019071910D45F00257325 /* TKPushDetailCell.m */,
 				013019031910D44000257325 /* PushView.h */,
 				013019041910D44000257325 /* PushView.m */,
 			);
@@ -1894,10 +1894,11 @@
 				01C2F0E918F4DF4B00B37603 /* PinView.m in Sources */,
 				01C2EF0B18F29C5E00B37603 /* ASIServiceArgs.m in Sources */,
 				0143A2541904AD7E00EB7B6E /* BasicWebViewController.m in Sources */,
-				0130190E1910D5BC00257325 /* PushDetail.m in Sources */,
+				01CDC194191A181F0002AE47 /* PushDetail.m in Sources */,
 				01C2F0E618F4DEDD00B37603 /* ToolBarMenu.m in Sources */,
 				0198F8ED18FE164E00F2DABE /* SOSManagerViewController.m in Sources */,
 				01C2EF0D18F29C5E00B37603 /* ASIServiceHTTPRequest.m in Sources */,
+				01CDC197191A18270002AE47 /* TKPushDetailCell.m in Sources */,
 				01CD567318F68DC3007731E1 /* WeatherView.m in Sources */,
 				01C2F08818F4DCC700B37603 /* TrajectorySearch.m in Sources */,
 				01CD56D218FCD2C7007731E1 /* DownloadMapView.m in Sources */,
@@ -1938,7 +1939,6 @@
 				01C2EE1218F24FD600B37603 /* UIButton+TPCategory.m in Sources */,
 				01C2EEA018F290A400B37603 /* RunScrollView.m in Sources */,
 				01CD568018F6A5D6007731E1 /* SVGeocoder.m in Sources */,
-				013019081910D45F00257325 /* TKPushDetailCell.m in Sources */,
 				01C2EEF818F29BBA00B37603 /* ASIInputStream.m in Sources */,
 				01C2EE8A18F2906200B37603 /* PagerViewController.m in Sources */,
 				01C2F01B18F3D79200B37603 /* DCRoundSwitchKnobLayer.m in Sources */,

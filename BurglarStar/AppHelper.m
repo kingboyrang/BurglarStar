@@ -14,6 +14,7 @@
 #import "AlertHelper.h"
 #import "AnimateLoadView.h"
 #import "Account.h"
+#import "ASIServiceHelper.h"
 @interface AppHelper ()
 - (void)runAnimation;
 - (void)watiAnimationShow:(UIImage*)image;
@@ -28,27 +29,55 @@
     Account *acc=[Account unarchiverAccount];
     if (acc.isLogin) {//表示已登陆
         if ([acc.UserId length]>0&&acc.pushUserId&&[acc.pushUserId length]>0&&acc.channelId&&[acc.channelId length]>0) {
+            NSMutableArray *params1=[NSMutableArray array];
+            [params1 addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.UserId,@"UID", nil]];
+            [params1 addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.pushUserId,@"Userid", nil]];
+            [params1 addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.channelId,@"ChannelId", nil]];
+            ASIServiceArgs *args1=[[[ASIServiceArgs alloc] init] autorelease];
+            args1.serviceURL=DataSOSWebservice;
+            args1.serviceNameSpace=DataSOSNameSpace;
+            args1.methodName=@"UpdatePushAccount";
+            args1.soapParams=params1;
             
-            NSString *pwd=acc.Password&&[acc.Password length]>0?acc.Password:@"";
-            NSMutableArray *params=[NSMutableArray array];
-            [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.UserId,@"uid", nil]];
-            [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:pwd,@"pwd", nil]];
-            [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.pushUserId,@"userId", nil]];
-            [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.channelId,@"channelId", nil]];
-            ASIServiceArgs *args=[[[ASIServiceArgs alloc] init] autorelease];
-            args.serviceURL=DataPushWebserviceURL;
-            args.serviceNameSpace=DataPushNameSpace;
-            args.methodName=@"Register";
-            args.soapParams=params;
-            
-            ASIHTTPRequest *request=[args request];
+            ASIHTTPRequest *request=[args1 request];
             [request setCompletionBlock:^{
-                
             }];
             [request setFailedBlock:^{
-                
             }];
             [request startAsynchronous];
+            /***
+            //新增
+            NSMutableArray *params=[NSMutableArray array];
+            [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.UserId,@"UID", nil]];
+            [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.pushUserId,@"Userid", nil]];
+            [params addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.channelId,@"ChannelId", nil]];
+            ASIServiceArgs *args=[[[ASIServiceArgs alloc] init] autorelease];
+            args.serviceURL=DataSOSWebservice;
+            args.serviceNameSpace=DataSOSNameSpace;
+            args.methodName=@"AddPushAccount";
+            args.soapParams=params;
+            //修改
+            NSMutableArray *params1=[NSMutableArray array];
+            [params1 addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.UserId,@"UID", nil]];
+            [params1 addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.pushUserId,@"Userid", nil]];
+            [params1 addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.channelId,@"ChannelId", nil]];
+            ASIServiceArgs *args1=[[[ASIServiceArgs alloc] init] autorelease];
+            args1.serviceURL=DataSOSWebservice;
+            args1.serviceNameSpace=DataSOSNameSpace;
+            args1.methodName=@"UpdatePushAccount";
+            args1.soapParams=params1;
+            
+            ASIServiceHelper *_helper=[[ASIServiceHelper alloc] init];
+            [_helper addQueue:[args request]];
+            [_helper addQueue:[args1 request]];
+            [_helper startQueue:^(ASIHTTPRequest *request) {
+                //NSLog(@"xml=%@",request.responseString);
+            } failed:^(NSError *error, NSDictionary *userInfo) {
+                
+            } complete:^(NSArray *results) {
+                
+            }];
+             ***/
             
         }
     }

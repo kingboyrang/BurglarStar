@@ -49,6 +49,7 @@
         _lineImageView=[[UIImageView alloc] initWithFrame:CGRectMake(0, _msgImageView.frame.origin.y+_msgImageView.frame.size.height+3, self.frame.size.width,image3.size.height)];
         [_lineImageView setImage:image3];
         [self addSubview:_lineImageView];
+        _lineImageView.hidden=YES;
         
         r=self.frame;
         r.size.height=_lineImageView.frame.origin.y+image3.size.height;

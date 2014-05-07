@@ -12,6 +12,8 @@
 #import "AppHelper.h"
 #import "BPush.h"
 #import "AlertHelper.h"
+#import "PushViewController.h"
+#import "Account.h"
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -170,7 +172,15 @@
     [application setApplicationIconBadgeNumber:0];
     
     [BPush handleNotification:userInfo];
-    //MainViewController *main=(MainViewController*)self.window.rootViewController;
-    //[main setSelectedItemIndex:2];
+    /******跳转到推播信息 ****/
+    Account *acc=[Account unarchiverAccount];
+    if (acc.isLogin) {
+        UINavigationController *nav=(UINavigationController*)self.window.rootViewController;
+        if (![nav.topViewController isKindOfClass:[PushViewController class]]) {
+            PushViewController *push=[[PushViewController alloc] init];
+            [nav pushViewController:push animated:YES];
+            [push release];
+        }
+    }
 }
 @end
