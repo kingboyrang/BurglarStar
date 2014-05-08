@@ -294,8 +294,16 @@
         [cell.chkButton addTarget:self action:@selector(buttonChkClick:) forControlEvents:UIControlEventTouchUpInside];
         [cell.arrowButton addTarget:self action:@selector(buttonSkipClick:) forControlEvents:UIControlEventTouchUpInside];
     }
+    if (indexPath.row%2==0) {
+        [cell.arrowButton setImage:[UIImage imageNamed:@"arrow_right_n.png"] forState:UIControlStateNormal];
+
+        
+    }else{
+        [cell.arrowButton setImage:[UIImage imageNamed:@"arrow_right_s.png"] forState:UIControlStateNormal];
+    }
+    
     UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
-    backgrdView.backgroundColor = indexPath.row%2==0?[UIColor colorFromHexRGB:@"bebeb8"]:[UIColor colorFromHexRGB:@"efeedc"];
+    backgrdView.backgroundColor = indexPath.row%2==0?[UIColor colorFromHexRGB:@"efeedc"]:[UIColor colorFromHexRGB:@"bebeb8"];
     cell.backgroundView = backgrdView;
     [backgrdView release];
     AreaCrawl *area=self.list[indexPath.row];

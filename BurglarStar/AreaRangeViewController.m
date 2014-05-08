@@ -657,18 +657,54 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+//显示或隐藏时间段
+- (void)buttonShowHide:(UIButton*)btn{
+    btn.selected=!btn.selected;
+    
+    id v=[btn superview];
+    while (![v isKindOfClass:[UITableViewCell class]]) {
+        v=[v superview];
+    }
+    TKAreaWeekCell *cell=(TKAreaWeekCell*)v;
+    NSIndexPath *indexPath=[_tableView indexPathForCell:cell];
+    NSString *key=[NSString stringWithFormat:@"%d",cell.index];
+    NSArray *source=[self.cellChilds objectForKey:key];
+    if (btn.selected) {//显示
+        [cell setOpen:YES];
+        NSMutableArray *indexPaths=[NSMutableArray array];
+        for (int i=0; i<source.count; i++) {
+            [self.cells insertObject:[source objectAtIndex:i] atIndex:indexPath.row+i+1];
+            [indexPaths addObject:[NSIndexPath indexPathForRow:indexPath.row+i+1 inSection:0]];
+        }
+        [_tableView beginUpdates];
+        [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
+        [_tableView endUpdates];
+    }else{//隐藏
+        [cell setOpen:NO];
+        NSMutableArray *indexPaths=[NSMutableArray array];
+        [self.cells removeObjectsInRange:NSMakeRange(indexPath.row+1, source.count)];
+        for (int i=0; i<source.count; i++) {
+            [indexPaths addObject:[NSIndexPath indexPathForRow:indexPath.row+i+1 inSection:0]];
+        }
+        [_tableView beginUpdates];
+        [_tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
+        [_tableView endUpdates];
+    }
+}
 #pragma mark - table source & delegate Methods
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return [self.cells count];
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell=self.cells[indexPath.row];
+    cell.selectionStyle=UITableViewCellSelectionStyleNone;
     if (![cell isKindOfClass:[TKAreaWeekCell class]]) {
         cell.selectionStyle=UITableViewCellSelectionStyleNone;
     }else{
         TKAreaWeekCell *weekCell=(TKAreaWeekCell*)cell;
         UIView *backgrdView = [[UIView alloc] initWithFrame:cell.frame];
         backgrdView.backgroundColor =weekCell.index%2==0?[UIColor colorFromHexRGB:@"bebeb8"]:[UIColor colorFromHexRGB:@"f1eedd"];
+        [weekCell.rightView addTarget:self action:@selector(buttonShowHide:) forControlEvents:UIControlEventTouchUpInside];
         weekCell.backgroundView = backgrdView;
         [backgrdView release];
     }
