@@ -183,6 +183,7 @@
 - (void)buttonSubmit{
     TKTextFieldCell *cell1=self.cells[3];
     TKTextFieldCell *cell2=self.cells[5];
+
     
     if (!cell1.hasValue) {
         [AlertHelper initWithTitle:@"提示" message:@"手机号码不为空!"];
@@ -198,6 +199,11 @@
     {
         [AlertHelper initWithTitle:@"提示" message:@"手机号码必须为11位！"];
         [cell1.textField becomeFirstResponder];
+        return;
+    }
+    if (!cell2.hasValue) {
+        [AlertHelper initWithTitle:@"提示" message:@"昵称不为空!"];
+        [cell2.textField becomeFirstResponder];
         return;
     }
     [self textFieldShouldReturn:cell1.textField];
