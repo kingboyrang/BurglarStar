@@ -27,9 +27,11 @@
 }
 - (void)setDataSource:(TrajectoryMessage*)entity indexPathRow:(NSInteger)row{
     if (row%2==0) {
-        self.backgroundColor=[UIColor colorFromHexRGB:@"bebeb8"];
+        [self.buttonArrow setImage:[UIImage imageNamed:@"arrow_right_n.png"] forState:UIControlStateNormal];
+         self.backgroundColor=[UIColor colorFromHexRGB:@"efeedc"];
     }else{
-        self.backgroundColor=[UIColor colorFromHexRGB:@"efeedc"];
+        [self.buttonArrow setImage:[UIImage imageNamed:@"arrow_right_s.png"] forState:UIControlStateNormal];
+        self.backgroundColor=[UIColor colorFromHexRGB:@"bebeb8"];
     }
     self.labName.textColor=[UIColor colorFromHexRGB:@"252930"];
     self.labLimit.textColor=[UIColor colorFromHexRGB:@"252930"];

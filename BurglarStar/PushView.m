@@ -195,9 +195,9 @@
     cell.detailView.labDate.textColor=[UIColor colorFromHexRGB:@"252930"];
     cell.detailView.labMessage.textColor=[UIColor colorFromHexRGB:@"252930"];
     if (indexPath.row%2==0) {
-        cell.detailView.backgroundColor=[UIColor colorFromHexRGB:@"bebeb8"];
-    }else{
         cell.detailView.backgroundColor=[UIColor colorFromHexRGB:@"efeedc"];
+    }else{
+        cell.detailView.backgroundColor=[UIColor colorFromHexRGB:@"bebeb8"];
     }
     return cell;
     
@@ -207,7 +207,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Push *entity=self.list[indexPath.row];
-    CGSize size=[entity.Message textSize:[UIFont boldSystemFontOfSize:14] withWidth:202];
+    CGSize size=[entity.Message textSize:[UIFont systemFontOfSize:14] withWidth:202];
     if (size.height>43){
         return 5+10+size.height+10+3+6;
     }

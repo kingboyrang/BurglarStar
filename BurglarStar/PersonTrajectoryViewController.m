@@ -257,10 +257,10 @@
 
     if (indexPath.row%2==0) {
          [cell.arrowButton setImage:[UIImage imageNamed:@"arrow_right_n.png"] forState:UIControlStateNormal];
-         cell.contentView.backgroundColor=[UIColor colorFromHexRGB:@"bebeb8"];
+         cell.contentView.backgroundColor=[UIColor colorFromHexRGB:@"efeedc"];
     }else{
          [cell.arrowButton setImage:[UIImage imageNamed:@"arrow_right_s.png"] forState:UIControlStateNormal];
-         cell.contentView.backgroundColor=[UIColor colorFromHexRGB:@"efeedc"];
+        cell.contentView.backgroundColor=[UIColor colorFromHexRGB:@"bebeb8"];
     }
     return cell;
 }

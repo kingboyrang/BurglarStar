@@ -39,7 +39,7 @@
         CGRect r=CGRectInset(_msgImageView.frame, 10, 10);
         _labMessage=[[UILabel alloc] initWithFrame:r];
         _labMessage.textColor=[UIColor colorFromHexRGB:@"919293"];
-        _labMessage.font=[UIFont boldSystemFontOfSize:14];
+        _labMessage.font=[UIFont systemFontOfSize:14];
         _labMessage.numberOfLines=0;
         _labMessage.lineBreakMode=NSLineBreakByWordWrapping;
         _labMessage.backgroundColor=[UIColor clearColor];
@@ -65,7 +65,7 @@
     [super layoutSubviews];
     CGRect  r=_labMessage.frame;
     if ([_labMessage.text length]>0) {
-        CGSize size=[_labMessage.text textSize:[UIFont boldSystemFontOfSize:14] withWidth:r.size.width];
+        CGSize size=[_labMessage.text textSize:[UIFont systemFontOfSize:14] withWidth:r.size.width];
         if (size.height>_msgImageView.frame.size.height-20) {
             UIImage *leftImage=[UIImage imageNamed:@"bubble.png"];
             UIEdgeInsets leftInsets = UIEdgeInsetsMake(10,10, 10, 10);
