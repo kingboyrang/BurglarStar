@@ -118,8 +118,10 @@
     args.methodName=@"GetPushList";
     args.soapParams=params;
     
+    
     ASIServiceHTTPRequest *request=[ASIServiceHTTPRequest requestWithArgs:args];
     [request setCompletionBlock:^{
+        //NSLog(@"xml=%@",request.responseString);
         [_tableView tableViewDidFinishedLoading];
         _tableView.reachedTheEnd  = NO;
         if (self.refreshing) {

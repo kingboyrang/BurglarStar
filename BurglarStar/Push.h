@@ -16,7 +16,7 @@
 @property(nonatomic,copy) NSString *Name;//出现异常车牌
 @property(nonatomic,copy) NSString *TimeSpan;//异常持续时间
 
-@property(nonatomic,readonly) NSString *Message;//界面显示信息
+@property(nonatomic,copy) NSString *Message;//界面显示信息
 @property (nonatomic,readonly) NSString *formatDateText;//时间
 
 + (NSArray*)jsonSerializationPushs:(NSString*)jsonStr;

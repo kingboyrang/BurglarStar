@@ -33,6 +33,7 @@
             [params1 addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.UserId,@"UID", nil]];
             [params1 addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.pushUserId,@"Userid", nil]];
             [params1 addObject:[NSDictionary dictionaryWithObjectsAndKeys:acc.channelId,@"ChannelId", nil]];
+            [params1 addObject:[NSDictionary dictionaryWithObjectsAndKeys:@"4",@"Devicetype", nil]];
             ASIServiceArgs *args1=[[[ASIServiceArgs alloc] init] autorelease];
             args1.serviceURL=DataSOSWebservice;
             args1.serviceNameSpace=DataSOSNameSpace;
