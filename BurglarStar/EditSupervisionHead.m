@@ -104,6 +104,7 @@
     [buttons.cancel addTarget:self action:@selector(buttonPrevClick) forControlEvents:UIControlEventTouchUpInside];
     [buttons.submit setTitle:@"完成" forState:UIControlStateNormal];
     [buttons.submit addTarget:self action:@selector(buttonSubmitClick) forControlEvents:UIControlEventTouchUpInside];
+    buttons.cancel.hidden=YES;
     /***
     if (self.operateType==2) {
         buttons.cancel.hidden=YES;

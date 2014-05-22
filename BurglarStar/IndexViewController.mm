@@ -211,7 +211,7 @@
     }
     if (index==3) {//应用中心
         MoreViewController *viewController2=[[MoreViewController alloc] init];
-        viewController2.title=@"更多";
+        viewController2.title=@"个人中心";
         [self.navigationController pushViewController:viewController2 animated:YES];
         [viewController2 release];
     }
