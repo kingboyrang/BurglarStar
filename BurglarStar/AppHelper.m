@@ -41,6 +41,7 @@
             args1.soapParams=params1;
             ASIHTTPRequest *request=[args1 request];
             [request setCompletionBlock:^{
+                //[AlertHelper initWithTitle:@"提示" message:request.responseString];
             }];
             [request setFailedBlock:^{
             }];
