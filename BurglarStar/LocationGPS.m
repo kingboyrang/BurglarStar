@@ -10,7 +10,7 @@
 
 @interface LocationGPS()//私有方法
 //获取当前位置
--(void) loadCurrentLocation:(CLLocationCoordinate2D)coor2D;
+-(void) loadCurrentLocation:(CLLocation*)newlocation;
 -(void) start;
 -(void) stop;
 @end
@@ -50,8 +50,9 @@
         [self loadCurrentLocation:newLocation.coordinate];
     }
      ***/
+
     [self stop];//停止定位
-    [self loadCurrentLocation:newLocation.coordinate];
+    [self loadCurrentLocation:newLocation];
     //CLLocation *currentLocation = [locations lastObject];
 }
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
@@ -77,14 +78,29 @@
         [locationManager release],locationManager=nil;
     }
 }
--(void) loadCurrentLocation:(CLLocationCoordinate2D)coor2D{
-    
+-(void) loadCurrentLocation:(CLLocation*)newlocation{
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    [geocoder reverseGeocodeLocation:newlocation completionHandler:^(NSArray *array, NSError *error) {
+        if (array.count > 0) {
+            CLPlacemark *placemark = [array objectAtIndex:0];
+            if (_finishlocationBlock) {
+                _finishlocationBlock(placemark);
+            }
+        }
+        if (error) {
+            if (_failedlocationBlock) {
+                _failedlocationBlock(error);
+            }
+        }
+    }];
+    /***
     [SVGeocoder reverseGeocode:coor2D
                     completion:^(NSArray *placemarks, NSHTTPURLResponse *urlResponse, NSError *error) {
                         // do something with placemarks, handle errors
-                        
+                         NSLog(@"error=%@",error.description);
                         if ([placemarks count]>0) {
                             SVPlacemark *place=(SVPlacemark*)[placemarks objectAtIndex:0];
+                            
                             if (_finishlocationBlock) {
                                 _finishlocationBlock(place);
                             }
@@ -98,6 +114,7 @@
                        
                         
                     }];
+     ***/
 
     
 }

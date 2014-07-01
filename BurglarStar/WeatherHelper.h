@@ -12,7 +12,7 @@
 @property (nonatomic,retain) NSDictionary *CityCode;
 //单一实例
 + (WeatherHelper*)sharedInstance;
-- (NSString*)cityNumberWithPlacemark:(SVPlacemark*)place;
+- (NSString*)cityNumberWithPlacemark:(CLPlacemark*)place;
 
-+ (NSString*)getWeatherCityCode:(SVPlacemark*)place;
++ (NSString*)getWeatherCityCode:(CLPlacemark*)place;
 @end

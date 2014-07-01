@@ -10,7 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "SVGeocoder.h"
 
-typedef void (^finishLocationBlock)(SVPlacemark *place);
+typedef void (^finishLocationBlock)(CLPlacemark *place);
 typedef void (^failedLocationBlock)(NSError *error);
 
 

@@ -29,10 +29,11 @@
     }
     return self;
 }
-- (NSString*)cityNumberWithPlacemark:(SVPlacemark*)place
+- (NSString*)cityNumberWithPlacemark:(CLPlacemark*)place
 {
     if (self.CityCode&&[self.CityCode count]>0) {
         NSPredicate *pred = [NSPredicate predicateWithFormat:@"%@ BEGINSWITH[cd] SELF",place.administrativeArea];
+        
         NSArray *arr=[self.CityCode.allKeys filteredArrayUsingPredicate:pred];
         if (arr&&[arr count]>0) {
             NSString *key=[arr objectAtIndex:0];
@@ -43,13 +44,13 @@
 }
 - (NSString*)searchKeyWithDictionary:(NSDictionary*)dic value:(NSString*)value{
     for (NSString *key in dic.allKeys) {
-        if ([[dic objectForKey:key] isEqualToString:value]) {
+        if ([[dic objectForKey:key] isEqualToString:value]||[value hasPrefix:[dic objectForKey:key]]) {
             return key;
         }
     }
     return nil;
 }
-+ (NSString*)getWeatherCityCode:(SVPlacemark*)place{
++ (NSString*)getWeatherCityCode:(CLPlacemark*)place{
     WeatherHelper *weather=[WeatherHelper sharedInstance];
     return [weather cityNumberWithPlacemark:place];
 }
